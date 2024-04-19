@@ -9,7 +9,7 @@ import logo_color_trimmed from "../assets/logo_color_trimmed.png";
 const NavBar = () =>{
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
-            <Container fluid>
+            <Container fluid className="ms-5 me-5">
                 <Navbar.Brand href="#">
                     <img
                         src={logo_color_trimmed}
