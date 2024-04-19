@@ -7,7 +7,7 @@
 - [Introduction](#introduction)
 - [Starting the React App](#starting-the-react-app)
 - [Creating the Navbar component](#creating-the-navbar-component)
-- [Creating the Footer component](#creating-the-footer-component)
+  - [Using Bootstrap as a base](#using-bootstrap-as-a-base)
 - [Creating the Home component](#creating-the-home-component)
 - [Creating the 404 - Not Found component](#creating-the-404---not-found-component)
 - [Deploying the React app in Heroku](#deploying-the-react-app-in-heroku)
@@ -66,10 +66,23 @@ Then, you can use the component in the `App.js` file by adding the following cod
 ```js
 <NavBar />
 ```
+### Using Bootstrap as a base
 
-## Creating the Footer component
+The normal Bootstrap cannot be used in React (due to incompatibilities with the virtual DOM), so we need to use the React Bootstrap library. You can read more about it here: https://react-bootstrap.github.io/getting-started/introduction/.
 
-To create the Footer component, you can follow the same steps as for the NavBar component.
+We need then to install the `react-bootstrap` package. You can do that by running the following command in the terminal:
+
+```bash
+npm install react-bootstrap
+```
+And then, as with the normal Bootstrap, we can make use of its components by just copying and pasting the code from the documentation (webpage): https://react-bootstrap.netlify.app/.
+
+NOTE: do not forget to add the css CDN link in the `index.html` file (take care of the verison... in this case is version 5 -react bootstrap 2.10.2-).
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+```
 
 ## Creating the Home component
 
