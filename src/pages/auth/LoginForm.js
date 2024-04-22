@@ -6,24 +6,22 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
-const SignUpForm = () => {
-    const [signUpData, setSignUpData] = useState({
+const LoginForm = () => {
+    const [loginData, setLoginData] = useState({
         username: '',
-        email: '',
-        password1: '',
-        password2: ''
+        password: '',
     });
     // We need to destruct the signUpData object to get easier the values of the form fields
-    const { username, email, password1, password2 } = signUpData;
+    const { username, password } = loginData;
 
     const [error, setError] = useState({});
 
     const navigate = useNavigate();
 
     const handleChange = (e) => {
-        setSignUpData({
+        setLoginData({
             // Remember to spread the signUpData object to keep the other values
-            ...signUpData,
+            ...loginData,
             // Dynamically set the name of the field and the value
             [e.target.name]: e.target.value,
         });
@@ -32,10 +30,8 @@ const SignUpForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            await axios.post('/dj-rest-auth/registration/', signUpData);
-            // Redirect to the login page
-            console.log('User created');
-            navigate('/login');
+            await axios.post('/dj-rest-auth/login/', loginData);
+            navigate('/');
         } catch (error) {
             console.error('An error occurred:', error.response);
             setError(error.response?.data);
@@ -50,7 +46,7 @@ const SignUpForm = () => {
                 <Col xs lg="4">
                     <h1 className='fst-italic'>LET'S BE POSITIVE!</h1>
                     <p>
-                        Sign up for an account and share your experiences.
+                        Login to your account and share your experiences.
                     </p>
                 </Col>
             </Row>
@@ -77,28 +73,13 @@ const SignUpForm = () => {
                                     {message}
                                 </Alert>
                             ))}
-                            <Form.Group className="mb-3" controlId="email">
-                                <Form.Label>Email address</Form.Label>
-                                    <Form.Control
-                                        type="email"
-                                        placeholder="Enter email"
-                                        name='email'
-                                        value={email}
-                                        onChange={handleChange}
-                                    />
-                            </Form.Group>
-                            {error.email?.map((message, index) => (
-                                <Alert variant="warning" key={index}>
-                                    {message}
-                                </Alert>
-                            ))}
                             <Form.Group className="mb-3" controlId="password1">
                                 <Form.Label>Password</Form.Label>
                                 <Form.Control
                                     type="password"
                                     placeholder="Password"
-                                    name='password1'
-                                    value={password1}
+                                    name='password'
+                                    value={password}
                                     onChange={handleChange}
                                 />
                             </Form.Group>
@@ -107,25 +88,11 @@ const SignUpForm = () => {
                                     {message}
                                 </Alert>
                             ))}
-                            <Form.Group className="mb-3" controlId="password2">
-                                    <Form.Control
-                                        type="password"
-                                        placeholder="Please, re-enter the password"
-                                        name='password2'
-                                        value={password2}
-                                        onChange={handleChange}
-                                    />
-                            </Form.Group>
-                            {error.password2?.map((message, index) => (
-                                <Alert variant="warning" key={index}>
-                                    {message}
-                                </Alert>
-                            ))}
                             <p>
-                                Already have an account? <Link to="/login">Login</Link>                                
+                                Don't have an account? <Link to="/signup">Sign Up!</Link>                                
                             </p>
                             <Button variant="primary" type="submit">
-                                Sign Up
+                                Login
                             </Button>
                         </Form>
                     </Col>
@@ -135,4 +102,4 @@ const SignUpForm = () => {
     );
 }
 
-export default SignUpForm;
+export default LoginForm;
