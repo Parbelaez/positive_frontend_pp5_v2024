@@ -17,29 +17,29 @@ function SignUpForm() {
             </Row>
             <Row className="justify-content-md-center">
                 <Col xs lg="4">
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Group className="mb-3" controlId="username">
                         <Form.Label>Username</Form.Label>
-                        <Form.Control type="username" placeholder="username" />
+                        <Form.Control type="text" placeholder="username" name='username'/>
                     </Form.Group>
 
                     <Form>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Group className="mb-3" controlId="email">
                             <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" placeholder="Enter email" />
-                            <Form.Text className="text-muted">
-                                We'll never share your email with anyone else.
-                            </Form.Text>
+                            <Form.Control type="email" placeholder="Enter email" name='email' />
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                        <Form.Group className="mb-3" controlId="password1">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" />
+                            <Form.Control type="password" placeholder="Password" name='password1'/>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="password2">
+                            <Form.Control type="password" placeholder="Please, re-enter the password" name='password2' />
                         </Form.Group>
                         <p>
-                            Already have an account? <Link to="/signin">Login</Link>                                
+                            Already have an account? <Link to="/login">Login</Link>                                
                         </p>
                         <Button variant="primary" type="submit">
-                            Submit
+                            Sign Up
                         </Button>
                     </Form>
                 </Col>
