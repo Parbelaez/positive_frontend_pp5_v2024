@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Col, Container, Row, Stack, Alert } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { SetCurrentUserContext } from '../../App';
 
 
 const LoginForm = () => {
+    const setCurrentUser = useContext(SetCurrentUserContext);
+
     const [loginData, setLoginData] = useState({
         username: '',
         password: '',
@@ -18,22 +21,27 @@ const LoginForm = () => {
 
     const navigate = useNavigate();
 
-    const handleChange = (e) => {
+    const handleChange = (event) => {
         setLoginData({
             // Remember to spread the signUpData object to keep the other values
             ...loginData,
             // Dynamically set the name of the field and the value
-            [e.target.name]: e.target.value,
+            [event.target.name]: event.target.value,
         });
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            await axios.post('/dj-rest-auth/login/', loginData);
+            console.log('Logging in...', loginData);
+            // Axios POST has a POJO response, in which the content of the body is called "data"
+            // We will dessctructure the response to get the "data" object
+            // and then we will extract the user information from it 
+            const { data } = await axios.post('/dj-rest-auth/login/', loginData);
+            setCurrentUser(data.user);
             navigate('/');
         } catch (error) {
-            console.error('An error occurred:', error.response);
+            console.log('An error occurred:', error.response);
             setError(error.response?.data);
         }
     };

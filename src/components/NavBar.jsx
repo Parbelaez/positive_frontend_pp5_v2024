@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -6,8 +6,39 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import logo_color_trimmed from "../assets/logo_color_trimmed.png";
 import { NavLink } from 'react-router-dom';
+import { CurrentUserContext } from '../App';
 
-const NavBar = () =>{
+const NavBar = () => {
+    const currentUser = useContext(CurrentUserContext);
+
+    const loggedInMenu = (
+        <>
+            <Nav.Link as={NavLink} to="/places">
+                Places
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/posts">
+                Posts
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/logout">
+                Logout
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/profile">
+                { currentUser?.username }
+            </Nav.Link>
+        </>
+    );
+
+    const loggedOutMenu = (
+        <>
+            <Nav.Link as={NavLink} to="/login">
+                Login
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/about">
+                About
+            </Nav.Link>
+        </>
+    );
+
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container fluid className="ms-5 me-5">
@@ -27,12 +58,7 @@ const NavBar = () =>{
                         style={{ maxHeight: "100px" }}
                         navbarScroll
                     >
-                        <Nav.Link as={ NavLink } to="/login">
-                            Login
-                        </Nav.Link>
-                        <Nav.Link as={ NavLink } to="/about">
-                            About
-                        </Nav.Link>
+                        { currentUser ? loggedInMenu : loggedOutMenu }
                     </Nav>
                     <Form className="d-flex">
                         <Form.Control

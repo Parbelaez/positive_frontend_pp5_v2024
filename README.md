@@ -200,7 +200,7 @@ This way, we will have a better overview of which components we are using in whi
 
 To create the Login.jsx component, we have used a Bootstrap form. You can read more about it here: https://react-bootstrap.github.io/components/forms/
 
-There is something imprtant compared with the tutorial, and it is the 'useNavigate' hook. You can read more about it here: https://reactrouter.com/docs/en/v6/api#usenavigate . Basically, it is used to navigate to a different page, but, in the tutorial, they are using the 'useHistory' hook. You can read more about it here: https://reactrouter.com/docs/en/v6/api#usehistory . The difference is that the 'useNavigate' hook is used in React Router v6, and the 'useHistory' hook is used in React Router v5.
+There is something important compared with the tutorial, and it is the 'useNavigate' hook. You can read more about it here: https://reactrouter.com/docs/en/v6/api#usenavigate . Basically, it is used to navigate to a different page, but, in the tutorial, they are using the 'useHistory' hook. You can read more about it here: https://reactrouter.com/docs/en/v6/api#usehistory . The difference is that the 'useNavigate' hook is used in React Router v6, and the 'useHistory' hook is used in React Router v5.
 
 Also, at the time of using it, it differs a little:
 
@@ -268,6 +268,37 @@ const handleMount = async () => {
 ```
 
 **NOTE: ** as you now from the API project, we are using the dj-rest-auth package to handle the authentication.
+
+As it can be seen, during the login process, we are storing the user data in the CurrentUser context. This way, we can access the user data from any component that is consuming the context.
+
+NOTE: notice that axios has a schema for the response message in which the content of the body is called "data". So, we need to destructure the response to get the "data" object and then extract the user information from it. More about it here: https://axios-http.com/docs/res_schema .
+
+```js
+const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            console.log('Logging in...', loginData);
+            const { data } = await axios.post('/dj-rest-auth/login/', loginData);
+            setCurrentUser(data.user);
+            navigate('/');
+        } catch (error) {
+            console.log('An error occurred:', error.response);
+            setError(error.response?.data);
+        }
+    };
+```
+
+We are also consuming this context in the NavBar component, so we can show the user name in the NavBar.
+
+```js
+const currentUser = useContext(CurrentUserContext);
+.
+.
+.
+    { currentUser ? loggedInMenu : loggedOutMenu }
+```
+
+NOTE: Please, go to the code to see the full implementation.
 
 ## Creating the Interceptors
 
