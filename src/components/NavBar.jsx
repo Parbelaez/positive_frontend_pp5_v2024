@@ -7,6 +7,7 @@ import logo_color_trimmed from "../assets/logo_color_trimmed.png";
 import { NavLink } from 'react-router-dom';
 import { useCurrentUser } from '../contexts/CurrentUserContext';
 import styles from '../styles/NavBar.module.css';
+import Avatar from "./Avatar";
 
 const NavBar = () => {
     const currentUser = useCurrentUser();
@@ -28,12 +29,7 @@ const NavBar = () => {
                 Logout
             </Nav.Link>
             <Nav.Link as={NavLink} to={`/profiles/${currentUser?.profile_id}`}>
-                <img
-                    src={currentUser?.profile_image}
-                    alt="Profile"
-                    height="50"
-                />
-                {console.log(currentUser?.profile_id)}
+                <Avatar src={currentUser?.profile_image} text={currentUser?.username} height={ 40 } />
             </Nav.Link>
         </>
     );
