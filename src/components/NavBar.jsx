@@ -5,13 +5,23 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import logo_color_trimmed from "../assets/logo_color_trimmed.png";
 import { NavLink } from 'react-router-dom';
-import { useCurrentUser } from '../contexts/CurrentUserContext';
+import axios from 'axios';
+import { useCurrentUser, useSetCurrentUser } from '../contexts/CurrentUserContext';
 import styles from '../styles/NavBar.module.css';
 import Avatar from "./Avatar";
 
 const NavBar = () => {
     const currentUser = useCurrentUser();
-    console.log('currentUser: ', currentUser);
+    const setCurrentUser = useSetCurrentUser();
+
+    const handleLogout = async () => {
+        try {
+            await axios.post('/dj-rest-auth/logout/');
+            setCurrentUser(null);
+        } catch (error) {
+            console.error('An error occurred:', error.response);
+        }
+    };
 
     const loggedInMenu = (
         <>
@@ -25,11 +35,11 @@ const NavBar = () => {
             <Nav.Link as={NavLink} to="/posts">
                 Posts
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/" onClick={() => {}}>
+            <Nav.Link as={NavLink} to="/login" onClick={handleLogout}>
                 Logout
             </Nav.Link>
             <Nav.Link as={NavLink} to={`/profiles/${currentUser?.profile_id}`}>
-                <Avatar src={currentUser?.profile_image} text={currentUser?.username} height={ 40 } />
+                <Avatar src={currentUser?.profile_image} text={currentUser?.username} height={40} />
             </Nav.Link>
         </>
     );
@@ -79,6 +89,6 @@ const NavBar = () => {
             </Container>
         </Navbar>
     );
-}
+};
 
-export default NavBar
+export default NavBar;
