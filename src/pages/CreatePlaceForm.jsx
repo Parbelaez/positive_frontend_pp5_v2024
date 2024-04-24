@@ -5,7 +5,7 @@ import { Alert, Container, Row, Col } from "react-bootstrap";
 import { axiosRequest } from "../api/axiosDefaults";
 
 
-const CreatePlace = () => {
+const CreatePlaceForm = () => {
     // A new axios instance for the country API
     const countryInstance = axios.create({
         baseURL: "https://countriesnow.space/api/v0.1/countries",
@@ -56,7 +56,6 @@ const CreatePlace = () => {
             getCountriesArray()
                 .then((countries) => {
                     setCountries(countries);
-                    console.log("countries", countries); // Log the countries outside the promise
                 })
                 .catch((error) => {
                     console.error("Error fetching data:", error);
@@ -68,18 +67,15 @@ const CreatePlace = () => {
 
     // The image should be sent as a FormData object
     const handleChange = (event) => {
-        console.log('Change Triggered by: ', event.target.name, event.target.value);
         setPlaceData({
             ...placeData,
             [event.target.name]: event.target.value,
         });
         // Reset the cities when the country changes
         if (event.target.name === "country") {
-            console.log('Country Selected: ', event.target.value);
             const selectedCountryCities = countries.find( n => {
                 return n.country === event.target.value;
             }).cities;
-            console.log('Cities: ', selectedCountryCities);
             setCities(selectedCountryCities)
         }
     };
@@ -119,9 +115,12 @@ const CreatePlace = () => {
             const { data } = await axiosRequest.post("/places/", formData);
             navigate(`/places/${data.id}`);
         } catch (err) {
+            console.log("An error occurred");
             console.log(err);
             if (err.response?.status !== 401) {
+                console.log("An error not 401");
                 setErrors(err.response?.data);
+                console.log(errors);
             }
         }
     };
@@ -143,7 +142,7 @@ const CreatePlace = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        {errors?.title?.map((message, idx) => (
+                        {errors?.place_name?.map((message, idx) => (
                             <Alert variant="warning" key={idx}>
                                 {message}
                             </Alert>
@@ -168,7 +167,7 @@ const CreatePlace = () => {
                                 <option value="other">Other</option>
                             </select>
                         </div>
-                        {errors?.title?.map((message, idx) => (
+                        {errors?.place_type?.map((message, idx) => (
                             <Alert variant="warning" key={idx}>
                                 {message}
                             </Alert>
@@ -184,7 +183,7 @@ const CreatePlace = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        {errors?.title?.map((message, idx) => (
+                        {errors?.address?.map((message, idx) => (
                             <Alert variant="warning" key={idx}>
                                 {message}
                             </Alert>
@@ -206,7 +205,7 @@ const CreatePlace = () => {
                                 ))}
                             </select>
                         </div>
-                        {errors?.title?.map((message, idx) => (
+                        {errors?.country?.map((message, idx) => (
                             <Alert variant="warning" key={idx}>
                                 {message}
                             </Alert>
@@ -226,7 +225,7 @@ const CreatePlace = () => {
                                 ))}
                             </select>
                         </div>
-                        {errors?.title?.map((message, idx) => (
+                        {errors?.city?.map((message, idx) => (
                             <Alert variant="warning" key={idx}>
                                 {message}
                             </Alert>
@@ -241,13 +240,8 @@ const CreatePlace = () => {
                                 value={placeData.website}
                                 onChange={handleChange}
                             />
-                            {/* {errors.website && (
-                        <div className="alert alert-danger">
-                            {errors.website}
                         </div>
-                    )} */}
-                        </div>
-                        {errors?.title?.map((message, idx) => (
+                        {errors?.website?.map((message, idx) => (
                             <Alert variant="warning" key={idx}>
                                 {message}
                             </Alert>
@@ -263,7 +257,7 @@ const CreatePlace = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        {errors?.title?.map((message, idx) => (
+                        {errors?.phone_number?.map((message, idx) => (
                             <Alert variant="warning" key={idx}>
                                 {message}
                             </Alert>
@@ -278,7 +272,7 @@ const CreatePlace = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                        {errors?.title?.map((message, idx) => (
+                        {errors?.description?.map((message, idx) => (
                             <Alert variant="warning" key={idx}>
                                 {message}
                             </Alert>
@@ -295,7 +289,7 @@ const CreatePlace = () => {
                                 ref={imageInput}
                             />
                         </div>
-                        {errors?.title?.map((message, idx) => (
+                        {errors?.image?.map((message, idx) => (
                             <Alert variant="warning" key={idx}>
                                 {message}
                             </Alert>
@@ -311,4 +305,4 @@ const CreatePlace = () => {
     );
 };
 
-export default CreatePlace;
+export default CreatePlaceForm;

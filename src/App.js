@@ -7,7 +7,7 @@ import LoginForm from './pages/auth/LoginForm';
 import NotFound from './pages/NotFound';
 import About from './pages/About';
 import './api/axiosDefaults';
-import CreatePlace from './pages/CreatePlace';
+import CreatePlaceForm from './pages/CreatePlaceForm';
 
 
 
@@ -22,7 +22,7 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/signup" element={<SignUpForm />} />
           <Route path="/about" element={<About />} />
-          <Route path="/create-place" element={<CreatePlace />} />
+          <Route path="/create-place" element={<CreatePlaceForm />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Container>
