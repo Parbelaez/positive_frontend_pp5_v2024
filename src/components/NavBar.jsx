@@ -9,10 +9,13 @@ import axios from 'axios';
 import { useCurrentUser, useSetCurrentUser } from '../contexts/CurrentUserContext';
 import styles from '../styles/NavBar.module.css';
 import Avatar from "./Avatar";
+import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
 
 const NavBar = () => {
     const currentUser = useCurrentUser();
     const setCurrentUser = useSetCurrentUser();
+
+    const { expanded, setExpanded, ref } = useClickOutsideToggle();
 
     const handleLogout = async () => {
         try {
@@ -56,9 +59,13 @@ const NavBar = () => {
     );
 
     return (
-        <Navbar expand="lg" className="bg-body-tertiary">
+        <Navbar
+            expanded={expanded}
+            expand="lg"
+            className="bg-body-tertiary"
+        >
             <Container fluid className="ms-5 me-5">
-                <NavLink exact to="/">
+                <Nav.Link as={NavLink} exact to="/">
                     <Navbar.Brand>
                         <img
                             src={logo_color_trimmed}
@@ -66,13 +73,14 @@ const NavBar = () => {
                             height="55"
                         />
                     </Navbar.Brand>
-                </NavLink>
-                <Navbar.Toggle aria-controls="navbarScroll" />
+                </Nav.Link>
+                <Navbar.Toggle
+                    ref={ref}
+                    onClick={() => setExpanded(!expanded)}
+                    aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
                     <Nav
                         className="me-auto my-2 my-lg-0 text-center align-items-center"
-                        style={{ maxHeight: "100px" }}
-                        navbarScroll
                     >
                         {currentUser ? loggedInMenu : loggedOutMenu}
                     </Nav>
