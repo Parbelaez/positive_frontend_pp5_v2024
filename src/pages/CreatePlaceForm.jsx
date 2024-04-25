@@ -302,9 +302,24 @@ const CreatePlaceForm = () => {
                             </Alert>
                         ))}
                         <br />
-                        <Button type="submit" className="btn btn-primary">
-                            Submit
-                        </Button>
+                        <Row>
+                            <Col md={2}>
+                                <Button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                >
+                                    Submit
+                                </Button>
+                            </Col>
+                            <Col >
+                                <Button
+                                    className="btn btn-secondary"
+                                    onClick={() => navigate("/places")}
+                                >
+                                    Cancel
+                                </Button>
+                            </Col>
+                        </Row>
                     </Form>
                 </Col>
             </Row>
