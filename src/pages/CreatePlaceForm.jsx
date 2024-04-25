@@ -79,10 +79,11 @@ const CreatePlaceForm = () => {
             setCities(selectedCountryCities)
         }
     };
-        
+
+    // handleChange for image field
     const handleChangeImage = (event) => {
-        // handleChange for image field
         if (event.target.files.length) {
+            URL.revokeObjectURL(placeData.image);
             setPlaceData({
                 ...placeData,
                 image: URL.createObjectURL(event.target.files[0]),
@@ -115,10 +116,8 @@ const CreatePlaceForm = () => {
             const { data } = await axiosRequest.post("/places/", formData);
             navigate(`/places/${data.id}`);
         } catch (err) {
-            console.log("An error occurred");
             console.log(err);
             if (err.response?.status !== 401) {
-                console.log("An error not 401");
                 setErrors(err.response?.data);
                 console.log(errors);
             }
