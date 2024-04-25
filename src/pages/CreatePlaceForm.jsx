@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Alert, Container, Row, Col } from "react-bootstrap";
+import { Alert, Container, Row, Col, Form, Button } from "react-bootstrap";
 import { axiosRequest } from "../api/axiosDefaults";
 
 
@@ -129,10 +129,12 @@ const CreatePlaceForm = () => {
             <Row className="justify-content-md-center">
                 <Col xs md="6">
                     <h1>Create Place Page</h1>
-                    <form onSubmit={handleSubmit}>
+                    <Form onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label htmlFor="place_name">Place Name</label>
-                            <input
+                            <Form.Label htmlFor="place_name">
+                                Place Name
+                            </Form.Label>
+                            <Form.Control
                                 type="text"
                                 className="form-control"
                                 id="place_name"
@@ -147,8 +149,10 @@ const CreatePlaceForm = () => {
                             </Alert>
                         ))}
                         <div className="form-group">
-                            <label htmlFor="place_type">Place Type</label>
-                            <select
+                            <Form.Label htmlFor="place_type">
+                                Place Type
+                            </Form.Label>
+                            <Form.Select
                                 name="place_type"
                                 className="form-control"
                                 id="place_type"
@@ -164,7 +168,7 @@ const CreatePlaceForm = () => {
                                 <option value="park">Park</option>
                                 <option value="beach">Beach</option>
                                 <option value="other">Other</option>
-                            </select>
+                            </Form.Select>
                         </div>
                         {errors?.place_type?.map((message, idx) => (
                             <Alert variant="warning" key={idx}>
@@ -172,8 +176,8 @@ const CreatePlaceForm = () => {
                             </Alert>
                         ))}
                         <div className="form-group">
-                            <label htmlFor="address">Address</label>
-                            <input
+                            <Form.Label htmlFor="address">Address</Form.Label>
+                            <Form.Control
                                 type="text"
                                 className="form-control"
                                 id="address"
@@ -188,8 +192,8 @@ const CreatePlaceForm = () => {
                             </Alert>
                         ))}
                         <div className="form-group">
-                            <label htmlFor="country">Country</label>
-                            <select
+                            <Form.Label htmlFor="country">Country</Form.Label>
+                            <Form.Select
                                 className="form-control"
                                 id="country"
                                 name="country"
@@ -202,7 +206,7 @@ const CreatePlaceForm = () => {
                                         {country.country}
                                     </option>
                                 ))}
-                            </select>
+                            </Form.Select>
                         </div>
                         {errors?.country?.map((message, idx) => (
                             <Alert variant="warning" key={idx}>
@@ -210,8 +214,8 @@ const CreatePlaceForm = () => {
                             </Alert>
                         ))}
                         <div className="form-group">
-                            <label htmlFor="city">City</label>
-                            <select
+                            <Form.Label htmlFor="city">City</Form.Label>
+                            <Form.Select
                                 className="form-control"
                                 id="city"
                                 name="city"
@@ -222,7 +226,7 @@ const CreatePlaceForm = () => {
                                 {cities.map((city) => (
                                     <option value={city}>{city}</option>
                                 ))}
-                            </select>
+                            </Form.Select>
                         </div>
                         {errors?.city?.map((message, idx) => (
                             <Alert variant="warning" key={idx}>
@@ -230,8 +234,8 @@ const CreatePlaceForm = () => {
                             </Alert>
                         ))}
                         <div className="form-group">
-                            <label htmlFor="website">Website</label>
-                            <input
+                            <Form.Label htmlFor="website">Website</Form.Label>
+                            <Form.Control
                                 type="text"
                                 className="form-control"
                                 id="website"
@@ -246,8 +250,10 @@ const CreatePlaceForm = () => {
                             </Alert>
                         ))}
                         <div className="form-group">
-                            <label htmlFor="phone_number">Phone Number</label>
-                            <input
+                            <Form.Label htmlFor="phone_number">
+                                Phone Number
+                            </Form.Label>
+                            <Form.Control
                                 type="text"
                                 className="form-control"
                                 id="phone_number"
@@ -262,7 +268,9 @@ const CreatePlaceForm = () => {
                             </Alert>
                         ))}
                         <div className="form-group">
-                            <label htmlFor="description">Description</label>
+                            <Form.Label htmlFor="description">
+                                Description
+                            </Form.Label>
                             <textarea
                                 className="form-control"
                                 id="description"
@@ -277,8 +285,8 @@ const CreatePlaceForm = () => {
                             </Alert>
                         ))}
                         <div className="form-group">
-                            <label htmlFor="image">Image</label>
-                            <input
+                            <Form.Label htmlFor="image">Image</Form.Label>
+                            <Form.Control
                                 type="file"
                                 className="form-control"
                                 id="image"
@@ -294,10 +302,10 @@ const CreatePlaceForm = () => {
                             </Alert>
                         ))}
                         <br />
-                        <button type="submit" className="btn btn-primary">
+                        <Button type="submit" className="btn btn-primary">
                             Submit
-                        </button>
-                    </form>
+                        </Button>
+                    </Form>
                 </Col>
             </Row>
         </Container>
