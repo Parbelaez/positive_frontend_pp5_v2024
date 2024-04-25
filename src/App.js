@@ -9,6 +9,7 @@ import About from './pages/About';
 import './api/axiosDefaults';
 import CreatePlaceForm from './pages/CreatePlaceForm';
 import NewPostForm from './pages/NewPostForm';
+import PlacePage from './pages/PlacePage';
 
 
 
@@ -20,12 +21,13 @@ function App() {
       <Container className={styles.Main}>
         <Routes>
           <Route exact path="/" element={<h1>Home</h1>} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/signup" element={<SignUpForm />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/create-place" element={<CreatePlaceForm />} />
-          <Route path="/new-post" element={<NewPostForm />} />
-          <Route path="*" element={<NotFound />} />
+          <Route exact path="/login" element={<LoginForm />} />
+          <Route exact path="/signup" element={<SignUpForm />} />
+          <Route exact path="/about" element={<About />} />
+          <Route exact path="/create-place" element={<CreatePlaceForm />} />
+          <Route exact path="/new-post" element={<NewPostForm />} />
+          <Route exact path="*" element={<NotFound />} />
+          <Route exact path="/places/:id" element={<PlacePage />} />
         </Routes>
       </Container>
     </div>
