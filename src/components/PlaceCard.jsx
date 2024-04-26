@@ -2,8 +2,15 @@ import { Container, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import styles from "../styles/PlaceCard.module.css";
+import { useCurrentUser } from "../contexts/CurrentUserContext";
 
 const PlaceCard = ({ place }) => {
+
+    const currentUser = useCurrentUser();
+    console.log('logged user: ', currentUser);
+    console.log("place owner: ", place.owner_id);
+    const is_owner = currentUser?.id === place.owner_id;
+
     return (
         <Container
             className={`${styles.content} position-absolute top-50 start-50 translate-middle`}
@@ -36,6 +43,14 @@ const PlaceCard = ({ place }) => {
                             place.
                         </p>
                         <Button variant="primary">Post You Experience!</Button>
+                        <span> </span>
+                        {is_owner && (
+                            <Button variant="secondary">Edit Place</Button>
+                        )}
+                        <span> </span>
+                        {is_owner && (
+                            <Button variant="danger">Delete Place</Button>
+                        )}
                     </Card.Body>
                 </Card>
             </Row>
