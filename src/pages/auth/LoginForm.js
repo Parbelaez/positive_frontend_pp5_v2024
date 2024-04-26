@@ -33,7 +33,6 @@ const LoginForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            console.log('Logging in...', loginData);
             // Axios POST has a POJO response, in which the content of the body is called "data"
             // We will dessctructure the response to get the "data" object
             // and then we will extract the user information from it 

@@ -7,7 +7,7 @@ import PlaceCard from "../components/PlaceCard";
 
 const PlacePage = () => {
     const { id } = useParams();
-    const [place, setPlace] = useState({ result: [] });
+    const [place, setPlace] = useState({ results: [] });
 
     useEffect(() => {
         // This Handle Mount will fetch the place data from the API
@@ -28,8 +28,7 @@ const PlacePage = () => {
 
     return (
         <div>
-            <h1>Place Page</h1>
-            <PlaceCard place={place.results[0]} />
+            { <PlaceCard place={place.results[0]} /> }
         </div>
     );
 }
