@@ -2,6 +2,7 @@ import { useState, createContext, useEffect, useContext, useMemo } from 'react';
 import axios from 'axios';
 import { axiosRequest, axiosResponse } from '../api/axiosDefaults';
 import { useNavigate } from 'react-router-dom';
+import { removeTokenTimestamp, shouldRefreshToken } from "../utils/utils";
 
 export const CurrentUserContext = createContext(null);
 export const SetCurrentUserContext = createContext(null);
@@ -29,6 +30,7 @@ export const CurrentUserProvider = ({ children }) => {
     useMemo(() => {
         axiosRequest.interceptors.request.use(
             async (config) => {
+                if (shouldRefreshToken()) {
                 try {
                     await axios.post('/dj-rest-auth/token/refresh/');
                 } catch (error) {
@@ -37,10 +39,12 @@ export const CurrentUserProvider = ({ children }) => {
                             navigate('/login');
                         }
                         return null;
-                    })
+                    });
+                    removeTokenTimestamp();
                     return config;
                 }
-                return config;
+                    return config;
+                }
             },
             (error) => Promise.reject(error)
         );
@@ -57,7 +61,8 @@ export const CurrentUserProvider = ({ children }) => {
                                 navigate('/login');
                             }
                             return null;
-                        })
+                        });
+                        removeTokenTimestamp();
                     }
                 return axios(error.config)
                 }
