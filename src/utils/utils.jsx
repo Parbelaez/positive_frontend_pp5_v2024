@@ -1,10 +1,5 @@
 import { jwtDecode } from "jwt-decode";
 
-// export const setAccessToken = (data) => {
-//     const accessToken = jwtDecode(data?.access).exp;
-//     console.log("accessToken", accessToken);
-//     localStorage.setItem("accessToken", accessToken);
-// };
 
 export const setTokenTimestamp = (data) => {
     console.log("refreshing token timestamp");

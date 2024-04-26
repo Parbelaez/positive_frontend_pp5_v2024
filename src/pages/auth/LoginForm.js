@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSetCurrentUser } from '../../contexts/CurrentUserContext';
+import { setTokenTimestamp } from "../../utils/utils";
 
 
 const LoginForm = () => {
@@ -38,6 +39,7 @@ const LoginForm = () => {
             // and then we will extract the user information from it 
             const { data } = await axios.post('/dj-rest-auth/login/', loginData);
             setCurrentUser(data.user);
+            setTokenTimestamp(data);
             navigate('/');
         } catch (error) {
             console.log('An error occurred:', error.response);
