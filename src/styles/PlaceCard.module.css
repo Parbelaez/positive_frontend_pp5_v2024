@@ -10,4 +10,5 @@
 
 .boldText {
     font-weight: bold;
+    text-transform: capitalize;
 }
