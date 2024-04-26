@@ -28,7 +28,7 @@ const PlacePage = () => {
 
     return (
         <div>
-            { <PlaceCard place={place.results[0]} /> }
+            <PlaceCard place={place.results[0]} />
         </div>
     );
 }
