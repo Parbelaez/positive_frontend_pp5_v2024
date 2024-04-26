@@ -10,6 +10,7 @@ import { useCurrentUser, useSetCurrentUser } from '../contexts/CurrentUserContex
 import styles from '../styles/NavBar.module.css';
 import Avatar from "./Avatar";
 import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
+import { removeTokenTimestamp } from "../utils/utils";
 
 const NavBar = () => {
     const currentUser = useCurrentUser();
@@ -20,7 +21,9 @@ const NavBar = () => {
     const handleLogout = async () => {
         try {
             await axios.post('/dj-rest-auth/logout/');
+            console.log('User logged out');
             setCurrentUser(null);
+            removeTokenTimestamp();
         } catch (error) {
             console.error('An error occurred:', error.response);
         }
@@ -59,11 +62,8 @@ const NavBar = () => {
     );
 
     return (
-        <Navbar
-            expanded={expanded}
-            expand="lg"
-            className="bg-body-tertiary"
-        >
+        <Navbar expanded={expanded} expand="lg" className="bg-body-tertiary">
+            {console.log("NavBar renderering")}
             <Container fluid className="ms-5 me-5">
                 <Nav.Link as={NavLink} exact to="/">
                     <Navbar.Brand>
@@ -77,11 +77,11 @@ const NavBar = () => {
                 <Navbar.Toggle
                     ref={ref}
                     onClick={() => setExpanded(!expanded)}
-                    aria-controls="navbarScroll" />
+                    aria-controls="navbarScroll"
+                />
                 <Navbar.Collapse id="navbarScroll">
-                    <Nav
-                        className="me-auto my-2 my-lg-0 text-center align-items-center"
-                    >
+                    <Nav className="me-auto my-2 my-lg-0 text-center align-items-center">
+                        {console.log("Current User:", currentUser)}
                         {currentUser ? loggedInMenu : loggedOutMenu}
                     </Nav>
                     <Form className="d-flex">

@@ -7,30 +7,32 @@ import { useCurrentUser } from "../contexts/CurrentUserContext";
 const PlaceCard = ({ place }) => {
 
     const currentUser = useCurrentUser();
-    console.log('logged user: ', currentUser);
+    console.log('logged user: ', currentUser.pk);
     console.log("place owner: ", place.owner_id);
-    const is_owner = currentUser?.id === place.owner_id;
+    const is_owner = currentUser?.pk === place.owner_id;
+    console.log("is owner: ", is_owner, currentUser?.id, place.owner_id);
 
     return (
         <Container
             className={`${styles.content} position-absolute top-50 start-50 translate-middle`}
         >
             <Row className="justify-content-md-center">
-                <Card style={{ width: "60rem" }}>
+                <Card style={{ width: "32rem" }}>
+                    <Row className="justify-content-md-center">
                     <Card.Img
                         variant="top"
                         src={place.image}
-                        className="img-fluid object-fit-cover border rounded mt-2"
-                    />
+                        className={`mt-2 ${styles.img}`}
+                        />
+                    </Row>
                     <Card.Body>
                         <Card.Title>
-                            <span className="text-uppercase fw-bold">
+                            <p className="text-uppercase fw-bold">
                                 {place.place_name}
-                            </span>
-                            <span className="text-muted"> </span>
-                            <span className="text-muted fs-6">
+                            </p>
+                            <p className="text-muted fs-6">
                                 ({place.country}, {place.city}, {place.address})
-                            </span>
+                            </p>
                         </Card.Title>
                         <Card.Text>{place.description}</Card.Text>
                         <p>Contact: {place.phone_number}</p>
@@ -41,6 +43,13 @@ const PlaceCard = ({ place }) => {
                         <p>
                             {place.num_posts} person(s) have posted about this
                             place.
+                        </p>
+                        <p>
+                            Thanks to{" "}
+                            <span className={`${styles.boldText}`}>
+                                {place.owner}
+                            </span>{" "}
+                            for sharing this place with us!
                         </p>
                         <Button variant="primary">Post You Experience!</Button>
                         <span> </span>

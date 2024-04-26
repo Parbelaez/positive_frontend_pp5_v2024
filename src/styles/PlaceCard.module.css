@@ -1,3 +1,13 @@
 .content {
     padding-top: 50px;
 }
+
+.img {
+    max-width: 400px;
+    max-height: 400px;
+    border-radius: 35px;
+}
+
+.boldText {
+    font-weight: bold;
+}

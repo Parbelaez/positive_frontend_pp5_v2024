@@ -8,6 +8,7 @@ import PlaceCard from "../components/PlaceCard";
 const PlacePage = () => {
     const { id } = useParams();
     const [place, setPlace] = useState({ results: [] });
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         // This Handle Mount will fetch the place data from the API
@@ -22,13 +23,14 @@ const PlacePage = () => {
             } catch (error) {
                 console.error('An error occurred:', error.response);
             }
+            setLoading(false);
         };
-        handleMount();
+        if (loading) { handleMount(); }
     }, [id]);
 
     return (
         <div>
-            <PlaceCard place={place.results[0]} />
+            {loading ? null : <PlaceCard place={place.results[0]} />}
         </div>
     );
 }

@@ -6,22 +6,25 @@ import SignUpForm from './pages/auth/SignUpForm';
 import LoginForm from './pages/auth/LoginForm';
 import NotFound from './pages/NotFound';
 import About from './pages/About';
+import Home from './pages/Home';
 import './api/axiosDefaults';
 import CreatePlaceForm from './pages/CreatePlaceForm';
 import NewPostForm from './pages/NewPostForm';
 import PlacePage from './pages/PlacePage';
+import { useCurrentUser } from './contexts/CurrentUserContext';
 
 
 
 function App() {
-
+  const currentUser = useCurrentUser();
+  // const profile_id = currentUser?.profile_id || "";
   return (
     <div className={styles.App}>
       <NavBar />
       <Container className={styles.Main}>
         <Routes>
-          <Route exact path="/" element={<h1>Home</h1>} />
-          <Route exact path="/login" element={<LoginForm />} />
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="/login" element={currentUser ? <Home /> : <LoginForm />} />
           <Route exact path="/signup" element={<SignUpForm />} />
           <Route exact path="/about" element={<About />} />
           <Route exact path="/create-place" element={<CreatePlaceForm />} />

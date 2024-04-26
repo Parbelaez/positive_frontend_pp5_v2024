@@ -22,15 +22,6 @@ const LoginForm = () => {
 
     const navigate = useNavigate();
 
-    const handleChange = (event) => {
-        setLoginData({
-            // Remember to spread the signUpData object to keep the other values
-            ...loginData,
-            // Dynamically set the name of the field and the value
-            [event.target.name]: event.target.value,
-        });
-    };
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -45,6 +36,15 @@ const LoginForm = () => {
             console.log('An error occurred:', error.response);
             setError(error.response?.data);
         }
+    };
+    
+    const handleChange = (event) => {
+        setLoginData({
+            // Remember to spread the signUpData object to keep the other values
+            ...loginData,
+            // Dynamically set the name of the field and the value
+            [event.target.name]: event.target.value,
+        });
     };
 
 
