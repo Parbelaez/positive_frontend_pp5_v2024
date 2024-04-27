@@ -21,7 +21,6 @@ const NavBar = () => {
     const handleLogout = async () => {
         try {
             await axios.post('/dj-rest-auth/logout/');
-            console.log('User logged out');
             setCurrentUser(null);
             removeTokenTimestamp();
         } catch (error) {
@@ -63,7 +62,6 @@ const NavBar = () => {
 
     return (
         <Navbar expanded={expanded} expand="lg" className="bg-body-tertiary">
-            {console.log("NavBar renderering")}
             <Container fluid className="ms-5 me-5">
                 <Nav.Link as={NavLink} exact to="/">
                     <Navbar.Brand>
@@ -81,7 +79,6 @@ const NavBar = () => {
                 />
                 <Navbar.Collapse id="navbarScroll">
                     <Nav className="me-auto my-2 my-lg-0 text-center align-items-center">
-                        {console.log("Current User:", currentUser)}
                         {currentUser ? loggedInMenu : loggedOutMenu}
                     </Nav>
                     <Form className="d-flex">

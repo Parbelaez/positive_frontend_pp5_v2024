@@ -19,7 +19,6 @@ const PlacePage = () => {
                     axiosRequest.get(`/places/${id}/`),
                 ]);
                 setPlace({ results: [place] });
-                console.log(place);
             } catch (error) {
                 console.error('An error occurred:', error.response);
             }

@@ -7,13 +7,9 @@ export const setTokenTimestamp = (data) => {
 };
 
 export const shouldRefreshToken = () => {
-    console.log("shouldRefreshToken");
-    const refreshtokenexists = !!localStorage.getItem("refreshTokenTimestamp");
-    console.log("refreshTokenTimestamp exists ", refreshtokenexists);
     return !!localStorage.getItem("refreshTokenTimestamp");
 };
 
 export const removeTokenTimestamp = () => {
     localStorage.removeItem("refreshTokenTimestamp");
-    console.log("refreshTokenTimestamp removed");
 };

@@ -32,35 +32,30 @@ export const CurrentUserProvider = ({ children }) => {
     }, []);
 
     useMemo(() => {
-        // axiosRequest.interceptors.request.use(
-        //     async (config) => {
-        //         console.log('Request interceptor: ', config);
-        //         if (shouldRefreshToken()) {
-        //             try {
-        //                 await axios.post('/dj-rest-auth/token/refresh/');
-        //             } catch (error) {
-        //                 setCurrentUser((prevCurrentUser) => {
-        //                     if (prevCurrentUser) {
-        //                         navigate("/login");
-        //                     }
-        //                     return null;
-        //                 });
-        //                 removeTokenTimestamp();
-        //                 return config;
-        //             };
-        //         }
-        //         return config;
-        //     },
-        //     (error) => {
-        //         return Promise.reject(error);
-        //     }
-        // );
-
-        axiosRequest.interceptors.response.use(async config => {
-            console.log('Request interceptor: ', config);
-            return config;
-        }
-    );
+        axiosRequest.interceptors.request.use(
+            async (request) => {
+                console.log('Request interceptor: ', request);
+                console.log('Headers: ', request.cookies);
+                if (shouldRefreshToken()) {
+                    try {
+                        await axios.post('/dj-rest-auth/token/refresh/');
+                    } catch (error) {
+                        setCurrentUser((prevCurrentUser) => {
+                            if (prevCurrentUser) {
+                                navigate("/login");
+                            }
+                            return null;
+                        });
+                        removeTokenTimestamp();
+                        return request;
+                    };
+                }
+                return request;
+            },
+            (error) => {
+                return Promise.reject(error);
+            }
+        );
 
         axiosResponse.interceptors.response.use(
             (response) => response,
