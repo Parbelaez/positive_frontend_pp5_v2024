@@ -18,6 +18,7 @@
 - [Creating the PostCard component](#creating-the-postcard-component)
 - [Creating the CurrentUser context](#creating-the-currentuser-context)
 - [Creating the Interceptors](#creating-the-interceptors)
+- [Bugs](#bugs)
 
 ## Introduction
 
@@ -345,3 +346,76 @@ We have decided to part ways (momentarily) with our cities-light library, becaus
 
 For this one, we have used the approach used in the Moments tutorial.
 
+## Bugs
+
+### CI Code's Bugs
+
+### Current User is lost after a refresh
+
+In the CurrentUserContext.js code, during the handleMount, the data is "fetch" but the current user is set no matter the promise is fulfilled or not.
+
+What happens is: Even though they user is signed in in the backend, the NavBar never loads the links for the signed in user, and no feature depending on this state works.
+
+These are the changes:
+
+Before:
+
+```js
+const handleMount = async () => {
+    try {
+      const { data } = await axiosRes.get("dj-rest-auth/user/");
+      setCurrentUser(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+```
+
+After:
+
+```js
+const handleMount = async () => {
+        try {
+            await axiosResponse.get('/dj-rest-auth/user/').then((response) => setCurrentUser(response.data));
+            // setCurrentUser(userData);
+        } catch (error) {
+            console.error('An error occurred, status:', error.response.status);
+        }
+        setLoading(false);
+    };
+```
+
+Moreover, it is even best practice to handle this sort of assignments in the interceptor, as it is the only entry point in which we are sure the promise has been fulfilled:
+
+The Handle Mount would be like this (and it has been left like this):
+
+```js
+const handleMount = async () => {
+        try {
+            await axiosResponse.get('/dj-rest-auth/user/');
+        } catch (error) {
+            console.error('An error occurred, status:', error.response.status);
+        }
+        setLoading(false);
+    }
+```
+
+And the interceptor like this:
+
+```js
+axiosResponse.interceptors.response.use(
+            (response) => {
+                setCurrentUser(response.data);
+                return response;
+            },
+.
+.
+.
+```
+
+If this is not done, and the response takes longer to be fetch than the rest of the routines, the currentUser will be set to null by the CurrentUserProvider:
+
+```js
+export const CurrentUserProvider = ({ children }) => {
+    const [currentUser, setCurrentUser] = useState(null);
+```

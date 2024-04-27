@@ -18,7 +18,6 @@ export const CurrentUserProvider = ({ children }) => {
     const handleMount = async () => {
         try {
             await axiosResponse.get('/dj-rest-auth/user/');
-            // setCurrentUser(userData);
         } catch (error) {
             console.error('An error occurred, status:', error.response.status);
         }
@@ -57,7 +56,6 @@ export const CurrentUserProvider = ({ children }) => {
 
         axiosResponse.interceptors.response.use(
             (response) => {
-                console.log('Exiting Response Interc. wtih response: ', response);
                 setCurrentUser(response.data);
                 return response;
             },
