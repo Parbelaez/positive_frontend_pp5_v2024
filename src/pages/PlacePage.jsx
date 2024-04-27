@@ -26,7 +26,7 @@ const PlacePage = () => {
             setLoading(false);
         };
         if (loading) { handleMount(); }
-    }, [id]);
+    }, [id, loading]);
 
     return (
         <div>

@@ -17,7 +17,8 @@ export const CurrentUserProvider = ({ children }) => {
 
     const handleMount = async () => {
         try {
-            await axiosResponse.get('/dj-rest-auth/user/');
+            await axiosResponse.get('/dj-rest-auth/user/')
+                .then((response) => setCurrentUser(response.data));
         } catch (error) {
             console.error('An error occurred, status:', error.response.status);
         }
@@ -31,34 +32,38 @@ export const CurrentUserProvider = ({ children }) => {
     }, []);
 
     useMemo(() => {
-        axiosRequest.interceptors.request.use(
-            async (config) => {
-                if (shouldRefreshToken()) {
-                    try {
-                        await axios.post('/dj-rest-auth/token/refresh/');
-                    } catch (error) {
-                        setCurrentUser((prevCurrentUser) => {
-                            if (prevCurrentUser) {
-                                navigate("/login");
-                            }
-                            return null;
-                        });
-                        removeTokenTimestamp();
-                        return config;
-                    };
-                }
-                return config;
-            },
-            (error) => {
-                return Promise.reject(error);
-            }
-        );
+        // axiosRequest.interceptors.request.use(
+        //     async (config) => {
+        //         console.log('Request interceptor: ', config);
+        //         if (shouldRefreshToken()) {
+        //             try {
+        //                 await axios.post('/dj-rest-auth/token/refresh/');
+        //             } catch (error) {
+        //                 setCurrentUser((prevCurrentUser) => {
+        //                     if (prevCurrentUser) {
+        //                         navigate("/login");
+        //                     }
+        //                     return null;
+        //                 });
+        //                 removeTokenTimestamp();
+        //                 return config;
+        //             };
+        //         }
+        //         return config;
+        //     },
+        //     (error) => {
+        //         return Promise.reject(error);
+        //     }
+        // );
+
+        axiosRequest.interceptors.response.use(async config => {
+            console.log('Request interceptor: ', config);
+            return config;
+        }
+    );
 
         axiosResponse.interceptors.response.use(
-            (response) => {
-                setCurrentUser(response.data);
-                return response;
-            },
+            (response) => response,
             async (error) => {
                 if (error.response.status === 401) {
                     try {
