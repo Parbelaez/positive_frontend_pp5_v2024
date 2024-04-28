@@ -55,7 +55,40 @@ const PostCard = (props) => {
         } catch (err) {
             console.log(err);
         }
+    };
+    
+    const handleUnlike = async (likeType) => {
+        const like_decrement = () => {
+            switch (likeType) {
+                case "top":
+                    return "num_tops = num_tops - 1";
+                case "like":
+                    return "num_likes = num_likes - 1";
+                case "dislike":
+                    return "num_dislikes = num_dislikes - 1";
+                default:
+                    return;
+            }
         };
+        try {
+            await axiosResponse.delete(`/likes/${like_id}/`);
+            setPosts((prevPosts) => ({
+                ...prevPosts,
+                results: prevPosts.results.map((post) => {
+                    return post.id === id
+                        ? {
+                            ...post,
+                            likes_count: like_decrement,
+                            like_id: null,
+                        }
+                        : post;
+                }),
+            }));
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
 
 
     return (
@@ -96,13 +129,12 @@ const PostCard = (props) => {
                                         }
                                     >
                                         <i
-                                            onClick={() => handleLike("top")}
                                             className={`fa-solid fa-hand-point-up ${styles.icon}`}
                                         ></i>
                                     </OverlayTrigger>
                                 ) : (
                                     <i
-                                        onClick={() => handleLike("top")}
+                                        onClick={() => handleUnlike("top")}
                                         className={`fa-solid fa-hand-point-up ${styles.icon}`}
                                     ></i>
                                 )
@@ -126,13 +158,12 @@ const PostCard = (props) => {
                                         }
                                     >
                                         <i
-                                            onClick={() => handleLike("like")}
                                             className={`fa-solid fa-thumbs-up ${styles.icon}`}
                                         ></i>
                                     </OverlayTrigger>
                                 ) : (
                                     <i
-                                        onClick={() => handleLike("like")}
+                                        onClick={() => handleUnlike("like")}
                                         className={`fa-solid fa-thumbs-up ${styles.icon}`}
                                     ></i>
                                 )
@@ -157,15 +188,12 @@ const PostCard = (props) => {
                                         }
                                     >
                                         <i
-                                            onClick={() =>
-                                                handleLike("dislike")
-                                            }
                                             className={`fa-solid fa-thumbs-down ${styles.icon}`}
                                         ></i>
                                     </OverlayTrigger>
                                 ) : (
                                     <i
-                                        onClick={() => handleLike("dislike")}
+                                        onClick={() => handleUnlike("dislike")}
                                         className={`fa-solid fa-thumbs-down ${styles.icon}`}
                                     ></i>
                                 )
