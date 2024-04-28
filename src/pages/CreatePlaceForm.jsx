@@ -328,7 +328,7 @@ const CreatePlaceForm = () => {
                                 <Col>
                                     <Button
                                         className="btn btn-secondary"
-                                        onClick={() => navigate("/places")}
+                                        onClick={() => navigate(-1)}
                                     >
                                         Cancel
                                     </Button>

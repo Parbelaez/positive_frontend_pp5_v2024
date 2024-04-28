@@ -4,13 +4,11 @@ import Card from "react-bootstrap/Card";
 import styles from "../styles/PlaceCard.module.css";
 import { useCurrentUser } from "../contexts/CurrentUserContext";
 
+
 const PlaceCard = ({ place }) => {
 
     const currentUser = useCurrentUser();
-    console.log('logged user: ', currentUser.pk);
-    console.log("place owner: ", place.owner_id);
     const is_owner = currentUser?.pk === place.owner_id;
-    console.log("is owner: ", is_owner, currentUser?.id, place.owner_id);
 
     return (
         <Container
