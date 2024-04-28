@@ -29,7 +29,7 @@ const PostPage = () => {
 
     return (
         <div>
-            {loading ? null : <PostCard post={post.results[0]} />}
+            {loading ? null : <PostCard {...post.results[0]} setPosts={setPost} postPage />}
         </div>
     );
 }
