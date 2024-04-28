@@ -1,0 +1,14 @@
+.content {
+    padding-top: 30px;
+}
+
+.img {
+    max-width: 400px;
+    max-height: 400px;
+    border-radius: 35px;
+}
+
+.boldText {
+    font-weight: bold;
+    text-transform: capitalize;
+}

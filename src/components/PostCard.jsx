@@ -1,21 +1,14 @@
 import { Container, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import styles from "../styles/PlaceCard.module.css";
-import { useCurrentUser } from "../contexts/CurrentUserContext";
+import styles from "../styles/PostCard.module.css";
 
 
 const PostCard = ({ post }) => {
 
-    const currentUser = useCurrentUser();
-    console.log('logged user: ', currentUser.pk);
-    console.log("post owner: ", post.owner_id);
-    const is_owner = currentUser?.pk === post.owner_id;
-    console.log("is owner: ", is_owner, currentUser?.id, post.owner_id);
-
     return (
         <Container
-            className={`${styles.content} position-absolute top-50 start-50 translate-middle`}
+            className={`${styles.content}`}
         >
             <Row className="justify-content-md-center">
                 <Card style={{ width: "32rem" }}>
@@ -35,9 +28,9 @@ const PostCard = ({ post }) => {
                                 {post.place_name}
                             </h3>
                             <h4 className="text-muted fs-6">
-                                {post.city}, {post.country}
+                                {post.place_city}, {post.place_country}
                                 <br />
-                                {post.address}
+                                {post.place_address}
                             </h4>
                             <p className="text-muted fs-6">
                                 Visted on: {post.visit_date}
@@ -51,6 +44,7 @@ const PostCard = ({ post }) => {
                             {post.num_likes} person(s) likes this place.
                             <br />
                             {post.num_dislikes} person(s) dislikes this place.
+                        </p>
                         <p>
                             Thanks to{" "}
                             <span className={`${styles.boldText}`}>
@@ -58,11 +52,11 @@ const PostCard = ({ post }) => {
                             </span>{" "}
                             for sharing her/his positive experience with us!
                         </p>
-                        {is_owner && (
+                        {post.is_owner && (
                             <Button variant="secondary">Edit Post</Button>
                         )}
                         <span> </span>
-                        {is_owner && (
+                        {post.is_owner && (
                             <Button variant="danger">Delete Post</Button>
                         )}
                     </Card.Body>

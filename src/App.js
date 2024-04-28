@@ -11,6 +11,7 @@ import './api/axiosDefaults';
 import CreatePlaceForm from './pages/CreatePlaceForm';
 import NewPostForm from './pages/NewPostForm';
 import PlacePage from './pages/PlacePage';
+import PostPage from './pages/PostPage';
 import { useCurrentUser } from './contexts/CurrentUserContext';
 
 
@@ -31,6 +32,7 @@ function App() {
           <Route exact path="/new-post" element={<NewPostForm />} />
           <Route exact path="*" element={<NotFound />} />
           <Route exact path="/places/:id" element={<PlacePage />} />
+          <Route exact path="/posts/:id" element={<PostPage />} />
         </Routes>
       </Container>
     </div>
