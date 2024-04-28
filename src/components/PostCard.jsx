@@ -7,16 +7,14 @@ import styles from "../styles/PostCard.module.css";
 const PostCard = ({ post }) => {
 
     return (
-        <Container
-            className={`${styles.content}`}
-        >
+        <Container className={`${styles.content}`}>
             <Row className="justify-content-md-center">
                 <Card style={{ width: "32rem" }}>
                     <Row className="justify-content-md-center">
-                    <Card.Img
-                        variant="top"
-                        src={post.image}
-                        className={`mt-2 ${styles.img}`}
+                        <Card.Img
+                            variant="top"
+                            src={post.image}
+                            className={`mt-2 ${styles.img}`}
                         />
                     </Row>
                     <Card.Body>
@@ -39,10 +37,28 @@ const PostCard = ({ post }) => {
                         <Card.Text>{post.content}</Card.Text>
                         <p>Recommendation: {post.recommendation}</p>
                         <p className="text-muted fs-6">
+                            {post.like_id && post.liketype === "Top" ? (
+                                <i class="fa-solid fa-hand-point-up"></i>
+                            ) : (
+                                <i class="fa-regular fa-hand-point-up"></i>
+                            )}
+                            <span> </span>
                             {post.num_tops} person(s) found this post helpful.
                             <br />
-                            {post.num_likes} person(s) likes this place.
+                            {post.like_id && post.liketype === "Like" ? (
+                                <i class="fa-solid fa-thumbs-up"></i>
+                            ) : (
+                                <i class="fa-regular fa-thumbs-up"></i>
+                            )}
+                            <span> </span> {post.num_likes} person(s) likes this
+                            place.
                             <br />
+                            {post.like_id && post.liketype === "Dislike" ? (
+                                <i class="fa-solid fa-thumbs-down"></i>
+                            ) : (
+                                <i class="fa-regular fa-thumbs-down"></i>
+                            )}
+                            <span> </span>
                             {post.num_dislikes} person(s) dislikes this place.
                         </p>
                         <p>
