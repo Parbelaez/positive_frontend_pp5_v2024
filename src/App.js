@@ -8,10 +8,10 @@ import NotFound from './pages/NotFound';
 import About from './pages/About';
 import Home from './pages/Home';
 import './api/axiosDefaults';
-import CreatePlaceForm from './pages/CreatePlaceForm';
-import NewPostForm from './pages/NewPostForm';
-import PlacePage from './pages/PlacePage';
-import PostPage from './pages/PostPage';
+import CreatePlaceForm from './pages/places/CreatePlaceForm';
+import NewPostForm from './pages/posts/NewPostForm';
+import PlacePage from './pages/places/PlacePage';
+import PostPage from './pages/posts/PostPage';
 import { useCurrentUser } from './contexts/CurrentUserContext';
 
 

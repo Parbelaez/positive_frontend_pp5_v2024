@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { axiosRequest } from "../api/axiosDefaults";
-import PlaceCard from "../components/PlaceCard";
-
-
+import { axiosRequest } from "../../api/axiosDefaults";
+import PlaceCard from "../../components/places/PlaceCard";
 
 const PlacePage = () => {
     const { id } = useParams();
@@ -20,18 +18,16 @@ const PlacePage = () => {
                 ]);
                 setPlace({ results: [place] });
             } catch (error) {
-                console.error('An error occurred:', error.response);
+                console.error("An error occurred:", error.response);
             }
             setLoading(false);
         };
-        if (loading) { handleMount(); }
+        if (loading) {
+            handleMount();
+        }
     }, [id, loading]);
 
-    return (
-        <div>
-            {loading ? null : <PlaceCard place={place.results[0]} />}
-        </div>
-    );
-}
-    
+    return <div>{loading ? null : <PlaceCard place={place.results[0]} />}</div>;
+};
+
 export default PlacePage;

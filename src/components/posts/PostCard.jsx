@@ -2,8 +2,7 @@ import { Container, Row, OverlayTrigger, Tooltip } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import styles from "../styles/PostCard.module.css";
-import { axiosResponse } from "../api/axiosDefaults";
-
+import { axiosResponse } from "../../api/axiosDefaults";
 
 const PostCard = (props) => {
     const {
@@ -24,22 +23,24 @@ const PostCard = (props) => {
         num_dislikes,
         owner,
         is_owner,
-        setPosts, } = props;
+        setPosts,
+    } = props;
 
     const handleLike = async (likeType) => {
         const like_increment = () => {
-            console.log('Enter Increasing: ',likeType);
+            console.log("Enter Increasing: ", likeType);
             switch (likeType) {
                 case "top":
-                    console.log('Incr. case top');
-                    return 'num_tops = num_tops + 1';
+                    console.log("Incr. case top");
+                    return "num_tops = num_tops + 1";
                 case "like":
                     console.log("Incr. case like");
-                    return 'num_likes = num_likes + 1';
+                    return "num_likes = num_likes + 1";
                 case "dislike":
                     console.log("Incr. case dislike");
-                    return 'num_dislikes = num_dislikes + 1';
-                default: return;
+                    return "num_dislikes = num_dislikes + 1";
+                default:
+                    return;
             }
         };
 
@@ -47,23 +48,26 @@ const PostCard = (props) => {
 
         try {
             const { data } = await axiosResponse.post("/likes/", {
-                like_type: likeType, post: id,
+                like_type: likeType,
+                post: id,
             });
             setPosts((prevPosts) => ({
-            ...prevPosts,
+                ...prevPosts,
                 results: prevPosts.results.map((post) => {
-            return post.id === id
-                ? {
-                    ...post, like_calc, like_id: data.id
-                }
-                : post;
-            }),
-        }));
+                    return post.id === id
+                        ? {
+                              ...post,
+                              like_calc,
+                              like_id: data.id,
+                          }
+                        : post;
+                }),
+            }));
         } catch (err) {
             console.log(err);
         }
     };
-    
+
     const handleUnlike = async (likeType) => {
         console.log("decreasing: ", likeType);
         const like_decrement = () => {
@@ -91,10 +95,10 @@ const PostCard = (props) => {
                 results: prevPosts.results.map((post) => {
                     return post.id === id
                         ? {
-                            ...post,
-                            like_calc,
-                            like_id: null,
-                        }
+                              ...post,
+                              like_calc,
+                              like_id: null,
+                          }
                         : post;
                 }),
             }));
@@ -102,8 +106,6 @@ const PostCard = (props) => {
             console.log(err);
         }
     };
-
-
 
     return (
         <Container className={`${styles.content}`}>

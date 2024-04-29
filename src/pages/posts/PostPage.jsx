@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { axiosRequest } from "../api/axiosDefaults";
-import PostCard from "../components/PostCard";
-
-
+import { axiosRequest } from "../../api/axiosDefaults";
+import PostCard from "../../components/posts/PostCard";
 
 const PostPage = () => {
     const { id } = useParams();
@@ -20,18 +18,22 @@ const PostPage = () => {
                 ]);
                 setPost({ results: [post] });
             } catch (error) {
-                console.error('An error occurred:', error.response);
+                console.error("An error occurred:", error.response);
             }
             setLoading(false);
         };
-        if (loading) { handleMount(); }
+        if (loading) {
+            handleMount();
+        }
     }, [id, loading]);
 
     return (
         <div>
-            {loading ? null : <PostCard {...post.results[0]} setPosts={setPost} postPage />}
+            {loading ? null : (
+                <PostCard {...post.results[0]} setPosts={setPost} postPage />
+            )}
         </div>
     );
-}
-    
+};
+
 export default PostPage;

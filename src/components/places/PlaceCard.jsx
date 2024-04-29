@@ -2,11 +2,9 @@ import { Container, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import styles from "../styles/PlaceCard.module.css";
-import { useCurrentUser } from "../contexts/CurrentUserContext";
-
+import { useCurrentUser } from "../../contexts/CurrentUserContext";
 
 const PlaceCard = ({ place }) => {
-
     const currentUser = useCurrentUser();
     const is_owner = currentUser?.pk === place.owner_id;
 
@@ -17,10 +15,10 @@ const PlaceCard = ({ place }) => {
             <Row className="justify-content-md-center">
                 <Card style={{ width: "32rem" }}>
                     <Row className="justify-content-md-center">
-                    <Card.Img
-                        variant="top"
-                        src={place.image}
-                        className={`mt-2 ${styles.img}`}
+                        <Card.Img
+                            variant="top"
+                            src={place.image}
+                            className={`mt-2 ${styles.img}`}
                         />
                     </Row>
                     <Card.Body>

@@ -2,8 +2,7 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Alert, Container, Row, Col } from "react-bootstrap";
-import { axiosRequest } from "../api/axiosDefaults";
-
+import { axiosRequest } from "../../api/axiosDefaults";
 
 const NewPostForm = () => {
     // A new axios instance for the country API
@@ -51,7 +50,8 @@ const NewPostForm = () => {
     };
 
     // On mount, get the countries and set the cities
-    useEffect(() => {
+    useEffect(
+        () => {
             getCountriesArray()
                 .then((countries) => {
                     setCountries(countries);
@@ -83,7 +83,6 @@ const NewPostForm = () => {
                 console.error("Error fetching data:", error);
             });
     }, [countries, cities]);
-
 
     const handleChange = (event) => {
         setPostData({
@@ -166,8 +165,8 @@ const NewPostForm = () => {
                                 <option value="">Select a place</option>
                                 {places.map((place) => (
                                     <option key={place.id} value={place.id}>
-                                        {place.place_name}, {place.country},{place.city}
-                                        , {place.address}
+                                        {place.place_name}, {place.country},
+                                        {place.city}, {place.address}
                                     </option>
                                 ))}
                             </select>
@@ -224,7 +223,9 @@ const NewPostForm = () => {
                                 onChange={handleChangeImage}
                             />
                             {errors.image && (
-                                <div className="alert alert-danger">{errors.image}</div>
+                                <div className="alert alert-danger">
+                                    {errors.image}
+                                </div>
                             )}
                         </div>
                         <div className="form-group">
@@ -244,7 +245,9 @@ const NewPostForm = () => {
                             )}
                         </div>
                         <div className="form-group">
-                            <label htmlFor="recommendation">Recommendation</label>
+                            <label htmlFor="recommendation">
+                                Recommendation
+                            </label>
                             <input
                                 type="text"
                                 className="form-control"
