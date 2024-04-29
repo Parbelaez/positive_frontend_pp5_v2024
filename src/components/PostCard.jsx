@@ -18,7 +18,7 @@ const PostCard = (props) => {
         recommendation,
         visit_date,
         like_id,
-        liketype,
+        like_type,
         num_tops,
         num_likes,
         num_dislikes,
@@ -28,16 +28,23 @@ const PostCard = (props) => {
 
     const handleLike = async (likeType) => {
         const like_increment = () => {
+            console.log('Enter Increasing: ',likeType);
             switch (likeType) {
                 case "top":
+                    console.log('Incr. case top');
                     return 'num_tops = num_tops + 1';
                 case "like":
+                    console.log("Incr. case like");
                     return 'num_likes = num_likes + 1';
                 case "dislike":
+                    console.log("Incr. case dislike");
                     return 'num_dislikes = num_dislikes + 1';
                 default: return;
             }
         };
+
+        const like_calc = like_increment();
+
         try {
             const { data } = await axiosResponse.post("/likes/", {
                 like_type: likeType, post: id,
@@ -47,7 +54,7 @@ const PostCard = (props) => {
                 results: prevPosts.results.map((post) => {
             return post.id === id
                 ? {
-                    ...post, like_increment, like_id: data.id
+                    ...post, like_calc, like_id: data.id
                 }
                 : post;
             }),
@@ -58,18 +65,25 @@ const PostCard = (props) => {
     };
     
     const handleUnlike = async (likeType) => {
+        console.log("decreasing: ", likeType);
         const like_decrement = () => {
             switch (likeType) {
                 case "top":
+                    console.log("Decr. case top");
                     return "num_tops = num_tops - 1";
                 case "like":
+                    console.log("Decr. case like");
                     return "num_likes = num_likes - 1";
                 case "dislike":
+                    console.log("Decr. case dislike");
                     return "num_dislikes = num_dislikes - 1";
                 default:
                     return;
             }
         };
+
+        const like_calc = like_decrement();
+
         try {
             await axiosResponse.delete(`/likes/${like_id}/`);
             setPosts((prevPosts) => ({
@@ -78,7 +92,7 @@ const PostCard = (props) => {
                     return post.id === id
                         ? {
                             ...post,
-                            likes_count: like_decrement,
+                            like_calc,
                             like_id: null,
                         }
                         : post;
@@ -118,26 +132,24 @@ const PostCard = (props) => {
                         <Card.Text>{content}</Card.Text>
                         <p>Recommendation: {recommendation}</p>
                         <p className="text-muted fs-6">
-                            {like_id && liketype === "Top" ? (
-                                is_owner ? (
-                                    <OverlayTrigger
-                                        placement="top"
-                                        overlay={
-                                            <Tooltip>
-                                                You can't rate your own post!
-                                            </Tooltip>
-                                        }
-                                    >
-                                        <i
-                                            className={`fa-solid fa-hand-point-up ${styles.icon}`}
-                                        ></i>
-                                    </OverlayTrigger>
-                                ) : (
+                            {is_owner ? (
+                                <OverlayTrigger
+                                    placement="top"
+                                    overlay={
+                                        <Tooltip>
+                                            You can't rate your own post!
+                                        </Tooltip>
+                                    }
+                                >
                                     <i
-                                        onClick={() => handleUnlike("top")}
-                                        className={`fa-solid fa-hand-point-up ${styles.icon}`}
+                                        className={`fa-regular fa-hand-point-up ${styles.icon}`}
                                     ></i>
-                                )
+                                </OverlayTrigger>
+                            ) : like_id && like_type === "top" ? (
+                                <i
+                                    onClick={() => handleUnlike("top")}
+                                    className={`fa-solid fa-hand-point-up ${styles.icon}`}
+                                ></i>
                             ) : (
                                 <i
                                     onClick={() => handleLike("top")}
@@ -147,26 +159,24 @@ const PostCard = (props) => {
                             <span> </span>
                             {num_tops} person(s) found this post helpful.
                             <br />
-                            {like_id && liketype === "Like" ? (
-                                is_owner ? (
-                                    <OverlayTrigger
-                                        placement="top"
-                                        overlay={
-                                            <Tooltip>
-                                                You can't like your own post!
-                                            </Tooltip>
-                                        }
-                                    >
-                                        <i
-                                            className={`fa-solid fa-thumbs-up ${styles.icon}`}
-                                        ></i>
-                                    </OverlayTrigger>
-                                ) : (
+                            {is_owner ? (
+                                <OverlayTrigger
+                                    placement="top"
+                                    overlay={
+                                        <Tooltip>
+                                            You can't like your own post!
+                                        </Tooltip>
+                                    }
+                                >
                                     <i
-                                        onClick={() => handleUnlike("like")}
-                                        className={`fa-solid fa-thumbs-up ${styles.icon}`}
+                                        className={`fa-regular fa-thumbs-up ${styles.icon}`}
                                     ></i>
-                                )
+                                </OverlayTrigger>
+                            ) : like_id && like_type === "like" ? (
+                                <i
+                                    onClick={() => handleUnlike("like")}
+                                    className={`fa-solid fa-thumbs-up ${styles.icon}`}
+                                ></i>
                             ) : (
                                 <i
                                     onClick={() => handleLike("like")}
@@ -177,26 +187,24 @@ const PostCard = (props) => {
                             place.
                             <br />
                             <span> </span>
-                            {like_id && liketype === "Dislike" ? (
-                                is_owner ? (
-                                    <OverlayTrigger
-                                        placement="top"
-                                        overlay={
-                                            <Tooltip>
-                                                You can't like your own post!
-                                            </Tooltip>
-                                        }
-                                    >
-                                        <i
-                                            className={`fa-solid fa-thumbs-down ${styles.icon}`}
-                                        ></i>
-                                    </OverlayTrigger>
-                                ) : (
+                            {is_owner ? (
+                                <OverlayTrigger
+                                    placement="top"
+                                    overlay={
+                                        <Tooltip>
+                                            You can't unlike your own post!
+                                        </Tooltip>
+                                    }
+                                >
                                     <i
-                                        onClick={() => handleUnlike("dislike")}
-                                        className={`fa-solid fa-thumbs-down ${styles.icon}`}
+                                        className={`fa-regular fa-thumbs-down ${styles.icon}`}
                                     ></i>
-                                )
+                                </OverlayTrigger>
+                            ) : like_id && like_type === "dislike" ? (
+                                <i
+                                    onClick={() => handleUnlike("dislike")}
+                                    className={`fa-solid fa-thumbs-down ${styles.icon}`}
+                                ></i>
                             ) : (
                                 <i
                                     onClick={() => handleLike("dislike")}
