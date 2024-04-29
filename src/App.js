@@ -6,7 +6,7 @@ import SignUpForm from './pages/auth/SignUpForm';
 import LoginForm from './pages/auth/LoginForm';
 import NotFound from './pages/NotFound';
 import About from './pages/About';
-import Home from './pages/Home';
+import Home from './pages/posts/AllPostsPage';
 import './api/axiosDefaults';
 import CreatePlaceForm from './pages/places/CreatePlaceForm';
 import NewPostForm from './pages/posts/NewPostForm';
@@ -32,6 +32,7 @@ function App() {
           <Route exact path="/new-post" element={<NewPostForm />} />
           <Route exact path="*" element={<NotFound />} />
           <Route exact path="/places/:id" element={<PlacePage />} />
+          <Route exact path="/posts" element={<Home message="No Results found. Adjust the search keyword." />} />
           <Route exact path="/posts/:id" element={<PostPage />} />
         </Routes>
       </Container>

@@ -18,7 +18,10 @@
 - [Creating the PostCard component](#creating-the-postcard-component)
 - [Creating the CurrentUser context](#creating-the-currentuser-context)
 - [Creating the Interceptors](#creating-the-interceptors)
+- [Version 2 desired features](#version-2-desired-features)
 - [Bugs](#bugs)
+  - [CI Code's Bugs](#ci-codes-bugs)
+  - [Current User is lost after a refresh](#current-user-is-lost-after-a-refresh)
 
 ## Introduction
 
@@ -249,6 +252,12 @@ Also, it is worth noting that the NavBar is available only for the logged in use
 
 ## Creating the PostCard component
 
+The post card will be used only in the detailed view of the post (url ending in /post/:id). It will show the post title, the post content, the post author, and the post date, and the tops, likes, and dislikes.
+
+### The likes criteria
+
+As the idea of the social network is avoid discussions while being able to agree or disagree with the post, the likes and dislikes will be used to show the agreement or disagreement with the post, therefore, the place. The tops are be used for people that found the post useful. And, as the post are all positive, it implies that they also liked the place.
+
 ## Creating the CurrentUser context
 
 We are using axios to make the API calls. You can read more about it here: https://www.npmjs.com/package/axios. Basically, it is a library that allows us to make HTTP requests. Therefore, we can use it to make GET, POST, PUT, and DELETE requests.
@@ -345,6 +354,16 @@ We have decided to part ways (momentarily) with our cities-light library, becaus
 ## Creating the CreatePost component
 
 For this one, we have used the approach used in the Moments tutorial.
+
+## Version 2 desired features
+
+1. The likes and dislikes of the posts will be computed in the backend. It needs brainstorming, as 5 categories will be needed: post likes, post dislikes, post tops, place likes, and place dislikes, which can be confusing to the users.
+
+2. AI should be able to check the positive tone of the writing. Grammarly already has some evaluation, but the usage of the API is not free. We could use the free version of APIs, but they are not as accurate as the paid one.
+
+3. The users should be able to insert the place directly from the data in Google Maps.
+
+*NOTE: * these features are already in the project created but not issued, all with the USER STORIES format and placed in the back-log column.
 
 ## Bugs
 
