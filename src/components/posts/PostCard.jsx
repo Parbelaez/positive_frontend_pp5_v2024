@@ -1,7 +1,7 @@
 import { Container, Row, OverlayTrigger, Tooltip } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import styles from "../styles/PostCard.module.css";
+import styles from "../../styles/PostCard.module.css";
 import { axiosResponse } from "../../api/axiosDefaults";
 
 const PostCard = (props) => {
@@ -56,10 +56,10 @@ const PostCard = (props) => {
                 results: prevPosts.results.map((post) => {
                     return post.id === id
                         ? {
-                              ...post,
-                              like_calc,
-                              like_id: data.id,
-                          }
+                            ...post,
+                            like_calc,
+                            like_id: data.id,
+                        }
                         : post;
                 }),
             }));
@@ -95,10 +95,10 @@ const PostCard = (props) => {
                 results: prevPosts.results.map((post) => {
                     return post.id === id
                         ? {
-                              ...post,
-                              like_calc,
-                              like_id: null,
-                          }
+                            ...post,
+                            like_calc,
+                            like_id: null,
+                        }
                         : post;
                 }),
             }));

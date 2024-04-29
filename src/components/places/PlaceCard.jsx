@@ -1,7 +1,7 @@
 import { Container, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import styles from "../styles/PlaceCard.module.css";
+import styles from "../../styles/PlaceCard.module.css";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 
 const PlaceCard = ({ place }) => {
