@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Alert, Container, Row, Col } from "react-bootstrap";
+import { Alert, Container, Row, Col, Form } from "react-bootstrap";
 import { axiosRequest } from "../../api/axiosDefaults";
 
 const NewPostForm = () => {
@@ -12,7 +12,7 @@ const NewPostForm = () => {
 
     // Creation of the Post data to be sent to the backend
     const [postData, setPostData] = useState({
-        place_name: "",
+        place: "",
         title: "",
         visit_date: "",
         content: "",
@@ -55,6 +55,7 @@ const NewPostForm = () => {
             getCountriesArray()
                 .then((countries) => {
                     setCountries(countries);
+                    console.log(countries);
                 })
                 .catch((error) => {
                     console.error("Error fetching data:", error);
@@ -64,25 +65,30 @@ const NewPostForm = () => {
         []
     );
 
-    const getPlacesArray = async () => {
+    const getPlacesArray = async (country, city) => {
         try {
-            const response = await axiosRequest.get("/places/");
-            return response.data;
+            const response = await axiosRequest.get(`/places/?country=${country}&city=${city}`);
+            console.log('Objetos devueltos: ', response.data.results);
+            return response.data.results;
         } catch (error) {
             console.error("An error occurred:", error.response);
             throw error;
         }
     };
 
-    useEffect(() => {
-        getPlacesArray()
-            .then((places) => {
-                setPlaces(places);
-            })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-            });
-    }, [countries, cities]);
+    // useEffect((country, city) => {
+    //     if (!!city) {
+    //         console.log('city is not empty')
+    //         getPlacesArray(countries, city)
+    //             .then((places) => {
+    //                 setPlaces(places);
+    //                 console.log(places);
+    //             })
+    //             .catch((error) => {
+    //                 console.error("Error fetching data:", error);
+    //             });
+    //     }
+    // }, [countries, cities]);
 
     const handleChange = (event) => {
         setPostData({
@@ -95,6 +101,15 @@ const NewPostForm = () => {
                 return n.country === event.target.value;
             }).cities;
             setCities(selectedCountryCities);
+        } else if (event.target.name === "city") {
+            getPlacesArray(postData.country, event.target.value)
+                .then((places) => {
+                    setPlaces(places);
+                    console.log('places después del get: ', places);
+                })
+                .catch((error) => {
+                    console.error("Error fetching data:", error);
+                });
         }
     };
 
@@ -136,7 +151,72 @@ const NewPostForm = () => {
             <Row className="justify-content-md-center">
                 <Col xs md="6">
                     <h1>Create Post Page</h1>
-                    <form onSubmit={handleSubmit}>
+                    <Form onSubmit={handleSubmit}>
+                        <div className="form-group">
+                            <Form.Label htmlFor="country">Country</Form.Label>
+                            <Form.Select
+                                className="form-control"
+                                id="country"
+                                name="country"
+                                value={postData.country}
+                                onChange={handleChange}
+                            >
+                                <option value="">Select a country</option>
+                                {countries.map((country) => (
+                                    <option value={country.country}>
+                                        {country.country}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        </div>
+                        {errors?.country?.map((message, idx) => (
+                            <Alert variant="warning" key={idx}>
+                                {message}
+                            </Alert>
+                        ))}
+                        <div className="form-group">
+                            <Form.Label htmlFor="city">City</Form.Label>
+                            <Form.Select
+                                className="form-control"
+                                id="city"
+                                name="city"
+                                value={postData.city}
+                                onChange={handleChange}
+                            >
+                                <option value="">Select a city</option>
+                                {cities.map((city) => (
+                                    <option value={city}>{city}</option>
+                                ))}
+                            </Form.Select>
+                        </div>
+                        {errors?.city?.map((message, idx) => (
+                            <Alert variant="warning" key={idx}>
+                                {message}
+                            </Alert>
+                        ))}
+                        <div className="form-group">
+                            <label htmlFor="place_name">Place Name</label>
+                            <select
+                                className="form-control"
+                                id="place_name"
+                                name="place_name"
+                                value={postData.place_name}
+                                onChange={handleChange}
+                            >
+                                <option value="">Select a place</option>
+                                {console.log('places en html: ', places)}
+                                {places.length ? places.map((place) => (
+                                    <option key={place.id} value={place.id}>
+                                        {place.place_name}, {place.address}
+                                    </option>
+                                )): <option value="">No places found</option>}
+                            </select>
+                            {errors.place_name && (
+                                <div className="alert alert-danger">
+                                    {errors.place_name}
+                                </div>
+                            )}
+                        </div>
                         <div className="form-group">
                             <label htmlFor="title">Title</label>
                             <input
@@ -150,29 +230,6 @@ const NewPostForm = () => {
                             {errors.place_type && (
                                 <div className="alert alert-danger">
                                     {errors.place_type}
-                                </div>
-                            )}
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="place_name">Place Name</label>
-                            <select
-                                className="form-control"
-                                id="place_name"
-                                name="place_name"
-                                value={postData.place_name}
-                                onChange={handleChange}
-                            >
-                                <option value="">Select a place</option>
-                                {places.map((place) => (
-                                    <option key={place.id} value={place.id}>
-                                        {place.place_name}, {place.country},
-                                        {place.city}, {place.address}
-                                    </option>
-                                ))}
-                            </select>
-                            {errors.place_name && (
-                                <div className="alert alert-danger">
-                                    {errors.place_name}
                                 </div>
                             )}
                         </div>
@@ -265,7 +322,7 @@ const NewPostForm = () => {
                         <button type="submit" className="btn btn-primary">
                             Submit
                         </button>
-                    </form>
+                    </Form>
                 </Col>
             </Row>
         </Container>
