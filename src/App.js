@@ -18,13 +18,14 @@ import { useCurrentUser } from './contexts/CurrentUserContext';
 
 function App() {
   const currentUser = useCurrentUser();
-  // const profile_id = currentUser?.profile_id || "";
+  const profile_id = currentUser?.profile_id || "";
+
   return (
     <div className={styles.App}>
       <NavBar />
       <Container className={styles.Main}>
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route exact path="/" element={currentUser ? <Home /> : <LoginForm />} />
           <Route exact path="/login" element={currentUser ? <Home /> : <LoginForm />} />
           <Route exact path="/signup" element={<SignUpForm />} />
           <Route exact path="/about" element={<About />} />

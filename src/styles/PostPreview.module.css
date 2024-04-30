@@ -1,0 +1,19 @@
+.content {
+    padding-top: 30px;
+}
+
+.img {
+    max-width: 300px;
+    max-height: 300px;
+    border-radius: 40px;
+    margin-bottom: 10px;
+}
+
+.boldText {
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.icon:hover {
+    cursor: pointer;
+}

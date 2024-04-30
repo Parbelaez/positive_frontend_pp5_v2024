@@ -29,7 +29,7 @@ export const CurrentUserProvider = ({ children }) => {
         if (loading) {
             handleMount()
         }
-    }, []);
+    }, [loading]);
 
     useMemo(() => {
         axiosRequest.interceptors.request.use(
