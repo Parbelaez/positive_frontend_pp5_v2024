@@ -55,7 +55,6 @@ const NewPostForm = () => {
             getCountriesArray()
                 .then((countries) => {
                     setCountries(countries);
-                    console.log(countries);
                 })
                 .catch((error) => {
                     console.error("Error fetching data:", error);
@@ -68,27 +67,12 @@ const NewPostForm = () => {
     const getPlacesArray = async (country, city) => {
         try {
             const response = await axiosRequest.get(`/places/?country=${country}&city=${city}`);
-            console.log('Objetos devueltos: ', response.data.results);
             return response.data.results;
         } catch (error) {
             console.error("An error occurred:", error.response);
             throw error;
         }
     };
-
-    // useEffect((country, city) => {
-    //     if (!!city) {
-    //         console.log('city is not empty')
-    //         getPlacesArray(countries, city)
-    //             .then((places) => {
-    //                 setPlaces(places);
-    //                 console.log(places);
-    //             })
-    //             .catch((error) => {
-    //                 console.error("Error fetching data:", error);
-    //             });
-    //     }
-    // }, [countries, cities]);
 
     const handleChange = (event) => {
         setPostData({
@@ -105,7 +89,6 @@ const NewPostForm = () => {
             getPlacesArray(postData.country, event.target.value)
                 .then((places) => {
                     setPlaces(places);
-                    console.log('places después del get: ', places);
                 })
                 .catch((error) => {
                     console.error("Error fetching data:", error);
@@ -195,8 +178,10 @@ const NewPostForm = () => {
                             </Alert>
                         ))}
                         <div className="form-group">
-                            <label htmlFor="place_name">Place Name</label>
-                            <select
+                            <Form.Label htmlFor="place_name">
+                                Place Name
+                            </Form.Label>
+                            <Form.Select
                                 className="form-control"
                                 id="place_name"
                                 name="place_name"
@@ -204,13 +189,16 @@ const NewPostForm = () => {
                                 onChange={handleChange}
                             >
                                 <option value="">Select a place</option>
-                                {console.log('places en html: ', places)}
-                                {places.length ? places.map((place) => (
-                                    <option key={place.id} value={place.id}>
-                                        {place.place_name}, {place.address}
-                                    </option>
-                                )): <option value="">No places found</option>}
-                            </select>
+                                {places.length ? (
+                                    places.map((place) => (
+                                        <option key={place.id} value={place.id}>
+                                            {place.place_name}, {place.address}
+                                        </option>
+                                    ))
+                                ) : (
+                                    <option value="">No places found</option>
+                                )}
+                            </Form.Select>
                             {errors.place_name && (
                                 <div className="alert alert-danger">
                                     {errors.place_name}
@@ -218,8 +206,8 @@ const NewPostForm = () => {
                             )}
                         </div>
                         <div className="form-group">
-                            <label htmlFor="title">Title</label>
-                            <input
+                            <Form.Label htmlFor="title">Title</Form.Label>
+                            <Form.Control
                                 type="text"
                                 className="form-control"
                                 id="title"
@@ -234,8 +222,10 @@ const NewPostForm = () => {
                             )}
                         </div>
                         <div className="form-group">
-                            <label htmlFor="visit_date">Visit Date</label>
-                            <input
+                            <Form.Label htmlFor="visit_date">
+                                Visit Date
+                            </Form.Label>
+                            <Form.Control
                                 type="date"
                                 className="form-control"
                                 id="visit_date"
@@ -250,10 +240,10 @@ const NewPostForm = () => {
                             )}
                         </div>
                         <div className="form-group">
-                            <label htmlFor="content">
+                            <Form.Label htmlFor="content">
                                 Write your positive experience
-                            </label>
-                            <input
+                            </Form.Label>
+                            <Form.Control
                                 type="text"
                                 className="form-control"
                                 id="content"
@@ -270,14 +260,15 @@ const NewPostForm = () => {
                         {/* // !Change to the form for uploading images!!!!!!!!!!!!!! //
                         // !Change to bootstrap!!!!!!!!!!!!!! */}
                         <div className="form-group">
-                            <label htmlFor="image">Image</label>
-                            <input
-                                type="text"
+                            <Form.Label htmlFor="image">Image</Form.Label>
+                            <Form.Control
+                                type="file"
                                 className="form-control"
                                 id="image"
                                 name="image"
-                                value={postData.image}
+                                accept="image/*"
                                 onChange={handleChangeImage}
+                                ref={imageInput}
                             />
                             {errors.image && (
                                 <div className="alert alert-danger">
@@ -286,7 +277,9 @@ const NewPostForm = () => {
                             )}
                         </div>
                         <div className="form-group">
-                            <label htmlFor="image_filter">Image Filter</label>
+                            <Form.Label htmlFor="image_filter">
+                                Image Filter
+                            </Form.Label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -302,10 +295,10 @@ const NewPostForm = () => {
                             )}
                         </div>
                         <div className="form-group">
-                            <label htmlFor="recommendation">
+                            <Form.Label htmlFor="recommendation">
                                 Recommendation
-                            </label>
-                            <input
+                            </Form.Label>
+                            <Form.Control
                                 type="text"
                                 className="form-control"
                                 id="recommendation"
