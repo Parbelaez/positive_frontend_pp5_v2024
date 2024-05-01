@@ -300,7 +300,8 @@ const CreatePlaceForm = () => {
                                     <Form.Label htmlFor="description">
                                         Description
                                     </Form.Label>
-                                    <textarea
+                                    <Form.Control
+                                        as="textarea"
                                         className="form-control"
                                         id="description"
                                         name="description"

@@ -11,11 +11,11 @@ const Home = ({ message, filter = "" }) => {
     const [hasLoaded, setHasLoaded] = useState(false);
     const { pathname } = useLocation();
 
-    useEffect(() => {
+    useEffect((filter) => {
         const getPosts = async () => {
             try {
                 await axiosResponse
-                    .get("/posts/?{filter}")
+                    .get(`/posts/?${filter}`)
                     .then((response) => setPosts(response.data))
                     .then(setHasLoaded(true));
             } catch (error) {

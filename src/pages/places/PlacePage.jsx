@@ -27,7 +27,8 @@ const PlacePage = () => {
         }
     }, [id, loading]);
 
-    return <div>{loading ? null : <PlaceCard place={place.results[0]} />}</div>;
+    // return <div>{loading ? null : <PlaceCard place={place.results[0]} />}</div>;
+    return <div>{loading ? null : <PlaceCard {...place.results[0]} setPlaces={setPlace} />}</div>;
 };
 
 export default PlacePage;

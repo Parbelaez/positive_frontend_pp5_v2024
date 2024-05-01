@@ -89,6 +89,7 @@ const NewPostForm = () => {
             getPlacesArray(postData.country, event.target.value)
                 .then((places) => {
                     setPlaces(places);
+                    console.log(places);
                 })
                 .catch((error) => {
                     console.error("Error fetching data:", error);
@@ -97,8 +98,8 @@ const NewPostForm = () => {
     };
 
     const handleChangeImage = (event) => {
-        URL.revokeObjectURL(postData.image);
         if (event.target.files.length) {
+            URL.revokeObjectURL(postData.image);
             setPostData({
                 ...postData,
                 image: URL.createObjectURL(event.target.files[0]),
@@ -110,17 +111,17 @@ const NewPostForm = () => {
         event.preventDefault();
         const formData = new FormData();
 
-        formData.append("place_name", postData.place_name);
+        formData.append("place", postData.place_name);
         formData.append("title", postData.title);
         formData.append("visit_date", postData.visit_date);
         formData.append("content", postData.content);
-        formData.append("image", postData.image);
-        formData.append("image_filter", postData.image_filter);
+        formData.append("image", imageInput.current.files[0]);
         formData.append("recommendaton", postData.recommendaton);
 
         try {
+            console.log(formData);
             const { data } = await axiosRequest.post("/posts/", formData);
-            navigate.push(`/posts/${data.id}`);
+            navigate(`/posts/${data.id}`);
         } catch (err) {
             console.log(err);
             if (err.response?.status !== 401) {
@@ -185,7 +186,7 @@ const NewPostForm = () => {
                                 className="form-control"
                                 id="place_name"
                                 name="place_name"
-                                value={postData.place_name}
+                                value={postData.id}
                                 onChange={handleChange}
                             >
                                 <option value="">Select a place</option>
@@ -244,55 +245,18 @@ const NewPostForm = () => {
                                 Write your positive experience
                             </Form.Label>
                             <Form.Control
-                                type="text"
+                                as="textarea"
                                 className="form-control"
                                 id="content"
                                 name="content"
                                 value={postData.content}
                                 onChange={handleChange}
                             />
-                            {errors.country && (
-                                <div className="alert alert-danger">
-                                    {errors.country}
-                                </div>
-                            )}
-                        </div>
-                        {/* // !Change to the form for uploading images!!!!!!!!!!!!!! //
-                        // !Change to bootstrap!!!!!!!!!!!!!! */}
-                        <div className="form-group">
-                            <Form.Label htmlFor="image">Image</Form.Label>
-                            <Form.Control
-                                type="file"
-                                className="form-control"
-                                id="image"
-                                name="image"
-                                accept="image/*"
-                                onChange={handleChangeImage}
-                                ref={imageInput}
-                            />
-                            {errors.image && (
-                                <div className="alert alert-danger">
-                                    {errors.image}
-                                </div>
-                            )}
-                        </div>
-                        <div className="form-group">
-                            <Form.Label htmlFor="image_filter">
-                                Image Filter
-                            </Form.Label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="image_filter"
-                                name="image_filter"
-                                value={postData.image_filter}
-                                onChange={handleChange}
-                            />
-                            {errors.place_name && (
-                                <div className="alert alert-danger">
-                                    {errors.place_name}
-                                </div>
-                            )}
+                            {errors?.content?.map((message, idx) => (
+                                <Alert variant="warning" key={idx}>
+                                    {message}
+                                </Alert>
+                            ))}
                         </div>
                         <div className="form-group">
                             <Form.Label htmlFor="recommendation">
@@ -306,12 +270,30 @@ const NewPostForm = () => {
                                 value={postData.recommendation}
                                 onChange={handleChange}
                             />
-                            {errors.place_name && (
-                                <div className="alert alert-danger">
-                                    {errors.place_name}
-                                </div>
-                            )}
+                            {errors?.recommendation?.map((message, idx) => (
+                                <Alert variant="warning" key={idx}>
+                                    {message}
+                                </Alert>
+                            ))}
                         </div>
+                        <div className="form-group">
+                            <Form.Label htmlFor="image">Image</Form.Label>
+                            <Form.Control
+                                type="file"
+                                className="form-control"
+                                id="image"
+                                name="image"
+                                accept="image/*"
+                                onChange={handleChangeImage}
+                                ref={imageInput}
+                            />
+                            {errors?.image?.map((message, idx) => (
+                                <Alert variant="warning" key={idx}>
+                                    {message}
+                                </Alert>
+                            ))}
+                        </div>
+                        <br />
                         <button type="submit" className="btn btn-primary">
                             Submit
                         </button>

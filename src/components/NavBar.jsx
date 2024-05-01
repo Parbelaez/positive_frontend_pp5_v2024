@@ -1,6 +1,4 @@
-import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import logo_color_trimmed from "../assets/logo_color_trimmed.png";
@@ -81,15 +79,6 @@ const NavBar = () => {
                     <Nav className="me-auto my-2 my-lg-0 text-center align-items-center">
                         {currentUser ? loggedInMenu : loggedOutMenu}
                     </Nav>
-                    <Form className="d-flex">
-                        <Form.Control
-                            type="search"
-                            placeholder="Search"
-                            className="me-2"
-                            aria-label="Search"
-                        />
-                        <Button variant="outline-success">Search</Button>
-                    </Form>
                 </Navbar.Collapse>
             </Container>
         </Navbar>

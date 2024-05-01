@@ -4,46 +4,61 @@ import Card from "react-bootstrap/Card";
 import styles from "../../styles/PlaceCard.module.css";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 
-const PlaceCard = ({ place }) => {
+// const PlaceCard = ({ place }) => {
+const PlaceCard = (props) => {
+    const { 
+        place_name,
+        country,
+        city,
+        address,
+        description,
+        phone_number,
+        website,
+        email,
+        image,
+        num_posts,
+        owner,
+        owner_id
+    } = props;
     const currentUser = useCurrentUser();
-    const is_owner = currentUser?.pk === place.owner_id;
+    const is_owner = currentUser?.pk === owner_id;
 
     return (
         <Container
-            className={`${styles.content} position-absolute top-50 start-50 translate-middle`}
+            className={`${styles.content}`}
         >
             <Row className="justify-content-md-center">
                 <Card style={{ width: "32rem" }}>
                     <Row className="justify-content-md-center">
                         <Card.Img
                             variant="top"
-                            src={place.image}
+                            src={image}
                             className={`mt-2 ${styles.img}`}
                         />
                     </Row>
                     <Card.Body>
                         <Card.Title>
                             <p className="text-uppercase fw-bold">
-                                {place.place_name}
+                                {place_name}
                             </p>
                             <p className="text-muted fs-6">
-                                ({place.country}, {place.city}, {place.address})
+                                ({country}, {city}, {address})
                             </p>
                         </Card.Title>
-                        <Card.Text>{place.description}</Card.Text>
-                        <p>Contact: {place.phone_number}</p>
+                        <Card.Text>{description}</Card.Text>
+                        <p>Contact: {phone_number}</p>
                         <p>
-                            {place.website}
-                            {place.email}
+                            {website}
+                            {email}
                         </p>
                         <p>
-                            {place.num_posts} person(s) have posted about this
+                            {num_posts} person(s) have posted about this
                             place.
                         </p>
                         <p>
                             Thanks to{" "}
                             <span className={`${styles.boldText}`}>
-                                {place.owner}
+                                {owner}
                             </span>{" "}
                             for sharing this place with us!
                         </p>
