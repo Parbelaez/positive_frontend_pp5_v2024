@@ -16,6 +16,7 @@ const PlacesPage = ({ message }) => {
     const [searchEntry, setSearchEntry] = useState('');
     const [searchPlaceHolder, setSearchPlaceHolder] = useState('Search for a place');
     const [ownerFilter, setOwnerFilter] = useState(false);
+    const [clear, setClear] = useState(false);
 
 
     const searchResults = async (searchEntry) => {
@@ -44,6 +45,10 @@ const PlacesPage = ({ message }) => {
     };
 
     useEffect(() => {
+        console.log("Clear: ", clear);
+        setClear(false);
+        setOwnerFilter(false);
+        console.log('Clear: ',clear);
         const getPlaces = async () => {
             try {
                 await axiosResponse
@@ -59,7 +64,7 @@ const PlacesPage = ({ message }) => {
         };
         setHasLoaded(false);
         getPlaces();
-    }, [ pathname ]);
+    }, [ pathname, clear ]);
 
     return (
         <Container>
@@ -75,14 +80,20 @@ const PlacesPage = ({ message }) => {
                                     className="mb-2"
                                 >
                                     <ToggleButton
+                                        variant={
+                                            ownerFilter
+                                                ? "secondary"
+                                                : "primary"
+                                        }
                                         id="tbg-check-1"
                                         value={1}
-                                        onChange={handleToggle}>
-                                        Show Me My Places
+                                        onChange={handleToggle}
+                                    >
+                                        My Places
                                     </ToggleButton>
                                 </ToggleButtonGroup>
                             </Col>
-                                ) : null}
+                        ) : null}
                         <Col>
                             <Form className="d-flex">
                                 <Form.Control
@@ -96,7 +107,10 @@ const PlacesPage = ({ message }) => {
                                 <Button
                                     variant="outline-success"
                                     onClick={() => {
-                                        console.log('Search Button Clicked',searchEntry);
+                                        console.log(
+                                            "Search Button Clicked",
+                                            searchEntry
+                                        );
                                         searchResults(searchEntry);
                                     }}
                                 >
@@ -104,13 +118,29 @@ const PlacesPage = ({ message }) => {
                                 </Button>
                             </Form>
                         </Col>
+                        <Col>
+                            <Button
+                                variant="outline-danger"
+                                onClick={() => {
+                                    setClear(true);
+                                }}
+                            >
+                                Clear
+                            </Button>
+                        </Col>
                     </Row>
                     {hasLoaded ? (
                         places.results.length ? (
-                            ownerFilter ? ( 
-                                places.results.filter((place) => place.owner_id === currentUser.pk).length ? (
+                            ownerFilter ? (
+                                places.results.filter(
+                                    (place) => place.owner_id === currentUser.pk
+                                ).length ? (
                                     places.results
-                                        .filter((place) => place.owner_id === currentUser.pk)
+                                        .filter(
+                                            (place) =>
+                                                place.owner_id ===
+                                                currentUser.pk
+                                        )
                                         .map((place) => (
                                             <PlaceCard
                                                 key={place.id}
@@ -120,25 +150,31 @@ const PlacesPage = ({ message }) => {
                                         ))
                                 ) : (
                                     <Container>
-                                        <Asset src={NoResults} message={message} />
-                                    </Container>
-                                )) : (
-                                    places.results.map((place) => (
-                                        <PlaceCard
-                                            key={place.id}
-                                            {...place}
-                                            setPlaces={setPlaces}
+                                        <Asset
+                                            src={NoResults}
+                                            message={message}
                                         />
-                                    ))
-                                )) : (
-                                <Container>
-                                    <Asset src={NoResults} message={message} />
-                                </Container>
-                                )) : (
-                                <Container>
-                                    <Asset spinner />
-                                </Container>
-                                )}
+                                    </Container>
+                                )
+                            ) : (
+                                places.results.map((place) => (
+                                    <PlaceCard
+                                        key={place.id}
+                                        {...place}
+                                        setPlaces={setPlaces}
+                                    />
+                                ))
+                            )
+                        ) : (
+                            <Container>
+                                <Asset src={NoResults} message={message} />
+                            </Container>
+                        )
+                    ) : (
+                        <Container>
+                            <Asset spinner />
+                        </Container>
+                    )}
                 </Col>
                 <Col md={4} className="d-none d-lg-block p-0 p-lg-2">
                     <p>Most positive users</p>
