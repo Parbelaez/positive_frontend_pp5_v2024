@@ -71,9 +71,9 @@ const PlacesPage = ({ message }) => {
             <Row>
                 <Col className="py-2 p-0 p-lg-2" lg={8}>
                     <p>Most positive users Mobile</p>
-                    <Row>
+                    <Row sm={1}>
                         {currentUser ? (
-                            <Col>
+                            <Col lg={3} className="text-center">
                                 <ToggleButtonGroup
                                     type="checkbox"
                                     defaultValue={[null]}
@@ -94,7 +94,7 @@ const PlacesPage = ({ message }) => {
                                 </ToggleButtonGroup>
                             </Col>
                         ) : null}
-                        <Col>
+                        <Col lg={6} className="text-center">
                             <Form className="d-flex">
                                 <Form.Control
                                     type="search"
@@ -118,7 +118,7 @@ const PlacesPage = ({ message }) => {
                                 </Button>
                             </Form>
                         </Col>
-                        <Col>
+                        <Col lg={2} className="text-center">
                             <Button
                                 variant="outline-danger"
                                 onClick={() => {
