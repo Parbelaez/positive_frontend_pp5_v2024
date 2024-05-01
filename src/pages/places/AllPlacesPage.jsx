@@ -7,6 +7,8 @@ import NoResults from "../../assets/no-results.jpg";
 import PlaceCard from "../../components/places/PlaceCard";
 import { axiosRequest } from "../../api/axiosDefaults";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { fetchMoreData } from "../../utils/utils";
 
 const PlacesPage = ({ message }) => {
     const currentUser = useCurrentUser();
@@ -135,19 +137,27 @@ const PlacesPage = ({ message }) => {
                                 places.results.filter(
                                     (place) => place.owner_id === currentUser.pk
                                 ).length ? (
-                                    places.results
-                                        .filter(
-                                            (place) =>
-                                                place.owner_id ===
-                                                currentUser.pk
-                                        )
-                                        .map((place) => (
-                                            <PlaceCard
-                                                key={place.id}
-                                                {...place}
-                                                setPlaces={setPlaces}
-                                            />
-                                        ))
+                                    <InfiniteScroll
+                                        children={places.results
+                                            .filter(
+                                                (place) =>
+                                                    place.owner_id ===
+                                                    currentUser.pk
+                                            )
+                                            .map((place) => (
+                                                <PlaceCard
+                                                    key={place.id}
+                                                    {...place}
+                                                    setPlaces={setPlaces}
+                                                />
+                                            ))}
+                                        dataLength={places.results.length}
+                                        loader={<Asset spinner />}
+                                        hasMore={!!places.next}
+                                        next={() => {
+                                            fetchMoreData(places, setPlaces);
+                                        }}
+                                    />
                                 ) : (
                                     <Container>
                                         <Asset
@@ -157,13 +167,21 @@ const PlacesPage = ({ message }) => {
                                     </Container>
                                 )
                             ) : (
-                                places.results.map((place) => (
-                                    <PlaceCard
-                                        key={place.id}
-                                        {...place}
-                                        setPlaces={setPlaces}
-                                    />
-                                ))
+                                <InfiniteScroll
+                                    children={places.results.map((place) => (
+                                        <PlaceCard
+                                            key={place.id}
+                                            {...place}
+                                            setPlaces={setPlaces}
+                                        />
+                                    ))}
+                                    dataLength={places.results.length}
+                                    loader={<Asset spinner />}
+                                    hasMore={!!places.next}
+                                    next={() => {
+                                        fetchMoreData(places, setPlaces);
+                                    }}
+                                />
                             )
                         ) : (
                             <Container>
