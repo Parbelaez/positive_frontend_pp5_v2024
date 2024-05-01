@@ -59,8 +59,7 @@ const PlacesPage = ({ message }) => {
         };
         setHasLoaded(false);
         getPlaces();
-        console.log('get places: ', places)
-    }, [ pathname, currentUser. profile_id ]);
+    }, [ pathname ]);
 
     return (
         <Container>
@@ -107,29 +106,39 @@ const PlacesPage = ({ message }) => {
                         </Col>
                     </Row>
                     {hasLoaded ? (
-                            ownerFilter ? (
-                                places.results
-                                    .filter((place) => place.owner_id === currentUser.pk)
-                                    .map((place) => (
+                        places.results.length ? (
+                            ownerFilter ? ( 
+                                places.results.filter((place) => place.owner_id === currentUser.pk).length ? (
+                                    places.results
+                                        .filter((place) => place.owner_id === currentUser.pk)
+                                        .map((place) => (
+                                            <PlaceCard
+                                                key={place.id}
+                                                {...place}
+                                                setPlaces={setPlaces}
+                                            />
+                                        ))
+                                ) : (
+                                    <Container>
+                                        <Asset src={NoResults} message={message} />
+                                    </Container>
+                                )) : (
+                                    places.results.map((place) => (
                                         <PlaceCard
                                             key={place.id}
                                             {...place}
                                             setPlaces={setPlaces}
                                         />
                                     ))
-                            ) : (
-                                places.results.map((place) => (
-                                    <PlaceCard
-                                        key={place.id}
-                                        {...place}
-                                        setPlaces={setPlaces}
-                                    />
-                                ))
-                            )) : (
-                            <Container>
-                                <Asset spinner />
-                            </Container>
-                            )}
+                                )) : (
+                                <Container>
+                                    <Asset src={NoResults} message={message} />
+                                </Container>
+                                )) : (
+                                <Container>
+                                    <Asset spinner />
+                                </Container>
+                                )}
                 </Col>
                 <Col md={4} className="d-none d-lg-block p-0 p-lg-2">
                     <p>Most positive users</p>
