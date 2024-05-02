@@ -14,10 +14,14 @@
 - [Adding the Bootstrap library](#adding-the-bootstrap-library)
 - [Creating the Login component](#creating-the-login-component)
 - [Creating the SignUp component](#creating-the-signup-component)
-- [Creating the Dashboard (Home) component](#creating-the-dashboard-home-component)
-- [Creating the PostCard component](#creating-the-postcard-component)
 - [Creating the CurrentUser context](#creating-the-currentuser-context)
 - [Creating the Interceptors](#creating-the-interceptors)
+- [Creating the CreatePlace component](#creating-the-createplace-component)
+- [Creating the Places page](#creating-the-places-page)
+  - [The Search bar](#the-search-bar)
+  - [The My Places filter button](#the-my-places-filter-button)
+- [Creating the Dashboard (Home) component](#creating-the-dashboard-home-component)
+- [Creating the PostCard component](#creating-the-postcard-component)
 - [Version 2 desired features](#version-2-desired-features)
 - [Bugs](#bugs)
   - [CI Code's Bugs](#ci-codes-bugs)
@@ -240,24 +244,6 @@ navigate("/");
 
 To create the SignUp component, you can follow the same steps as for the Login component.
 
-## Creating the Dashboard (Home) component
-
-![dashboard_wireframe](./README_Images/dashboard_wireframe.png)
-
-The idea of the webpage, is that the non-registered user will only see a splash screen in which it is invited to make part of the community. The registered user is invited to log in. And the logged in user will see the dashboard (Home) component.
-
-In this page, the user will see the list of the posts. The posts will be fetched from the API and will be listed from newer to older.
-
-Also, it is worth noting that the NavBar is available only for the logged in user. The non-registered user and the registered user will not see the NavBar.
-
-## Creating the PostCard component
-
-The post card will be used only in the detailed view of the post (url ending in /post/:id). It will show the post title, the post content, the post author, and the post date, and the tops, likes, and dislikes.
-
-### The likes criteria
-
-As the idea of the social network is avoid discussions while being able to agree or disagree with the post, the likes and dislikes will be used to show the agreement or disagreement with the post, therefore, the place. The tops are be used for people that found the post useful. And, as the post are all positive, it implies that they also liked the place.
-
 ## Creating the CurrentUser context
 
 We are using axios to make the API calls. You can read more about it here: https://www.npmjs.com/package/axios. Basically, it is a library that allows us to make HTTP requests. Therefore, we can use it to make GET, POST, PUT, and DELETE requests.
@@ -324,11 +310,6 @@ The logic is the following:
 
 The code can be found in the axiosDefaults.js file, and the CurrentUserContext.jsx file.
 
-
-## Creating the About component
-
-To create the About component, you can follow the same steps as for the Home component.
-
 ## Creating the CreatePlace component
 
 As the porpuse of all projects is to practice, we have decided to use a different approach to create the CreatePlace component. In this case, a not so efficient one, but easier to understand for the students.
@@ -350,6 +331,45 @@ We have decided to part ways (momentarily) with our cities-light library, becaus
 *RECOMMENDATION:* make a select distinct country from places_table and check the number of countries, and compare with the previous dump.
 
 ## Creating the PlaceDetail component
+
+The PlaceDetail component is used to show the details of a place after it has been created. It uses a custom bootstrap card, and has the option to edit and delete the place.
+
+## Creating the Places page
+
+The Places page is used to show all the places that have been created. It uses the PlaceCard component to show the places in a (vertical) grid. It is just a fetch of all places in the DB. But, a search bar has been added to query only the places that have the search term in the title, country, and/or city -as it is designed from the backend.
+
+### The Search bar
+
+**It is only available in the places page** because posts are not intended to be searched for. The philosophy of the positive social network is to share experiences in places. With them, the user can infer if the place is good or not, so many points of view are needed in order to accomplish this.
+
+The search bar triggers a search in the backend, and the backend returns the places that have the search term in the title, country, and/or city. The search is case insensitive, and the search term can be a substring of the title, country, and/or city.
+
+### The My Places filter button
+
+The My Places filter button is used to show only the places that have been created by the logged-in user. Different than the search bar, **the My Places filter button does not trigger a search in the backend**. It just filters the places that have been fetched from the backend. And the reason? Each query to the DB costs money in a cloud environment, so we need to minimize the number of these DB requests, and as we have already fetched all the places data, then, we can filter it in the frontend.
+
+## Creating the Dashboard (Home) component
+
+![dashboard_wireframe](./README_Images/dashboard_wireframe.png)
+
+The idea of the webpage, is that the non-registered user will only see a splash screen in which it is invited to make part of the community. The registered user is invited to log in. And the logged in user will see the dashboard (Home) component.
+
+In this page, the user will see the list of the posts. The posts will be fetched from the API and will be listed from newer to older.
+
+Also, it is worth noting that the NavBar is available only for the logged in user. The non-registered user and the registered user will not see the NavBar.
+
+## Creating the PostCard component
+
+The post card will be used only in the detailed view of the post (url ending in /post/:id). It will show the post title, the post content, the post author, and the post date, and the tops, likes, and dislikes.
+
+### The likes criteria
+
+As the idea of the social network is avoid discussions while being able to agree or disagree with the post, the likes and dislikes will be used to show the agreement or disagreement with the post, therefore, the place. The tops are be used for people that found the post useful. And, as the post are all positive, it implies that they also liked the place.
+
+
+## Creating the About component
+
+To create the About component, you can follow the same steps as for the Home component.
 
 ## Creating the CreatePost component
 
