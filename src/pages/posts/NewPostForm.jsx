@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Alert, Container, Row, Col, Form } from "react-bootstrap";
 import { axiosRequest } from "../../api/axiosDefaults";
+import styles from "../../styles/NewPostForm.module.css";
 
 const NewPostForm = () => {
     // A new axios instance for the country API
@@ -131,10 +132,9 @@ const NewPostForm = () => {
     };
 
     return (
-        <Container className="position-absolute top-50 start-50 translate-middle">
+        <Container>
             <Row className="justify-content-md-center">
                 <Col xs md="6">
-                    <h1>Create Post Page</h1>
                     <Form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <Form.Label htmlFor="country">Country</Form.Label>
@@ -297,6 +297,18 @@ const NewPostForm = () => {
                         <button type="submit" className="btn btn-primary">
                             Submit
                         </button>
+                        <br />
+                        <br />
+                        <p className={styles.disclaimer}>
+                            Your post is your experience. Be aware that it will
+                            be liked when someone agrees with your experience.
+                            So, be clear and concise. This means, that you will
+                            not be able to edit it later.
+                        </p>
+                        <p className={styles.disclaimer}>
+                            Others will trust your words, so be honest and
+                            positive
+                        </p>
                     </Form>
                 </Col>
             </Row>
