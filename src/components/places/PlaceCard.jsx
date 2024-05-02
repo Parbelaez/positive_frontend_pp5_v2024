@@ -30,7 +30,7 @@ const PlaceCard = (props) => {
         return async () => {
             try {
                 await axiosRequest.delete(`/places/${props.id}/`)
-                    .then(() => navigate("/places"));
+                    .then(() => navigate(-1));
             } catch (error) {
                 console.error("An error occurred:", error.response);
             }
