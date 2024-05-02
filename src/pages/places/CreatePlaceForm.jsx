@@ -134,13 +134,15 @@ const CreatePlaceForm = () => {
 
     return (
         <Container>
-            {/* <Row>
-                <h1 className="position-absolute start-50 translate-middle">
-                    Create Place Page
-                </h1>
-            </Row> */}
+            <Row className="text-center">
+                <h2 className="fst-italic">
+                    Create a new place so we all can enjoy it and share our
+                    experiences!
+                </h2>
+            </Row>
+            <br />
             <Row>
-                <Container className="position-absolute top-50 start-50 translate-middle">
+                <Container>
                     <Row className="justify-content-md-center">
                         <Col xs md="4">
                             <Form onSubmit={handleSubmit}>
@@ -335,7 +337,7 @@ const CreatePlaceForm = () => {
                                 ))}
                                 <br />
                                 <Row>
-                                    <Col md={2}>
+                                    <Col md={4}>
                                         <Button
                                             type="submit"
                                             className="btn btn-primary"
@@ -343,7 +345,7 @@ const CreatePlaceForm = () => {
                                             Submit
                                         </Button>
                                     </Col>
-                                    <Col>
+                                    <Col md={3}>
                                         <Button
                                             className="btn btn-secondary"
                                             onClick={() => navigate(-1)}

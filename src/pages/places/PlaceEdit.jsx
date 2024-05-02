@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
     Alert,
     Container,
@@ -42,36 +42,13 @@ const PlaceEditForm = () => {
     // Creation of the imageInput ref to access the file input
     const imageInput = useRef(null);
 
+    const { id } = useParams();
+
     let navigate = useNavigate();
 
-    // Use async/await or .then() to handle the response
-    const getCountriesArray = async () => {
-        try {
-            const response = await countryInstance.get("/", {
-                // Used to avoid CORS issues with the API
-                withCredentials: false,
-            });
-            return response.data["data"]; // Return the data directly
-        } catch (error) {
-            console.error("An error occurred:", error.response);
-            throw error;
-        }
+    const capitalizeFirst = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
     };
-
-    // On mount, get the countries and set the cities
-    useEffect(
-        () => {
-            getCountriesArray()
-                .then((countries) => {
-                    setCountries(countries);
-                })
-                .catch((error) => {
-                    console.error("Error fetching data:", error);
-                });
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        []
-    );
 
     // The image should be sent as a FormData object
     const handleChange = (event) => {
@@ -121,7 +98,7 @@ const PlaceEditForm = () => {
         formData.append("image", imageInput.current.files[0]);
 
         try {
-            const { data } = await axiosRequest.post("/places/", formData);
+            const { data } = await axiosRequest.put("/places/", formData);
             navigate(`/places/${data.id}`);
         } catch (err) {
             console.log(err);
@@ -132,13 +109,65 @@ const PlaceEditForm = () => {
         }
     };
 
+    const getCountriesArray = async () => {
+        try {
+            const response = await countryInstance.get("/", {
+                // Used to avoid CORS issues with the API
+                withCredentials: false,
+            });
+            return response.data["data"]; // Return the data directly
+        } catch (error) {
+            console.error("An error occurred:", error.response);
+            throw error;
+        }
+    };
+
+    // On mount, get the countries and set the cities
+    useEffect(
+        () => {
+            console.log("useEffect for countries started");
+            getCountriesArray()
+                .then((countries) => {
+                    setCountries(countries);
+                })
+                .catch((error) => {
+                    console.error("Error fetching data:", error);
+                });
+            console.log("useEffect for countries finished");
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        []
+    );
+
+    useEffect(() => {
+        const handleMount = async () => {
+            try {
+                await axiosRequest.get(`/places/${id}/`).then(({ data }) => {
+                    if (data?.is_owner) {
+                        setPlaceData({
+                            place_name: data.place_name,
+                            place_type: data.place_type,
+                            address: data.address,
+                            country: data.country,
+                            city: data.city,
+                            website: data.website,
+                            phone_number: data.phone_number,
+                            description: data.description,
+                            image: data.image,
+                        });
+                    } else {
+                        navigate(-1);
+                    }
+                });
+            } catch (error) {
+                console.error("An error occurred:", error.response);
+            }
+        };
+        handleMount();
+    }, [id, navigate,]);
+
     return (
         <Container>
-            {/* <Row>
-                <h1 className="position-absolute start-50 translate-middle">
-                    Create Place Page
-                </h1>
-            </Row> */}
             <Row>
                 <Container className="position-absolute top-50 start-50 translate-middle">
                     <Row className="justify-content-md-center">
@@ -178,7 +207,9 @@ const PlaceEditForm = () => {
                                             disable
                                             hidden
                                         >
-                                            Choose the type of place
+                                            {capitalizeFirst(
+                                                placeData.place_type
+                                            ) || "Place Type"}
                                         </option>
                                         <option value="restaurant">
                                             Restaurant
@@ -226,7 +257,8 @@ const PlaceEditForm = () => {
                                         onChange={handleChange}
                                     >
                                         <option value="">
-                                            Select a country
+                                            {placeData.country ||
+                                                "Select a country"}
                                         </option>
                                         {countries.map((country) => (
                                             <option value={country.country}>
@@ -249,7 +281,9 @@ const PlaceEditForm = () => {
                                         value={placeData.city}
                                         onChange={handleChange}
                                     >
-                                        <option value="">Select a city</option>
+                                        <option value="">
+                                            {placeData.city || "Select a city"}
+                                        </option>
                                         {cities.map((city) => (
                                             <option value={city}>{city}</option>
                                         ))}
@@ -314,28 +348,9 @@ const PlaceEditForm = () => {
                                         {message}
                                     </Alert>
                                 ))}
-                                <div className="form-group">
-                                    <Form.Label htmlFor="image">
-                                        Image
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="file"
-                                        className="form-control"
-                                        id="image"
-                                        name="image"
-                                        accept="image/*"
-                                        onChange={handleChangeImage}
-                                        ref={imageInput}
-                                    />
-                                </div>
-                                {errors?.image?.map((message, idx) => (
-                                    <Alert variant="warning" key={idx}>
-                                        {message}
-                                    </Alert>
-                                ))}
                                 <br />
                                 <Row>
-                                    <Col md={2}>
+                                    <Col md={3}>
                                         <Button
                                             type="submit"
                                             className="btn btn-primary"
@@ -343,7 +358,7 @@ const PlaceEditForm = () => {
                                             Submit
                                         </Button>
                                     </Col>
-                                    <Col>
+                                    <Col md={3}>
                                         <Button
                                             className="btn btn-secondary"
                                             onClick={() => navigate(-1)}
@@ -356,13 +371,26 @@ const PlaceEditForm = () => {
                         </Col>
                         {placeData.image ? (
                             <Col xs md="4">
-                                <Figure>
-                                    <Image
-                                        src={placeData.image}
-                                        alt="place"
-                                        className="img-thumbnail rounded"
+                                <Form.Group>
+                                    <Figure>
+                                        <Image
+                                            src={placeData.image}
+                                            alt="place"
+                                            className="img-thumbnail rounded"
+                                        />
+                                    </Figure>
+                                    {errors?.image?.map((message, idx) => (
+                                        <Alert variant="warning" key={idx}>
+                                            {message}
+                                        </Alert>
+                                    ))}
+                                    <Form.Label>Change Image</Form.Label>
+                                    <Form.Control
+                                        type="file"
+                                        onChange={handleChangeImage}
+                                        ref={imageInput}
                                     />
-                                </Figure>
+                                </Form.Group>
                             </Col>
                         ) : null}
                         <Col xs md="6"></Col>

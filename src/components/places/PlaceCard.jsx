@@ -37,6 +37,12 @@ const PlaceCard = (props) => {
         };
     }
 
+    const handleEdit = () => {
+        return () => {
+            navigate(`/places/${props.id}/edit`);
+        };
+    }
+
     return (
         <Container
             className={`${styles.content}`}
@@ -81,7 +87,7 @@ const PlaceCard = (props) => {
                         {is_owner && (
                             <Button
                                 variant="secondary"
-                                onClick={ navigate(`/places/${props.id}/edit`) }
+                                onClick={ handleEdit() }
                             >Edit Place</Button>
                         )}
                         <span> </span>

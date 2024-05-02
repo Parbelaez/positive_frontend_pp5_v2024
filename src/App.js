@@ -22,7 +22,7 @@ import PlaceEditForm from './pages/places/PlaceEdit';
 
 function App() {
   const currentUser = useCurrentUser();
-  const profile_id = currentUser?.profile_id || "";
+  // const profile_id = currentUser?.profile_id || "";
 
   return (
     <div className={styles.App}>
