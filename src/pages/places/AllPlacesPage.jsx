@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { axiosResponse } from "../../api/axiosDefaults";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Asset from "../../components/Asset";
 import { Button, Col, Container, Form, Row, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import NoResults from "../../assets/no-results.jpg";
@@ -16,7 +16,7 @@ const PlacesPage = ({ message }) => {
     const [hasLoaded, setHasLoaded] = useState(false);
     const { pathname } = useLocation();
     const [searchEntry, setSearchEntry] = useState('');
-    const [searchPlaceHolder, setSearchPlaceHolder] = useState('Search for a place');
+    const [searchPlaceHolder, setSearchPlaceHolder] = useState('Enter a place');
     const [ownerFilter, setOwnerFilter] = useState(false);
     const [clear, setClear] = useState(false);
 
@@ -73,84 +73,127 @@ const PlacesPage = ({ message }) => {
             <Row>
                 <Col className="py-2 p-0 p-lg-2" lg={6}>
                     <p>Most positive users Mobile</p>
-                    <Row sm={1}>
-                        {currentUser ? (
-                            <Col lg={3} className="text-center">
-                                <ToggleButtonGroup
-                                    type="checkbox"
-                                    defaultValue={[null]}
-                                    className="mb-2"
-                                >
-                                    <ToggleButton
-                                        variant={
-                                            ownerFilter
-                                                ? "secondary"
-                                                : "primary"
-                                        }
-                                        id="tbg-check-1"
-                                        value={1}
-                                        onChange={handleToggle}
-                                    >
-                                        My Places
-                                    </ToggleButton>
-                                </ToggleButtonGroup>
+                    <Container>
+                        <Row>
+                            <Col>
+                                <h4 className="fst-italic">
+                                    Been somewhere?
+                                    <span> </span>
+                                    <Link to="/create-place">
+                                        Create that place
+                                    </Link>
+                                </h4>
+                                <br />
                             </Col>
-                        ) : null}
-                        <Col lg={6} className="text-center">
-                            <Form className="d-flex">
-                                <Form.Control
-                                    type="search"
-                                    placeholder={searchPlaceHolder}
-                                    className="me-2"
-                                    aria-label="Search"
-                                    value={searchEntry}
-                                    onChange={handleChange()}
-                                />
+                        </Row>
+                        <Row sm={1}>
+                            {currentUser ? (
+                                <Col lg={3} className="text-center">
+                                    <ToggleButtonGroup
+                                        type="checkbox"
+                                        defaultValue={[null]}
+                                        className="mb-2"
+                                    >
+                                        <ToggleButton
+                                            variant={
+                                                ownerFilter
+                                                    ? "secondary"
+                                                    : "primary"
+                                            }
+                                            id="tbg-check-1"
+                                            value={1}
+                                            onChange={handleToggle}
+                                        >
+                                            My Places
+                                        </ToggleButton>
+                                    </ToggleButtonGroup>
+                                </Col>
+                            ) : null}
+                            <Col lg={7} className="text-center">
+                                <Form className="d-flex">
+                                    <Form.Control
+                                        type="search"
+                                        placeholder={searchPlaceHolder}
+                                        className="me-2"
+                                        aria-label="Search"
+                                        value={searchEntry}
+                                        onChange={handleChange()}
+                                    />
+                                    <Button
+                                        variant="outline-success"
+                                        onClick={() => {
+                                            console.log(
+                                                "Search Button Clicked",
+                                                searchEntry
+                                            );
+                                            searchResults(searchEntry);
+                                        }}
+                                    >
+                                        Search
+                                    </Button>
+                                </Form>
+                            </Col>
+                            <Col lg={2} className="text-center">
                                 <Button
-                                    variant="outline-success"
+                                    variant="outline-danger"
                                     onClick={() => {
-                                        console.log(
-                                            "Search Button Clicked",
-                                            searchEntry
-                                        );
-                                        searchResults(searchEntry);
+                                        setClear(true);
                                     }}
                                 >
-                                    Search
+                                    Clear
                                 </Button>
-                            </Form>
-                        </Col>
-                        <Col lg={2} className="text-center">
-                            <Button
-                                variant="outline-danger"
-                                onClick={() => {
-                                    setClear(true);
-                                }}
-                            >
-                                Clear
-                            </Button>
-                        </Col>
-                    </Row>
-                    {hasLoaded ? (
-                        places.results.length ? (
-                            ownerFilter ? (
-                                places.results.filter(
-                                    (place) => place.owner_id === currentUser.pk
-                                ).length ? (
+                            </Col>
+                        </Row>
+                        {hasLoaded ? (
+                            places.results.length ? (
+                                ownerFilter ? (
+                                    places.results.filter(
+                                        (place) =>
+                                            place.owner_id === currentUser.pk
+                                    ).length ? (
+                                        <InfiniteScroll
+                                            children={places.results
+                                                .filter(
+                                                    (place) =>
+                                                        place.owner_id ===
+                                                        currentUser.pk
+                                                )
+                                                .map((place) => (
+                                                    <PlaceCard
+                                                        key={place.id}
+                                                        {...place}
+                                                        setPlaces={setPlaces}
+                                                    />
+                                                ))}
+                                            dataLength={places.results.length}
+                                            loader={<Asset spinner />}
+                                            hasMore={!!places.next}
+                                            next={() => {
+                                                fetchMoreData(
+                                                    places,
+                                                    setPlaces
+                                                );
+                                            }}
+                                        />
+                                    ) : (
+                                        <Container>
+                                            <Asset
+                                                src={NoResults}
+                                                message={message}
+                                            />
+                                        </Container>
+                                    )
+                                ) : (
                                     <InfiniteScroll
-                                        children={places.results
-                                            .filter(
-                                                (place) =>
-                                                    place.owner_id ===
-                                                    currentUser.pk
-                                            )
-                                            .map((place) => (
+                                        children={places.results.map(
+                                            (place) => (
                                                 <PlaceCard
                                                     key={place.id}
                                                     {...place}
                                                     setPlaces={setPlaces}
                                                 />
-                                            ))}
+                                            )
+                                        )}
                                         dataLength={places.results.length}
                                         loader={<Asset spinner />}
                                         hasMore={!!places.next}
@@ -158,41 +201,18 @@ const PlacesPage = ({ message }) => {
                                             fetchMoreData(places, setPlaces);
                                         }}
                                     />
-                                ) : (
-                                    <Container>
-                                        <Asset
-                                            src={NoResults}
-                                            message={message}
-                                        />
-                                    </Container>
                                 )
                             ) : (
-                                <InfiniteScroll
-                                    children={places.results.map((place) => (
-                                        <PlaceCard
-                                            key={place.id}
-                                            {...place}
-                                            setPlaces={setPlaces}
-                                        />
-                                    ))}
-                                    dataLength={places.results.length}
-                                    loader={<Asset spinner />}
-                                    hasMore={!!places.next}
-                                    next={() => {
-                                        fetchMoreData(places, setPlaces);
-                                    }}
-                                />
+                                <Container>
+                                    <Asset src={NoResults} message={message} />
+                                </Container>
                             )
                         ) : (
                             <Container>
-                                <Asset src={NoResults} message={message} />
+                                <Asset spinner />
                             </Container>
-                        )
-                    ) : (
-                        <Container>
-                            <Asset spinner />
-                        </Container>
-                    )}
+                        )}
+                    </Container>
                 </Col>
                 <Col md={4} className="d-none d-lg-block p-0 p-lg-2">
                     <p>Most positive users</p>

@@ -95,11 +95,13 @@ const PlaceEditForm = () => {
         formData.append("website", placeData.website);
         formData.append("phone_number", placeData.phone_number);
         formData.append("description", placeData.description);
-        formData.append("image", imageInput.current.files[0]);
+        if (imageInput?.current?.files[0]) {
+            formData.append("image", imageInput.current.files[0]);
+        }
 
         try {
-            const { data } = await axiosRequest.put("/places/", formData);
-            navigate(`/places/${data.id}`);
+            await axiosRequest.put(`/places/${id}`, formData);
+            navigate(`/places/${id}`);
         } catch (err) {
             console.log(err);
             if (err.response?.status !== 401) {

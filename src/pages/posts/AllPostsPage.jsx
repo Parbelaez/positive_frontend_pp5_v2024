@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { axiosResponse } from "../../api/axiosDefaults";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Asset from "../../components/Asset";
 import { Col, Container, Row } from "react-bootstrap";
 import NoResults from "../../assets/no-results.jpg";
@@ -39,9 +39,9 @@ const Home = ({ message, filter = "" }) => {
                             <h4 className="fst-italic">
                                 Want to share your experience too?
                                 <span> </span>
-                                <NavLink to="/new-post">
+                                <Link to="/new-post">
                                     Create a post
-                                </NavLink>
+                                </Link>
                             </h4>
                         </Col>
                     </Row>
