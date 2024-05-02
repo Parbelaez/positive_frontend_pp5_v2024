@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { axiosResponse } from "../../api/axiosDefaults";
-import { useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import Asset from "../../components/Asset";
 import { Col, Container, Row } from "react-bootstrap";
 import NoResults from "../../assets/no-results.jpg";
@@ -33,27 +33,44 @@ const Home = ({ message, filter = "" }) => {
         <Row className="h-100">
             <Col className="py-2 p-0 p-lg-2" lg={8}>
                 <p>Most positive users Mobile</p>
-                {hasLoaded ? (
-                    <>
-                        {posts.results.length ? (
-                            posts.results.map((post) => (
-                                <Post
-                                    key={post.id}
-                                    {...post}
-                                    setPosts={setPosts}
-                                />
-                            ))
-                        ) : (
-                            <Container>
-                                <Asset src={NoResults} message={message} />
-                            </Container>
-                        )}
-                    </>
-                ) : (
-                    <Container>
-                        <Asset spinner />
-                    </Container>
-                )}
+                <Container>
+                    <Row>
+                        <Col>
+                            <h4 className="fst-italic">
+                                Want to share your experience too?
+                                <span> </span>
+                                <NavLink to="/new-post">
+                                    Create a post
+                                </NavLink>
+                            </h4>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                    {hasLoaded ? (
+                        <>
+                            {posts.results.length ? (
+                                posts.results.map((post) => (
+                                    <Post
+                                        key={post.id}
+                                        {...post}
+                                        setPosts={setPosts}
+                                    />
+                                ))
+                            ) : (
+                                <Container>
+                                    <Asset src={NoResults} message={message} />
+                                </Container>
+                            )}
+                        </>
+                    ) : (
+                        <Container>
+                            <Asset spinner />
+                        </Container>
+                            )}
+                        </Col>
+                    </Row>
+                </Container>
             </Col>
             <Col md={4} className="d-none d-lg-block p-0 p-lg-2">
                 <p>Most positive users</p>
