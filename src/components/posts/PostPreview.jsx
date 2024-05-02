@@ -56,19 +56,19 @@ const PostPreview = (props) => {
                             </Card.Title>
                             <p className="text-muted fs-6">
                                 <i
-                                    className={`fa-regular fa-hand-point-up ${styles.icon}`}
+                                    className={`fa-regular fa-hand-point-up`}
                                 ></i>
                                 <span> </span>
                                 {num_tops}
                                 <span> </span>
                                 <i
-                                    className={`fa-regular fa-thumbs-up ${styles.icon}`}
+                                    className={`fa-regular fa-thumbs-up`}
                                 ></i>
                                 <span> </span>
                                 {num_likes}
                                 <span> </span>
                                 <i
-                                    className={`fa-regular fa-thumbs-down ${styles.icon}`}
+                                    className={`fa-regular fa-thumbs-down`}
                                 ></i>
                                 <span> </span>
                                 {num_dislikes}
