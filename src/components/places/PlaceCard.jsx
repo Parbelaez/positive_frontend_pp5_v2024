@@ -3,8 +3,10 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import styles from "../../styles/PlaceCard.module.css";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
+import { useNavigate } from "react-router-dom";
+import { axiosRequest } from "../../api/axiosDefaults";
 
-// const PlaceCard = ({ place }) => {
+
 const PlaceCard = (props) => {
     const { 
         place_name,
@@ -22,6 +24,18 @@ const PlaceCard = (props) => {
     } = props;
     const currentUser = useCurrentUser();
     const is_owner = currentUser?.pk === owner_id;
+    const navigate = useNavigate();
+
+    const handleDelete = () => {
+        return async () => {
+            try {
+                await axiosRequest.delete(`/places/${props.id}/`)
+                    .then(() => navigate("/places"));
+            } catch (error) {
+                console.error("An error occurred:", error.response);
+            }
+        };
+    }
 
     return (
         <Container
@@ -65,11 +79,17 @@ const PlaceCard = (props) => {
                         <Button variant="primary">Post You Experience!</Button>
                         <span> </span>
                         {is_owner && (
-                            <Button variant="secondary">Edit Place</Button>
+                            <Button
+                                variant="secondary"
+                                onClick={ navigate(`/places/${props.id}/edit`) }
+                            >Edit Place</Button>
                         )}
                         <span> </span>
                         {is_owner && (
-                            <Button variant="danger">Delete Place</Button>
+                            <Button
+                                variant="danger"
+                                onClick={ handleDelete() }
+                            >Delete Place</Button>
                         )}
                     </Card.Body>
                 </Card>

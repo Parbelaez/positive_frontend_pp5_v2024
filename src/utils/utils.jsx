@@ -23,7 +23,7 @@ export const fetchMoreData = async (resource, setResource) => {
             next: data.next,
             results: data.results.reduce((acc, cur) => {
                 return acc.some((accResult) => accResult.id === cur.id) ? acc : [...acc, cur];
-             }, prevResource.results)
+            }, prevResource.results)
         }));
     } catch (error) {
         console.error("An error occurred, status:", error.response.status);
