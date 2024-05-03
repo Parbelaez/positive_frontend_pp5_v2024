@@ -8,6 +8,10 @@
     border-radius: 35px;
 }
 
+.img:hover {
+    cursor: pointer;
+}
+
 .boldText {
     font-weight: bold;
     text-transform: capitalize;

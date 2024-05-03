@@ -8,7 +8,8 @@ import { axiosRequest } from "../../api/axiosDefaults";
 
 
 const PlaceCard = (props) => {
-    const { 
+    const {
+        id=20,
         place_name,
         country,
         city,
@@ -54,6 +55,7 @@ const PlaceCard = (props) => {
                             variant="top"
                             src={image}
                             className={`mt-2 ${styles.img}`}
+                            onClick = {() => navigate(`/places/${id}`)}
                         />
                     </Row>
                     <Card.Body>

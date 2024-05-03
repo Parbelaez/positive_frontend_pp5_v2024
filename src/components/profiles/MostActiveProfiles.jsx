@@ -12,18 +12,22 @@ const MostActiveProfiles = () => {
   const { mostActiveProfiles } = profileData;
 
   useEffect(() => {
-    const handleMount = async () => {
-      try {
-        const { data } = await axiosRequest.get(
-          '/profiles/?ordering=-num_places'
-        );
-        setProfileData((prevState) => ({
-          ...prevState,
-          mostActiveProfiles: data,
-        }));
-      } catch (error) {
-        console.error(error);
-      }
+    // Once again, we need to use the then after the axios request
+    // to get the data from the API. The biggest problem comes when the browser
+    // has cached the previous render and tries to render once again the data before it is fetched.
+    const handleMount = () => {
+        axiosRequest
+          .get("/profiles/?ordering=-num_places")
+          .then(
+            ({ data }) => {
+                setProfileData((prevState) => ({
+                    ...prevState,
+                    mostActiveProfiles: data,
+                }));
+            })
+          .catch((error) => {
+              console.error(error);
+            });
     };
 
     handleMount();

@@ -73,7 +73,7 @@ const PlacesPage = ({ message }) => {
         <Container>
             <Row>
                 <Col className="py-2 p-0 p-lg-2" lg={6}>
-                    <p>Most positive users Mobile</p>
+                    {/* <p>Most positive users Mobile</p> */}
                     <Container>
                         <Row>
                             <Col>
@@ -123,10 +123,6 @@ const PlacesPage = ({ message }) => {
                                     <Button
                                         variant="outline-success"
                                         onClick={() => {
-                                            console.log(
-                                                "Search Button Clicked",
-                                                searchEntry
-                                            );
                                             searchResults(searchEntry);
                                         }}
                                     >
