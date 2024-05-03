@@ -1,0 +1,16 @@
+.postImage {
+    width: 100px;
+    height: 100px;
+    border-radius: 20%;
+    margin-right: 10px;
+}
+
+.secondaryText {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+.postContainer {
+    margin-bottom: 20px;
+}

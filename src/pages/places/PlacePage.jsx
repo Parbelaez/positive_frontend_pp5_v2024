@@ -33,14 +33,18 @@ const PlacePage = () => {
     return (
         <Container>
             <Row>
-                <Col>
-                    {loading ? null : <PlaceCard {...place.results[0]} setPlaces={setPlace} />}
+                <Col lg={6}>
+                    {loading ? null : (
+                        <PlaceCard {...place.results[0]} setPlaces={setPlace} />
+                    )}
                 </Col>
-                <Col>
-                    {loading ? null : <PostList />}
+                <Col lg={1}></Col>
+                <Col lg={5} className="d-none d-lg-block p-0 p-lg-2">
+                    {loading ? null : <PostList place_id={id} />}
                 </Col>
             </Row>
-        </Container>)
+        </Container>
+    );
 };
 
 export default PlacePage;

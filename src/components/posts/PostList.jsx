@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { axiosRequest } from '../../api/axiosDefaults';
-import { Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import styles from '../../styles/PostList.module.css';
 
-const PostList = (place_id) => {
+const PostList = (place) => {
+    const navigate = useNavigate();
     const [postsData, setPostsData] = useState({
         pagePost: { results: [] },
         placePosts: { results: [] },
@@ -13,33 +16,55 @@ const PostList = (place_id) => {
     useEffect(() => {
         const handleMount = async () => {
             try {
-                const { data } = await axiosRequest.get(
-                    `/posts/?place=${place_id}`
-                );
-                setPostsData((prevState) => ({
-                    ...prevState,
-                    placePosts: data,
-                }));
+                await axiosRequest.get(
+                    `/posts/?place=${place.place_id}`
+                )
+                .then(
+                    ({ data }) => setPostsData((prevState) => ({
+                        ...prevState,
+                        placePosts: data,
+                })));
             } catch (error) {
                 console.error(error);
             }
         };
 
         handleMount();
-    }, [place_id]);
+    }, [place]);
 
     return (
         <Container>
-                {placePosts.results.map((post) => (
-                    <Container key={post.id}>
-                        <Row>
-                            <h4>{post.title}</h4>
-                            <p>{post.visit_date}</p>
-                        </Row>
-                    </Container>
-                ))}
-            </Container>
-    )
+            <br />
+            <Row className="text-center">
+                <h3>Shared Experiences</h3>
+            </Row>
+            <br />
+            {placePosts.results.map((post) => (
+                <Container key={post.id} className="postContainer">
+                    <Row>
+                        <Col lg={3}>
+                            <img
+                                src={post.image}
+                                alt={post.owner}
+                                className={styles.postImage}
+                                onClick={() => navigate(`/posts/${post.id}`)}
+                            />
+                        </Col>
+                        <Col lg={1}></Col>
+                        <Col lg={8}>
+                            <h5>{post.title}</h5>
+                            <p className={styles.secondaryText}>
+                                Visit: {post.visit_date}
+                            </p>
+                            <p className={styles.secondaryText}>
+                                By: {post.owner}
+                            </p>
+                        </Col>
+                    </Row>
+                </Container>
+            ))}
+        </Container>
+    );
 }
 
 export default PostList

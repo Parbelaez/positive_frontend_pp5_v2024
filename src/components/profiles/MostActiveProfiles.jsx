@@ -34,22 +34,24 @@ const MostActiveProfiles = () => {
   }, []);
 
   return (
-      <Container>
-          <Row>
+    <Container>
+          <br />
+          <Row className="text-center">
               <h3>Top 5 Active Profiles</h3>
           </Row>
+          <br />
           <Row>
               {mostActiveProfiles.results.slice(0, 5).map((profile) => (
                   <Container key={profile.id}>
                       <Row>
-                          <Col>
+                          <Col className="text-end">
                               <img
                                   src={profile.image}
                                   alt={profile.owner}
                                   className={styles.profileImage}
                               />
                           </Col>
-                          <Col>
+                          <Col className="text-start">
                               <h4>{profile.owner}</h4>
                               <p>{profile.num_places} places</p>
                           </Col>
