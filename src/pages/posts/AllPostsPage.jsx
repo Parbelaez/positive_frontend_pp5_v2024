@@ -5,6 +5,7 @@ import Asset from "../../components/Asset";
 import { Col, Container, Row } from "react-bootstrap";
 import NoResults from "../../assets/no-results.jpg";
 import { default as Post } from "../../components/posts/PostPreview";
+import MostActiveProfiles from "../../components/profiles/MostActiveProfiles";
 
 const Home = ({ message, filter = "" }) => {
     const [posts, setPosts] = useState({ results: [] });
@@ -39,41 +40,42 @@ const Home = ({ message, filter = "" }) => {
                             <h4 className="fst-italic">
                                 Want to share your experience too?
                                 <span> </span>
-                                <Link to="/new-post">
-                                    Create a post
-                                </Link>
+                                <Link to="/new-post">Create a post</Link>
                             </h4>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                    {hasLoaded ? (
-                        <>
-                            {posts.results.length ? (
-                                posts.results.map((post) => (
-                                    <Post
-                                        key={post.id}
-                                        {...post}
-                                        setPosts={setPosts}
-                                    />
-                                ))
+                            {hasLoaded ? (
+                                <>
+                                    {posts.results.length ? (
+                                        posts.results.map((post) => (
+                                            <Post
+                                                key={post.id}
+                                                {...post}
+                                                setPosts={setPosts}
+                                            />
+                                        ))
+                                    ) : (
+                                        <Container>
+                                            <Asset
+                                                src={NoResults}
+                                                message={message}
+                                            />
+                                        </Container>
+                                    )}
+                                </>
                             ) : (
                                 <Container>
-                                    <Asset src={NoResults} message={message} />
+                                    <Asset spinner />
                                 </Container>
-                            )}
-                        </>
-                    ) : (
-                        <Container>
-                            <Asset spinner />
-                        </Container>
                             )}
                         </Col>
                     </Row>
                 </Container>
             </Col>
             <Col md={4} className="d-none d-lg-block p-0 p-lg-2">
-                <p>Most positive users</p>
+                <MostActiveProfiles orderCriteria="-num_posts" field="posts" />
             </Col>
         </Row>
     );

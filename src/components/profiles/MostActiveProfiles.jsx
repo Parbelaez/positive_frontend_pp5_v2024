@@ -3,7 +3,8 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { axiosRequest } from '../../api/axiosDefaults';
 import styles from '../../styles/MostActiveProfiles.module.css'
 
-const MostActiveProfiles = () => {
+const MostActiveProfiles = ({ orderCriteria, field }) => {
+  console.log(orderCriteria)
   const [profileData, setProfileData] = useState({
     pageProfile: { results: [] },
     mostActiveProfiles: { results: [] },
@@ -11,13 +12,15 @@ const MostActiveProfiles = () => {
 
   const { mostActiveProfiles } = profileData;
 
+
+
   useEffect(() => {
     // Once again, we need to use the then after the axios request
     // to get the data from the API. The biggest problem comes when the browser
     // has cached the previous render and tries to render once again the data before it is fetched.
     const handleMount = () => {
         axiosRequest
-          .get("/profiles/?ordering=-num_places")
+          .get(`/profiles/?ordering=${orderCriteria}`)
           .then(
             ({ data }) => {
                 setProfileData((prevState) => ({
@@ -31,10 +34,10 @@ const MostActiveProfiles = () => {
     };
 
     handleMount();
-  }, []);
+  }, [orderCriteria]);
 
   return (
-    <Container>
+      <Container>
           <br />
           <Row className="text-center">
               <h3>Top 5 Active Profiles</h3>
@@ -53,7 +56,9 @@ const MostActiveProfiles = () => {
                           </Col>
                           <Col className="text-start">
                               <h4>{profile.owner}</h4>
-                              <p>{profile.num_places} places</p>
+                              <p>
+                                  {field === 'places' ? profile.num_places : profile.num_posts} {field}
+                              </p>
                           </Col>
                       </Row>
                   </Container>

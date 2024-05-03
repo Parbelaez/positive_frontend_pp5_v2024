@@ -213,7 +213,7 @@ const PlacesPage = ({ message }) => {
                 </Col>
                 <Col md={1}></Col>
                 <Col md={4} className="d-none d-lg-block p-0 p-lg-2">
-                    <MostActiveProfiles />
+                    <MostActiveProfiles orderCriteria="-num_places" field="places"/>
                 </Col>
             </Row>
         </Container>
