@@ -9,6 +9,7 @@ import { axiosRequest } from "../../api/axiosDefaults";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchMoreData } from "../../utils/utils";
+import MostActiveProfiles from "../../components/profiles/MostActiveProfiles";
 
 const PlacesPage = ({ message }) => {
     const currentUser = useCurrentUser();
@@ -214,8 +215,9 @@ const PlacesPage = ({ message }) => {
                         )}
                     </Container>
                 </Col>
+                <Col md={1}></Col>
                 <Col md={4} className="d-none d-lg-block p-0 p-lg-2">
-                    <p>Most positive users</p>
+                    <MostActiveProfiles />
                 </Col>
             </Row>
         </Container>
