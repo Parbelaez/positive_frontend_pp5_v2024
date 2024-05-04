@@ -20,52 +20,52 @@ const MostActiveProfiles = ({ orderCriteria, field }) => {
     // has cached the previous render and tries to render once again the data before it is fetched.
     const handleMount = () => {
         axiosRequest
-          .get(`/profiles/?ordering=${orderCriteria}`)
-          .then(
-            ({ data }) => {
-                setProfileData((prevState) => ({
-                    ...prevState,
-                    mostActiveProfiles: data,
-                }));
+            .get(`/profiles/?ordering=${orderCriteria}`)
+            .then(
+                ({ data }) => {
+                    setProfileData((prevState) => ({
+                        ...prevState,
+                        mostActiveProfiles: data,
+                    }));
             })
-          .catch((error) => {
-              console.error(error);
+            .catch((error) => {
+                console.error(error);
             });
     };
 
     handleMount();
-  }, [orderCriteria]);
+    }, [orderCriteria]);
 
-  return (
-      <Container>
-          <br />
-          <Row className="text-center">
-              <h3>Top 5 Active Profiles</h3>
-          </Row>
-          <br />
-          <Row>
-              {mostActiveProfiles.results.slice(0, 5).map((profile) => (
-                  <Container key={profile.id}>
-                      <Row>
-                          <Col className="text-end">
-                              <img
-                                  src={profile.image}
-                                  alt={profile.owner}
-                                  className={styles.profileImage}
-                              />
-                          </Col>
-                          <Col className="text-start">
-                              <h4>{profile.owner}</h4>
-                              <p>
-                                  {field === 'places' ? profile.num_places : profile.num_posts} {field}
-                              </p>
-                          </Col>
-                      </Row>
-                  </Container>
-              ))}
-          </Row>
-      </Container>
-  );
+    return (
+        <Container>
+            <br />
+            <Row className="text-center">
+                <h3>Top 5 Active Profiles</h3>
+            </Row>
+            <br />
+            <Row>
+                {mostActiveProfiles.results.slice(0, 5).map((profile) => (
+                    <Container key={profile.id}>
+                        <Row>
+                            <Col className="text-end">
+                                <img
+                                    src={profile.image}
+                                    alt={profile.owner}
+                                    className={styles.profileImage}
+                                />
+                            </Col>
+                            <Col className="text-start">
+                                <h4>{profile.owner}</h4>
+                                <p>
+                                    {field === 'places' ? profile.num_places : profile.num_posts} {field}
+                                </p>
+                            </Col>
+                        </Row>
+                    </Container>
+                ))}
+            </Row>
+        </Container>
+    );
 }
 
 export default MostActiveProfiles

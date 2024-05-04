@@ -4,6 +4,7 @@ import NavBar from './components/NavBar';
 import { Routes, Route } from 'react-router-dom';
 import SignUpForm from './pages/auth/SignUpForm';
 import LoginForm from './pages/auth/LoginForm';
+import ProfilePage from './pages/profiles/ProfilePage';
 import NotFound from './pages/NotFound';
 import About from './pages/About';
 import Home from './pages/posts/AllPostsPage';
@@ -32,6 +33,7 @@ function App() {
           <Route exact path="/" element={currentUser ? <Home /> : <LoginForm />} />
           <Route exact path="/login" element={currentUser ? <Home /> : <LoginForm />} />
           <Route exact path="/signup" element={<SignUpForm />} />
+          <Route exact path="/profiles/:id" element={<ProfilePage />} />
           <Route exact path="/about" element={<About />} />
           <Route exact path="/places" element={<PlacesPage message="No Results found. Adjust the search keyword." />} />
           <Route exact path="/create-place" element={<CreatePlaceForm />} />
