@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import styles from "../../styles/PostCard.module.css";
 import { axiosResponse } from "../../api/axiosDefaults";
+import { useState } from "react";
 
 const PostCard = (props) => {
     const {
@@ -23,85 +24,48 @@ const PostCard = (props) => {
         num_dislikes,
         owner,
         is_owner,
-        setPosts,
     } = props;
 
+    const [totalLikes, setTotalLikes ] = useState({
+        numTops : num_tops,
+        numLikes : num_likes,
+        numDislikes : num_dislikes,
+    });
+
+    const [likeId, setLikeId] = useState(like_id);
+    const [clickedLike, setClickedLike] = useState('');
+
     const handleLike = async (likeType) => {
-        const like_increment = () => {
-            console.log("Enter Increasing: ", likeType);
-            switch (likeType) {
-                case "top":
-                    console.log("Incr. case top");
-                    return "num_tops = num_tops + 1";
-                case "like":
-                    console.log("Incr. case like");
-                    return "num_likes = num_likes + 1";
-                case "dislike":
-                    console.log("Incr. case dislike");
-                    return "num_dislikes = num_dislikes + 1";
-                default:
-                    return;
-            }
-        };
-
-        const like_calc = like_increment();
-
         try {
-            const { data } = await axiosResponse.post("/likes/", {
+            await axiosResponse.post("/likes/", {
                 like_type: likeType,
                 post: id,
-            });
-            setPosts((prevPosts) => ({
-                ...prevPosts,
-                results: prevPosts.results.map((post) => {
-                    return post.id === id
-                        ? {
-                            ...post,
-                            like_calc,
-                            like_id: data.id,
-                        }
-                        : post;
-                }),
-            }));
+            })
+                .then((response) => {
+                    setTotalLikes({
+                        numTops: response.data.num_tops,
+                        numLikes: response.data.num_likes,
+                        numDislikes: response.data.num_dislikes,
+                    });
+                    setLikeId(response.data.like_id);
+                    setClickedLike(likeType);
+                });
         } catch (err) {
             console.log(err);
         }
     };
 
-    const handleUnlike = async (likeType) => {
-        console.log("decreasing: ", likeType);
-        const like_decrement = () => {
-            switch (likeType) {
-                case "top":
-                    console.log("Decr. case top");
-                    return "num_tops = num_tops - 1";
-                case "like":
-                    console.log("Decr. case like");
-                    return "num_likes = num_likes - 1";
-                case "dislike":
-                    console.log("Decr. case dislike");
-                    return "num_dislikes = num_dislikes - 1";
-                default:
-                    return;
-            }
-        };
-
-        const like_calc = like_decrement();
-
+    const handleUnlike = async () => {
         try {
-            await axiosResponse.delete(`/likes/${like_id}/`);
-            setPosts((prevPosts) => ({
-                ...prevPosts,
-                results: prevPosts.results.map((post) => {
-                    return post.id === id
-                        ? {
-                            ...post,
-                            like_calc,
-                            like_id: null,
-                        }
-                        : post;
-                }),
-            }));
+            await axiosResponse.delete(`/likes/${likeId}/`)
+                .then((response) => {
+                    setTotalLikes({
+                        numTops: response.data.num_tops,
+                        numLikes: response.data.num_likes,
+                        numDislikes: response.data.num_dislikes,
+                    });
+                    setLikeId(response.data.like_id);
+                })
         } catch (err) {
             console.log(err);
         }
@@ -147,9 +111,9 @@ const PostCard = (props) => {
                                         className={`fa-regular fa-hand-point-up ${styles.icon}`}
                                     ></i>
                                 </OverlayTrigger>
-                            ) : like_id && like_type === "top" ? (
+                            ) : likeId !== null && like_type === "top" ? (
                                 <i
-                                    onClick={() => handleUnlike("top")}
+                                    onClick={() => handleUnlike()}
                                     className={`fa-solid fa-hand-point-up ${styles.icon}`}
                                 ></i>
                             ) : (
@@ -159,7 +123,8 @@ const PostCard = (props) => {
                                 ></i>
                             )}
                             <span> </span>
-                            {num_tops} person(s) found this post helpful.
+                            {totalLikes.numTops} person(s) found this post
+                            helpful.
                             <br />
                             {is_owner ? (
                                 <OverlayTrigger
@@ -174,9 +139,9 @@ const PostCard = (props) => {
                                         className={`fa-regular fa-thumbs-up ${styles.icon}`}
                                     ></i>
                                 </OverlayTrigger>
-                            ) : like_id && like_type === "like" ? (
+                            ) : likeId !== null && like_type === "like" ? (
                                 <i
-                                    onClick={() => handleUnlike("like")}
+                                    onClick={() => handleUnlike()}
                                     className={`fa-solid fa-thumbs-up ${styles.icon}`}
                                 ></i>
                             ) : (
@@ -185,8 +150,8 @@ const PostCard = (props) => {
                                     className={`fa-regular fa-thumbs-up ${styles.icon}`}
                                 ></i>
                             )}
-                            <span> </span> {num_likes} person(s) likes this
-                            place.
+                            <span> </span> {totalLikes.numLikes} person(s) likes
+                            this place.
                             <br />
                             <span> </span>
                             {is_owner ? (
@@ -202,9 +167,9 @@ const PostCard = (props) => {
                                         className={`fa-regular fa-thumbs-down ${styles.icon}`}
                                     ></i>
                                 </OverlayTrigger>
-                            ) : like_id && like_type === "dislike" ? (
+                            ) : likeId !== null && like_type === "dislike" ? (
                                 <i
-                                    onClick={() => handleUnlike("dislike")}
+                                    onClick={() => handleUnlike()}
                                     className={`fa-solid fa-thumbs-down ${styles.icon}`}
                                 ></i>
                             ) : (
@@ -214,7 +179,8 @@ const PostCard = (props) => {
                                 ></i>
                             )}
                             <span> </span>
-                            {num_dislikes} person(s) dislikes this place.
+                            {totalLikes.numDislikes} person(s) dislikes this
+                            place.
                         </p>
                         <p>
                             Thanks to{" "}
