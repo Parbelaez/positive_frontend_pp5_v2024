@@ -31,12 +31,13 @@ const Home = ({ message, filter = "" }) => {
     }, [filter, pathname]);
 
     return (
-        <Row className="h-100">
-            <Col className="py-2 p-0 p-lg-2" lg={8}>
-                <p>Most positive users Mobile</p>
+        <Container>
+        <Row>
+            <Col className="py-2 p-0 p-lg-2" lg={7}>
                 <Container>
                     <Row>
                         <Col>
+                            <br />
                             <h4 className="fst-italic">
                                 Want to share your experience too?
                                 <span> </span>
@@ -73,11 +74,13 @@ const Home = ({ message, filter = "" }) => {
                         </Col>
                     </Row>
                 </Container>
-            </Col>
-            <Col md={4} className="d-none d-lg-block p-0 p-lg-2">
+                </Col>
+                <Col md={1}></Col>
+            <Col sm={4} className="d-none d-lg-block p-0 p-lg-2">
                 <MostActiveProfiles orderCriteria="-num_posts" field="posts" />
             </Col>
-        </Row>
+            </Row>
+        </Container>
     );
 };
 
