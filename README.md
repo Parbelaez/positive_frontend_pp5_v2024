@@ -492,3 +492,111 @@ document.addEventListener("mouseup", handleClickOutside);
 ```
 
 ![hamburger_menu_fix](./README_Images/gifs/bugs/hamburger_menu_fix.gif)
+
+### No real like calculation is seen in the posts
+
+The likes are not correctly calculated in the Moments app because the renders are not done with the data from the Backend, therefore, if anotheer user is interacting with the same post, his/her likes will not be shown in the post. This is a conflict between the frontend and the backend that could lead to misinformation to the users.
+
+The solution was to created a response message in the backend that would return the num_likes, num_dislikes, and num_tops of the post every time a user interacts with it. This way, the frontend will always have the correct data.
+
+For practical reasons, this implementation is shown in both parts of the readme, so no matter on what side you will be working with, you will have the complete information and pass it to the person repsonsible for the other side.
+
+**BACKEND**:
+
+As the likes are calculated for each post, we needed a neew serializer for the post that would return the number of likes, dislikes, and tops. This is the code:
+
+```python
+class PostLikesSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+    num_tops = serializers.ReadOnlyField()
+    num_likes = serializers.ReadOnlyField()
+    num_dislikes = serializers.ReadOnlyField()
+    like_id = serializers.SerializerMethodField()
+
+    # We need to define the get_like_id method to be able to access the
+    # like_id field in the serializer
+    def get_like_id(self, obj):
+        user = self.context['request'].user
+        if user.is_authenticated:
+            try:
+                like = Likes.objects.filter(
+                    owner=user, post=obj
+                ).first()
+                return like.id if like else None
+            except Exception:
+                return None
+        return None
+
+    class Meta:
+        model = Post
+        fields = [
+            ## the id field is created automatically by django
+            ## but we need to declare it here to be able to access it
+            'id',
+            'like_id',
+            'num_tops',
+            'num_likes',
+            'num_dislikes',
+        ]
+```
+
+Then, in the likes views, we need to import the Post model and the PostLikesSerializer and extended the create method for the like to return the post data as well. This is the code:
+
+```python
+def create(self, request, *args, **kwargs):
+        serializer =self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        post_id = request.data.get('post')
+        post = Post.objects.annotate(
+        num_tops=Count('post_likes__like_type',
+            filter=Q(post_likes__like_type='top')
+            ),
+        num_likes=Count('post_likes__like_type',
+            filter=Q(post_likes__like_type='like')
+            ),
+        num_dislikes=Count('post_likes__like_type',
+            filter=Q(post_likes__like_type='dislike')
+            )
+        ).get(id=post_id)
+        serialized_data = PostLikesSerializer(post, context={"request": request})
+        return Response(serialized_data.data, status=status.HTTP_201_CREATED, headers=headers)
+```
+
+Same as in LikeDetail for the destroy method, the post data is returned in the response.
+
+```python
+def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        post_id = instance.post.id
+        self.perform_destroy(instance)
+        post = Post.objects.annotate(
+        num_tops=Count('post_likes__like_type',
+            filter=Q(post_likes__like_type='top')
+            ),
+        num_likes=Count('post_likes__like_type',
+            filter=Q(post_likes__like_type='like')
+            ),
+        num_dislikes=Count('post_likes__like_type',
+            filter=Q(post_likes__like_type='dislike')
+            )
+        ).get(id=post_id)
+        serialized_data = PostLikesSerializer(post, context={"request": request})
+        return Response(serialized_data.data, status=status.HTTP_200_OK)
+```
+
+**FRONTEND**:
+
+In the front end, we need to change the logic to one that uses always the responses from the backend, and keeps track of the last clicked like type.
+
+This code is too long to copy, so please refer to the Post.Card.jsx file in the frontend code (src/components/Post/Post.Card.jsx).
+
+The logic is this:
+
+![Likes Logic](./README_Images/bugs/Positive%20Likes.jpg)
+
+A view with better resolution can be seen here:
+
+[Flow Chart](https://miro.com/app/board/uXjVKLp_b-s=/?share_link_id=287718421848)
+

@@ -33,9 +33,10 @@ const PostCard = (props) => {
     });
 
     const [likeId, setLikeId] = useState(like_id);
-    const [clickedLike, setClickedLike] = useState('');
+    const [clickedLike, setClickedLike] = useState(like_type);
 
     const handleLike = async (likeType) => {
+        setClickedLike(likeType);
         try {
             await axiosResponse.post("/likes/", {
                 like_type: likeType,
@@ -55,7 +56,8 @@ const PostCard = (props) => {
         }
     };
 
-    const handleUnlike = async () => {
+    const handleUnlike = async (likeType) => {
+        setClickedLike(likeType);
         try {
             await axiosResponse.delete(`/likes/${likeId}/`)
                 .then((response) => {
@@ -111,9 +113,9 @@ const PostCard = (props) => {
                                         className={`fa-regular fa-hand-point-up ${styles.icon}`}
                                     ></i>
                                 </OverlayTrigger>
-                            ) : likeId !== null && like_type === "top" ? (
+                            ) : likeId !== null && clickedLike === "top" ? (
                                 <i
-                                    onClick={() => handleUnlike()}
+                                    onClick={() => handleUnlike("top")}
                                     className={`fa-solid fa-hand-point-up ${styles.icon}`}
                                 ></i>
                             ) : (
@@ -139,9 +141,9 @@ const PostCard = (props) => {
                                         className={`fa-regular fa-thumbs-up ${styles.icon}`}
                                     ></i>
                                 </OverlayTrigger>
-                            ) : likeId !== null && like_type === "like" ? (
+                            ) : likeId !== null && clickedLike === "like" ? (
                                 <i
-                                    onClick={() => handleUnlike()}
+                                    onClick={() => handleUnlike("like")}
                                     className={`fa-solid fa-thumbs-up ${styles.icon}`}
                                 ></i>
                             ) : (
@@ -167,9 +169,9 @@ const PostCard = (props) => {
                                         className={`fa-regular fa-thumbs-down ${styles.icon}`}
                                     ></i>
                                 </OverlayTrigger>
-                            ) : likeId !== null && like_type === "dislike" ? (
+                            ) : likeId !== null && clickedLike === "dislike" ? (
                                 <i
-                                    onClick={() => handleUnlike()}
+                                    onClick={() => handleUnlike("dislike")}
                                     className={`fa-solid fa-thumbs-down ${styles.icon}`}
                                 ></i>
                             ) : (
