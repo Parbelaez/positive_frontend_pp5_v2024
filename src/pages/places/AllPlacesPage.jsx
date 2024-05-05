@@ -48,7 +48,6 @@ const PlacesPage = ({ message }) => {
     };
 
     useEffect(() => {
-        console.log("Clear: ", clear);
         setClear(false);
         setOwnerFilter(false);
         console.log('Clear: ',clear);

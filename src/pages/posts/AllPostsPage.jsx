@@ -2,17 +2,28 @@ import { useEffect, useState } from "react";
 import { axiosResponse } from "../../api/axiosDefaults";
 import { Link, useLocation } from "react-router-dom";
 import Asset from "../../components/utilities/Asset";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import NoResults from "../../assets/no-results.jpg";
-import { default as Post } from "../../components/posts/PostPreview";
+import PostPreview, { default as Post } from "../../components/posts/PostPreview";
 import MostActiveProfiles from "../../components/profiles/MostActiveProfiles";
+import { useCurrentUser } from "../../contexts/CurrentUserContext";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { fetchMoreData } from "../../utils/utils";
 
 const Home = ({ message, filter = "" }) => {
+    const currentUser = useCurrentUser();
     const [posts, setPosts] = useState({ results: [] });
     const [hasLoaded, setHasLoaded] = useState(false);
+    const [ownerFilter, setOwnerFilter] = useState(false);
     const { pathname } = useLocation();
 
+    const handleToggle = () => {
+        setOwnerFilter(!ownerFilter);
+        console.log("Owner filter after toggle: ", ownerFilter);
+    };
+
     useEffect((filter) => {
+        setOwnerFilter(false);
         const getPosts = async () => {
             try {
                 await axiosResponse
@@ -32,31 +43,124 @@ const Home = ({ message, filter = "" }) => {
 
     return (
         <Container>
-        <Row>
-            <Col className="py-2 p-0 p-lg-2" lg={7}>
-                <Container>
-                    <Row>
-                        <Col>
-                            <br />
-                            <h4 className="fst-italic">
-                                Want to share your experience too?
-                                <span> </span>
-                                <Link to="/new-post">Create a post</Link>
-                            </h4>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            {hasLoaded ? (
-                                <>
-                                    {posts.results.length ? (
-                                        posts.results.map((post) => (
-                                            <Post
-                                                key={post.id}
-                                                {...post}
-                                                setPosts={setPosts}
+            <Row className="gx-1">
+                <Col className="py-2 p-0 p-lg-2" lg={7}>
+                    <Container>
+                        <Row>
+                            <Col>
+                                <br />
+                                <h4 className="fst-italic">
+                                    Want to share your experience too?
+                                    <span> </span>
+                                    <Link to="/new-post">Create a post</Link>
+                                </h4>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <ToggleButtonGroup
+                                    type="checkbox"
+                                    defaultValue={[null]}
+                                    className="mb-2"
+                                >
+                                    {console.log(
+                                        "Owner filter inside html: ",
+                                        ownerFilter
+                                    )}
+                                    <ToggleButton
+                                        variant={
+                                            ownerFilter
+                                                ? "secondary"
+                                                : "primary"
+                                        }
+                                        id="tbg-check-1"
+                                        value={1}
+                                        onChange={handleToggle}
+                                    >
+                                        My Posts
+                                    </ToggleButton>
+                                </ToggleButtonGroup>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                {hasLoaded ? (
+                                    posts.results.length ? (
+                                        ownerFilter ? (
+                                            (console.log(
+                                                "posts: ",
+                                                posts,
+                                                "results",
+                                                posts.results,
+                                                "post owner filter: ",
+                                                posts.results.filter(
+                                                    (post) =>
+                                                        post.is_owner === true
+                                                )
+                                            ),
+                                            posts.results.filter(
+                                                (post) => post.is_owner === true
+                                            ).length ? (
+                                                <InfiniteScroll
+                                                    children={posts.results
+                                                        .filter(
+                                                            (post) =>
+                                                                post.is_owner ===
+                                                                true
+                                                        )
+                                                        .map((post) => (
+                                                            <PostPreview
+                                                                key={post.id}
+                                                                {...post}
+                                                                setPosts={
+                                                                    setPosts
+                                                                }
+                                                            />
+                                                        ))}
+                                                    dataLength={
+                                                        posts.results.length
+                                                    }
+                                                    loader={<Asset spinner />}
+                                                    hasMore={!!posts.next}
+                                                    next={() => {
+                                                        fetchMoreData(
+                                                            posts,
+                                                            setPosts
+                                                        );
+                                                    }}
+                                                />
+                                            ) : (
+                                                <Container>
+                                                    <Asset
+                                                        src={NoResults}
+                                                        message={message}
+                                                    />
+                                                </Container>
+                                            ))
+                                        ) : (
+                                            <InfiniteScroll
+                                                children={posts.results.map(
+                                                    (post) => (
+                                                        <PostPreview
+                                                            key={post.id}
+                                                            {...post}
+                                                            setPosts={setPosts}
+                                                        />
+                                                    )
+                                                )}
+                                                dataLength={
+                                                    posts.results.length
+                                                }
+                                                loader={<Asset spinner />}
+                                                hasMore={!!posts.next}
+                                                next={() => {
+                                                    fetchMoreData(
+                                                        posts,
+                                                        setPosts
+                                                    );
+                                                }}
                                             />
-                                        ))
+                                        )
                                     ) : (
                                         <Container>
                                             <Asset
@@ -64,21 +168,22 @@ const Home = ({ message, filter = "" }) => {
                                                 message={message}
                                             />
                                         </Container>
-                                    )}
-                                </>
-                            ) : (
-                                <Container>
-                                    <Asset spinner />
-                                </Container>
-                            )}
-                        </Col>
-                    </Row>
-                </Container>
+                                    )
+                                ) : (
+                                    <Container>
+                                        <Asset spinner />
+                                    </Container>
+                                )}
+                            </Col>
+                        </Row>
+                    </Container>
                 </Col>
-                <Col md={1}></Col>
-            <Col sm={4} className="d-none d-lg-block p-0 p-lg-2">
-                <MostActiveProfiles orderCriteria="-num_posts" field="posts" />
-            </Col>
+                <Col sm={4} className="d-none d-lg-block p-0 p-lg-2">
+                    <MostActiveProfiles
+                        orderCriteria="-num_posts"
+                        field="posts"
+                    />
+                </Col>
             </Row>
         </Container>
     );
