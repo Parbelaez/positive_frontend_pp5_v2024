@@ -49,6 +49,7 @@ const PlaceCard = (props) => {
 
     const handlePostCreation = (id, place_name, country, city) => {
         return () => {
+            console.log("Lo que envié: ", id, place_name, country, city);
             navigate("/new-post", {
                 state: { id, place_name, country, city },
             });

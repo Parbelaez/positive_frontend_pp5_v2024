@@ -14,7 +14,7 @@ const NewPostForm = () => {
     const country = location.state !== null ? location.state.country : "";
     const city = location.state !== null ? location.state.city : "";
 
-    console.log(place_id, place_name, country, city);
+    console.log("lo que recibí: ", place_id, place_name, country, city);
     
     // A new axios instance for the country API
     const countryInstance = axios.create({
@@ -23,7 +23,7 @@ const NewPostForm = () => {
 
     // Creation of the Post data to be sent to the backend
     const [postData, setPostData] = useState({
-        place: "",
+        place: place_id ? place_id : "",
         title: "",
         visit_date: "",
         content: "",
@@ -124,7 +124,9 @@ const NewPostForm = () => {
         event.preventDefault();
         const formData = new FormData();
 
-        formData.append("place", postData.place_name);
+        console.log("submit place id: ", place_id);
+
+        formData.append("place", place_id ? place_id : postData.place);
         formData.append("title", postData.title);
         formData.append("visit_date", postData.visit_date);
         formData.append("content", postData.content);
@@ -132,7 +134,7 @@ const NewPostForm = () => {
         formData.append("recommendaton", postData.recommendaton);
 
         try {
-            console.log(formData);
+            console.log("lo que voy a enviar a la DB: ", formData);
             const { data } = await axiosRequest.post("/posts/", formData);
             navigate(`/posts/${data.id}`);
         } catch (err) {
@@ -212,30 +214,46 @@ const NewPostForm = () => {
                                 Place Name
                             </Form.Label>
                             {!!place_id ? (
-                                <Form.Select disabled>
-                                    <option value="place_id">{place_name}</option>
-                                </Form.Select>
-                            ) : (
-                            <Form.Select
-                                className="form-control"
-                                id="place_name"
-                                name="place_name"
-                                value={postData.id}
-                                onChange={handleChange}
-                            >
-                                <option value="place_id">
-                                    {!!place_id ? place_name : "Select a place"}
-                                </option>
-                                {places.length ? (
-                                    places.map((place) => (
-                                        <option key={place.id} value={place.id}>
-                                            {place.place_name}, {place.address}
+                                (console.log("place_id: ", place_id),
+                                (
+                                    <Form.Select
+                                        disabled
+                                    >
+                                        <option
+                                            key={place_id}
+                                            value={place_id}
+                                        >
+                                            {place_name}
                                         </option>
-                                    ))
-                                ) : (
-                                    <option value="">No places found</option>
-                                )}
-                            </Form.Select>
+                                    </Form.Select>
+                                ))
+                            ) : (
+                                <Form.Select
+                                    className="form-control"
+                                    id="place_name"
+                                    name="place_name"
+                                    value=""
+                                    onChange={handleChange}
+                                >
+                                    <option value="">
+                                        "Select a place"
+                                    </option>
+                                    {places.length ? (
+                                        places.map((place) => (
+                                            <option
+                                                key={place.id}
+                                                value={place.id}
+                                            >
+                                                {place.place_name},{" "}
+                                                {place.address}
+                                            </option>
+                                        ))
+                                    ) : (
+                                        <option value="">
+                                            No places found
+                                        </option>
+                                    )}
+                                </Form.Select>
                             )}
                             {errors.place && (
                                 <div className="alert alert-danger">
