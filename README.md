@@ -377,6 +377,18 @@ To create the About component, you can follow the same steps as for the Home com
 
 For this one, we have used the approach used in the Moments tutorial.
 
+## Preventive coding
+
+Probably it is the thing that takes more time in the whole process, but as we all know, it is crucial for a well designed and robust application.
+
+The implemented features are:
+
+**Form error detection:** each form waits for the BE to send a response. If an error code is sent, or form errors are detected, the are dispolayed below the corresponding field.
+
+**Deletion confirmation:** when a user wants to delete a post, a modal is displayed asking for confirmation. If the user clicks the "Delete" button, the post is deleted. If the user clicks the "Cancel" button, the modal is closed.
+
+**Login after account creation:** after the user creates an account, he/she is sent to the loging page, so the entered data can be used to log in. This is perhaps an old practice, as modern applicatins log the user in automatically after the account is created. But, as we are using JWT, we need to log in the user manually so we can retrieve the token and cookies.
+
 ## Version 2 desired features
 
 1. The likes and dislikes of the posts will be computed in the backend. It needs brainstorming, as 5 categories will be needed: post likes, post dislikes, post tops, place likes, and place dislikes, which can be confusing to the users.

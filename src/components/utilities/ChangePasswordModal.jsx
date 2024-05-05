@@ -2,12 +2,25 @@ import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
+import { axiosResponse } from "../../api/axiosDefaults";
+import { Alert } from "bootstrap";
 
 const ChangePasswordModal = (props) => {
     const { profile_id, setChangePassword } = props;
-    
-    console.log("Entering change password modal: ", profile_id);
     const [show, setShow] = useState(true);
+
+    const [userData, setUserData] = useState({
+        new_password1: "",
+        new_password2: "",
+    });
+
+    const { new_password1, new_password2 } = userData;
+
+    const [errors, setErrors] = useState({});
+
+    const handleChange = (e) => {
+        setUserData({ ...userData, [e.target.name]: e.target.value });
+    };
 
     const handleClose = () => {
         setShow(false);
@@ -19,7 +32,23 @@ const ChangePasswordModal = (props) => {
     useEffect(() => {
         handleShow();
     }
-    , [profile_id]);
+        , [profile_id]);
+    
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await axiosResponse.post("/dj-rest-auth/password/change/", userData)
+                .then(
+                    (response) => {
+                        console.log(response);
+                        handleClose();
+                    }
+            );
+        } catch (error) {
+            console.error("An error occurred:", error.response);
+            setErrors(error.response.data);
+        };
+    }
 
     return (
         <>
@@ -38,9 +67,17 @@ const ChangePasswordModal = (props) => {
                             <Form.Control
                                 type="password"
                                 placeholder="New Password"
+                                name="new_password1"
+                                value={new_password1}
+                                onChange={handleChange}
                                 autoFocus
                             />
                         </Form.Group>
+                        {errors?.new_password1?.map((message, idx) => (
+                            <Alert key={idx} variant="warning">
+                                {message}
+                            </Alert>
+                        ))}
                         <Form.Group
                             className="mb-3"
                             controlId="exampleForm.ControlTextarea1"
@@ -49,6 +86,9 @@ const ChangePasswordModal = (props) => {
                             <Form.Control
                                 type="password"
                                 placeholder="Repeat Password"
+                                name="new_password2"
+                                value={new_password2}
+                                onChange={handleChange}
                             />
                         </Form.Group>
                     </Form>
@@ -57,7 +97,7 @@ const ChangePasswordModal = (props) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
+                    <Button variant="primary" onClick={handleSubmit}>
                         Change Password
                     </Button>
                 </Modal.Footer>

@@ -1,23 +1,17 @@
-import React, { createRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../styles/ProfileCard.module.css";
 import {
-    Alert,
     Button,
     Card,
     Col,
     Container,
-    Figure,
-    Form,
-    Image,
     Row,
 } from "react-bootstrap";
-import { axiosRequest } from "../../api/axiosDefaults";
-import { useNavigate } from "react-router-dom";
 import ChangePasswordModal from "../utilities/ChangePasswordModal";
 import DeleteConfirm from "../utilities/DeleteConfirm";
+import ProfileEditForm from "./ProfileEditForm";
 
 const ProfileCard = (profile) => {
-    const navigate = useNavigate();
     const [editON, setEditON] = useState(false);
     const [profileData, setProfileData] = useState({
         first_name: "",
@@ -26,10 +20,8 @@ const ProfileCard = (profile) => {
         about_you: "",
         image: null,
     });
-    const [errors, setErrors] = useState({});
     const [changePassword, setChangePassword] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
-    const imageInput = createRef();
 
     const {
         id,
@@ -55,43 +47,19 @@ const ProfileCard = (profile) => {
         setChangePassword(true);
     };
 
-    const handleChangeImage = (event) => {
-        if (event.target.files.length) {
-            URL.revokeObjectURL(profileData.image);
-            setProfileData({
-                ...profileData,
-                image: URL.createObjectURL(event.target.files[0]),
-            });
-        }
-    };
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const formData = new FormData();
-
-        formData.append(first_name, profileData.first_name);
-        formData.append(last_name, profileData.last_name);
-        formData.append(email, profileData.email);
-        formData.append(about_you, profileData.about_you);
-        if (imageInput?.current?.files[0]) {
-            formData.append("image", imageInput.current.files[0]);
-        }
-
-        try {
-            await axiosRequest.put(`/profiles/${id}`, formData);
-            navigate(`/places/${id}`);
-        } catch (err) {
-            console.log(err);
-            if (err.response?.status !== 401) {
-                setErrors(err.response?.data);
-                console.log(errors);
-            }
-        }
-    };
-
     const handleDelete = () => {
         setShowDelete(true);
     }
+
+    useEffect(() => {
+        setProfileData({
+            first_name: first_name,
+            last_name: last_name,
+            email: email,
+            about_you: about_you,
+            image: image,
+        });
+    },[first_name, last_name, email, about_you, image]);
 
     return (
         <Container className={`${styles.content}`}>
@@ -121,6 +89,13 @@ const ProfileCard = (profile) => {
                                     {first_name} {last_name}
                                 </h3>
                             </Card.Title>
+                            {is_owner && (
+                                <Card.Title>
+                                <h3 className="text-muted fs-6">
+                                    {email}
+                                </h3>
+                                </Card.Title>
+                            )}
                             <Card.Text>{about_you}</Card.Text>
                             <p className="text-muted fs-6">
                                 <i
@@ -143,7 +118,7 @@ const ProfileCard = (profile) => {
                                         variant="secondary"
                                         onClick={handleEdit}
                                     >
-                                        Edit Profile
+                                        Edit
                                     </Button>
                                     <span> </span>
                                     <Button
@@ -155,7 +130,9 @@ const ProfileCard = (profile) => {
                                     <span> </span>
                                     <Button
                                         variant="danger"
-                                        onClick={() => handleDelete("profile", id)}
+                                        onClick={() =>
+                                            handleDelete("profile", id)
+                                        }
                                     >
                                         Delete My Profile
                                     </Button>
@@ -166,84 +143,20 @@ const ProfileCard = (profile) => {
                                     itemType="profile"
                                     id={id}
                                     setShowDelete={setShowDelete}
-                                    postCard
+                                    profileCard
                                 />
                             )}
                         </Card.Body>
                     </Card>
                 </Col>
                 {editON && (
-                    <Col lg={4}>
-                        <Form>
-                            <Form.Group className="mb-3">
-                                <Form.Label htmlFor="disabledTextInput">
-                                    First Name
-                                </Form.Label>
-                                <Form.Control
-                                    id="disabledTextInput"
-                                    placeholder="First Name"
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label htmlFor="disabledTextInput">
-                                    Last Name
-                                </Form.Label>
-                                <Form.Control
-                                    id="disabledTextInput"
-                                    placeholder="Last Name"
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label htmlFor="disabledTextInput">
-                                    Email
-                                </Form.Label>
-                                <Form.Control
-                                    id="disabledTextInput"
-                                    placeholder="Email"
-                                />
-                            </Form.Group>
-                            <Form.Group>
-                                <Figure>
-                                    <Image
-                                        src={image}
-                                        alt="place"
-                                        className="img-thumbnail rounded"
-                                    />
-                                </Figure>
-                                {errors?.image?.map((message, idx) => (
-                                    <Alert variant="warning" key={idx}>
-                                        {message}
-                                    </Alert>
-                                ))}
-                                <Form.Label>Change Image</Form.Label>
-                                <Form.Control
-                                    type="file"
-                                    onChange={handleChangeImage}
-                                    ref={imageInput}
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label htmlFor="disabledTextInput">
-                                    About You
-                                </Form.Label>
-                                <Form.Control
-                                    as="textarea"
-                                    id="disabledTextInput"
-                                    placeholder="About You"
-                                />
-                            </Form.Group>
-                            <Button type="submit" onClick={handleSubmit}>
-                                Submit
-                            </Button>
-                            <span> </span>
-                            <Button
-                                variant="secondary"
-                                onClick={() => setEditON(false)}
-                            >
-                                Cancel
-                            </Button>
-                        </Form>
-                    </Col>
+                    <ProfileEditForm
+                        id={id}
+                        profileData={profileData}
+                        setEditON={setEditON}
+                        setProfileData={setProfileData}
+                        profileCard
+                    />
                 )}
             </Row>
         </Container>

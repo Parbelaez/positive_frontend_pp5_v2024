@@ -127,7 +127,6 @@ const PlaceEditForm = () => {
     // On mount, get the countries and set the cities
     useEffect(
         () => {
-            console.log("useEffect for countries started");
             getCountriesArray()
                 .then((countries) => {
                     setCountries(countries);
@@ -135,7 +134,6 @@ const PlaceEditForm = () => {
                 .catch((error) => {
                     console.error("Error fetching data:", error);
                 });
-            console.log("useEffect for countries finished");
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
