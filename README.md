@@ -25,6 +25,9 @@
 - [Version 2 desired features](#version-2-desired-features)
 - [Bugs](#bugs)
   - [CI Moments Code's Bugs](#ci-moments-codes-bugs)
+    - [Current User is lost after a refresh](#current-user-is-lost-after-a-refresh)
+    - [The hamburger menu closes before the link is clicked](#the-hamburger-menu-closes-before-the-link-is-clicked)
+    - [No real like calculation is seen in the posts](#no-real-like-calculation-is-seen-in-the-posts)
   - [Current User is lost after a refresh](#current-user-is-lost-after-a-refresh)
 
 ## Introduction
@@ -391,7 +394,7 @@ For this one, we have used the approach used in the Moments tutorial.
 
 The Moments tutorial has some bugs that were inherited in this project, but gladly I could find some of them and fix them. They were reported as well to the bugs CI channel. They are:
 
-### Current User is lost after a refresh
+#### Current User is lost after a refresh
 
 In the CurrentUserContext.js code, during the handleMount, the data is "fetch" but the current user is set no matter the promise is fulfilled or not.
 
@@ -460,7 +463,7 @@ If this is not done, and the response takes longer to be fetch than the rest of 
 export const CurrentUserProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
 ```
-### The hamburger menu closes before the link is clicked
+#### The hamburger menu closes before the link is clicked
 
 This was a simple bug. The 
 
@@ -493,7 +496,7 @@ document.addEventListener("mouseup", handleClickOutside);
 
 ![hamburger_menu_fix](./README_Images/gifs/bugs/hamburger_menu_fix.gif)
 
-### No real like calculation is seen in the posts
+#### No real like calculation is seen in the posts
 
 The likes are not correctly calculated in the Moments app because the renders are not done with the data from the Backend, therefore, if anotheer user is interacting with the same post, his/her likes will not be shown in the post. This is a conflict between the frontend and the backend that could lead to misinformation to the users.
 

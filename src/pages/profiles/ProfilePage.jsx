@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { axiosResponse } from '../../api/axiosDefaults'
 import { useParams } from 'react-router-dom'
 import ProfileCard from '../../components/profiles/ProfileCard'
+import Asset from '../../components/Asset'
 
 const ProfilePage = () => {
     const profile_id = useParams().id;
@@ -25,8 +26,9 @@ const ProfilePage = () => {
     }, [profile_id]);
 
     return (
-            loading? null:
-                <ProfileCard profile={profile} />
+        loading?
+            <Asset src="/loading.gif" /> :
+            <ProfileCard profile={profile} />
     )
 }
 

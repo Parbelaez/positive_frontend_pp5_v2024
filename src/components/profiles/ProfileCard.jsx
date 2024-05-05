@@ -137,6 +137,7 @@ const ProfileCard = (profile) => {
                             </Card.Body>
                         </Card>
                     </Col>
+                    { editON && (
                     <Col lg={4}>
                         <Form>
                             <Form.Group className="mb-3">
@@ -207,7 +208,8 @@ const ProfileCard = (profile) => {
                                 Cancel
                             </Button>
                         </Form>
-                    </Col>
+                        </Col>
+                    )}
                 </Row>
             </Container>
         )
