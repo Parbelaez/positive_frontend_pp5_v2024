@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Alert, Container, Row, Col, Form } from "react-bootstrap";
+import { Alert, Container, Row, Col, Form, Button } from "react-bootstrap";
 import { axiosRequest } from "../../api/axiosDefaults";
 import styles from "../../styles/NewPostForm.module.css";
 
@@ -349,9 +349,12 @@ const NewPostForm = () => {
                             ))}
                         </div>
                         <br />
-                        <button type="submit" className="btn btn-primary">
+                        <Button type="submit" className="btn btn-primary">
                             Submit
-                        </button>
+                        </Button>
+                        <Button variant="secondary" onClick={() => navigate("/")}>
+                            Cancel
+                        </Button>
                         <br />
                         <br />
                         <p className={styles.disclaimer}>
