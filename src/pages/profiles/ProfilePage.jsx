@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { axiosResponse } from '../../api/axiosDefaults'
 import { useParams } from 'react-router-dom'
 import ProfileCard from '../../components/profiles/ProfileCard'
-import Asset from '../../components/Asset'
+import Asset from '../../components/utilities/Asset'
 
 const ProfilePage = () => {
     const profile_id = useParams().id;

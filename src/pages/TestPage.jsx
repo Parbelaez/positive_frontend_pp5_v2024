@@ -1,7 +1,7 @@
 import { Col, Container, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import { useCurrentUser } from "../contexts/CurrentUserContext";
 import PlaceCard from "../components/places/PlaceCard";
-import Asset from "../components/Asset";
+import Asset from "../components/utilities/Asset";
 import { axiosResponse } from "../api/axiosDefaults";
 import { useEffect, useState } from "react";
 

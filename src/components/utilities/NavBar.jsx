@@ -1,14 +1,14 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import logo_color_trimmed from "../assets/logo_color_trimmed.png";
+import logo_color_trimmed from "../../assets/logo_color_trimmed.png";
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
-import { useCurrentUser, useSetCurrentUser } from '../contexts/CurrentUserContext';
-import styles from '../styles/NavBar.module.css';
+import { useCurrentUser, useSetCurrentUser } from '../../contexts/CurrentUserContext';
+import styles from '../../styles/NavBar.module.css';
 import Avatar from "./Avatar";
-import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
-import { removeTokenTimestamp } from "../utils/utils";
+import useClickOutsideToggle from "../../hooks/useClickOutsideToggle";
+import { removeTokenTimestamp } from "../../utils/utils";
 
 const NavBar = () => {
     const currentUser = useCurrentUser();

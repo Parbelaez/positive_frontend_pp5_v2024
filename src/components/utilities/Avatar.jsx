@@ -1,4 +1,4 @@
-import styles from '../styles/Avatar.module.css';
+import styles from '../../styles/Avatar.module.css';
 
 const Avatar = (props) => {
     const { src, text, height = 45 } = props;

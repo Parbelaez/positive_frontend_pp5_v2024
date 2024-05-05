@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { axiosResponse } from "../../api/axiosDefaults";
 import { Link, useLocation } from "react-router-dom";
-import Asset from "../../components/Asset";
+import Asset from "../../components/utilities/Asset";
 import { Col, Container, Row } from "react-bootstrap";
 import NoResults from "../../assets/no-results.jpg";
 import { default as Post } from "../../components/posts/PostPreview";

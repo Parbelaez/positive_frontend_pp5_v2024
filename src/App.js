@@ -1,6 +1,6 @@
 import { Container } from 'react-bootstrap';
 import styles from './App.module.css';
-import NavBar from './components/NavBar';
+import NavBar from './components/utilities/NavBar';
 import { Routes, Route } from 'react-router-dom';
 import SignUpForm from './pages/auth/SignUpForm';
 import LoginForm from './pages/auth/LoginForm';
