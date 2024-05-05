@@ -24,7 +24,7 @@
 - [Creating the PostCard component](#creating-the-postcard-component)
 - [Version 2 desired features](#version-2-desired-features)
 - [Bugs](#bugs)
-  - [CI Code's Bugs](#ci-codes-bugs)
+  - [CI Moments Code's Bugs](#ci-moments-codes-bugs)
   - [Current User is lost after a refresh](#current-user-is-lost-after-a-refresh)
 
 ## Introduction
@@ -387,7 +387,9 @@ For this one, we have used the approach used in the Moments tutorial.
 
 ## Bugs
 
-### CI Code's Bugs
+### Moments Derived Code's Bugs
+
+The Moments tutorial has some bugs that were inherited in this project, but gladly I could find some of them and fix them. They were reported as well to the bugs CI channel. They are:
 
 ### Current User is lost after a refresh
 
@@ -458,3 +460,35 @@ If this is not done, and the response takes longer to be fetch than the rest of 
 export const CurrentUserProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
 ```
+### The hamburger menu closes before the link is clicked
+
+This was a simple bug. The 
+
+
+The problem resides in that the links work with the mousedown event, and if the event listener for the menu closing is also set to mousedown, the menu will close before the link is clicked.
+
+![hamburger_menu_bug](./README_Images/gifs/bugs/hamburger_menu_bug.gif)
+
+The solution is to change the event listener to mouseup.
+
+File: useClickOutsideToggle.jsx
+
+Before:
+
+```js
+document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+```
+
+Change:
+
+```js
+document.addEventListener("mouseup", handleClickOutside);
+        return () => {
+            document.removeEventListener("mouseup", handleClickOutside);
+        };
+```
+
+![hamburger_menu_fix](./README_Images/gifs/bugs/hamburger_menu_fix.gif)
