@@ -28,7 +28,6 @@
     - [Current User is lost after a refresh](#current-user-is-lost-after-a-refresh)
     - [The hamburger menu closes before the link is clicked](#the-hamburger-menu-closes-before-the-link-is-clicked)
     - [No real like calculation is seen in the posts](#no-real-like-calculation-is-seen-in-the-posts)
-  - [Current User is lost after a refresh](#current-user-is-lost-after-a-refresh)
 
 ## Introduction
 
@@ -603,3 +602,10 @@ A view with better resolution can be seen here:
 
 [Flow Chart](https://miro.com/app/board/uXjVKLp_b-s=/?share_link_id=287718421848)
 
+### Normal Bugs
+
+#### The modal is not displayed after the user cancels the deletion
+
+When a user clicks the delete button in the post card, a modal is displayed asking for confirmation. If the user clicks the cancel button, the modal is not displayed again when the user clicks the delete button.
+
+Seems more like a feature than a bug, but it is not the expected behavior. The expected behavior is that the modal is displayed every time the user clicks the delete button.

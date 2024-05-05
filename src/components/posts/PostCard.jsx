@@ -74,8 +74,10 @@ const PostCard = (props) => {
         }
     };
 
-    const handleDelete = (itemType, id) => {
-        return <DeleteConfirm item={itemType} id={id} />;
+    const [showDelete, setShowDelete] = useState(false);
+
+    const handleDelete = (event, itemType, id) => {
+        setShowDelete(true);
     };
 
     return (
@@ -197,14 +199,18 @@ const PostCard = (props) => {
                             for sharing her/his positive experience with us!
                         </p>
                         {is_owner && (
-                            <Button variant="secondary">Edit Post</Button>
-                        )}
-                        <span> </span>
-                        {is_owner && (
                             <Button
                                 variant="danger"
                                 onClick={() => handleDelete("post", id)}
-                            >Delete Post</Button>
+                            >
+                                Delete Post
+                            </Button>
+                        )}
+                        {showDelete && (
+                            <DeleteConfirm
+                                itemType="post"
+                                id={id}
+                            />
                         )}
                     </Card.Body>
                 </Card>
