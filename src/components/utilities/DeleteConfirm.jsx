@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { axiosRequest } from "../../api/axiosDefaults";
 import { useNavigate } from "react-router-dom";
 
-const DeleteConfirm = ({ itemType, id }) => {
+const DeleteConfirm = (props) => {
+
+    const { itemType, id, setShowDelete } = props;
 
     console.log("Entering delete confirm: ", itemType, id);
 
@@ -11,9 +13,18 @@ const DeleteConfirm = ({ itemType, id }) => {
     console.log("Modal show: ", modalShow);
     const navigate = useNavigate();
 
-    const handleModalClose = () => setModalShow(false);
+    const handleModalClose = () => {
+        setModalShow(false);
+        setShowDelete(false);
+    }
 
     const handleModalShow = () => setModalShow(true);
+
+    useEffect(() => {
+        handleModalShow();
+    }
+    , [id]);
+    
     
     const handleDelete = async () => {
         // This function will delete the item from the database.

@@ -13,6 +13,8 @@ import {
 } from "react-bootstrap";
 import { axiosRequest } from "../../api/axiosDefaults";
 import { useNavigate } from "react-router-dom";
+import ChangePasswordModal from "../utilities/ChangePasswordModal";
+import DeleteConfirm from "../utilities/DeleteConfirm";
 
 const ProfileCard = (profile) => {
     const navigate = useNavigate();
@@ -25,6 +27,8 @@ const ProfileCard = (profile) => {
         image: null,
     });
     const [errors, setErrors] = useState({});
+    const [changePassword, setChangePassword] = useState(false);
+    const [showDelete, setShowDelete] = useState(false);
     const imageInput = createRef();
 
     const {
@@ -40,13 +44,17 @@ const ProfileCard = (profile) => {
         is_owner,
     } = profile.profile;
 
-    const handleClick = () => {
-        setEditON(true);
+    const handleEdit = () => {
+        setEditON(!editON);
     };
 
     const columnSize = editON ? 6 : 12;
 
-    // handleChange for image field
+    
+    const handleChangePassword = () => {
+        setChangePassword(true);
+    };
+
     const handleChangeImage = (event) => {
         if (event.target.files.length) {
             URL.revokeObjectURL(profileData.image);
@@ -81,63 +89,90 @@ const ProfileCard = (profile) => {
         }
     };
 
+    const handleDelete = () => {
+        setShowDelete(true);
+    }
+
     return (
-        console.log("editON", editON),
-        (
-            <Container className={`${styles.content}`}>
-                <Row>
-                    <Col lg={columnSize}>
-                        <Card style={{ width: "32rem" }}>
-                            <Row>
-                                <Card.Img
-                                    variant="top"
-                                    src={image}
-                                    className={`mt-2 ${styles.img}`}
+        <Container className={`${styles.content}`}>
+            {changePassword ? (
+                <ChangePasswordModal
+                    profile_id={id}
+                    setChangePassword={setChangePassword}
+                    profileCard
+                />
+            ) : null}
+            <Row>
+                <Col lg={columnSize}>
+                    <Card style={{ width: "32rem" }}>
+                        <Row>
+                            <Card.Img
+                                variant="top"
+                                src={image}
+                                className={`mt-2 ${styles.img}`}
+                            />
+                        </Row>
+                        <Card.Body>
+                            <Card.Title>
+                                <h2 className="text-uppercase fw-bold">
+                                    {owner}
+                                </h2>
+                                <h3 className="text-muted fs-6">
+                                    {first_name} {last_name}
+                                </h3>
+                            </Card.Title>
+                            <Card.Text>{about_you}</Card.Text>
+                            <p className="text-muted fs-6">
+                                <i
+                                    className={`fa-solid fa-location-dot ${styles.icon}`}
+                                ></i>
+                                <span> </span>
+                                {`${num_places} place(s) created.`}
+                            </p>
+                            <p className="text-muted fs-6">
+                                <i
+                                    className={`fa-regular fa-note-sticky ${styles.icon}`}
+                                ></i>
+                                <span> </span>
+                                {`${num_posts} shared experience(s).`}
+                            </p>
+                            <br />
+                            {is_owner && (
+                                <>
+                                    <Button
+                                        variant="secondary"
+                                        onClick={handleEdit}
+                                    >
+                                        Edit Profile
+                                    </Button>
+                                    <span> </span>
+                                    <Button
+                                        variant="outline-primary"
+                                        onClick={handleChangePassword}
+                                    >
+                                        Change Password
+                                    </Button>
+                                    <span> </span>
+                                    <Button
+                                        variant="danger"
+                                        onClick={() => handleDelete("profile", id)}
+                                    >
+                                        Delete My Profile
+                                    </Button>
+                                </>
+                            )}
+                            {showDelete && (
+                                <DeleteConfirm
+                                    itemType="profile"
+                                    id={id}
+                                    setShowDelete={setShowDelete}
+                                    postCard
                                 />
-                            </Row>
-                            <Card.Body>
-                                <Card.Title>
-                                    <h2 className="text-uppercase fw-bold">
-                                        {owner}
-                                    </h2>
-                                    <h3 className="text-muted fs-6">
-                                        {first_name} {last_name}
-                                    </h3>
-                                </Card.Title>
-                                <Card.Text>{about_you}</Card.Text>
-                                <p className="text-muted fs-6">
-                                    <i
-                                        className={`fa-solid fa-location-dot ${styles.icon}`}
-                                    ></i>
-                                    <span> </span>
-                                    {`${num_places} place(s) created.`}
-                                </p>
-                                <p className="text-muted fs-6">
-                                    <i
-                                        className={`fa-regular fa-note-sticky ${styles.icon}`}
-                                    ></i>
-                                    <span> </span>
-                                    {`${num_posts} shared experience(s).`}
-                                </p>
-                                <br />
-                                {is_owner && (
-                                    <>
-                                        <Button
-                                            variant="secondary"
-                                            onClick={handleClick}
-                                        >
-                                            Edit Profile
-                                        </Button>
-                                        <span> </span>
-                                        <Button variant="danger">
-                                            Delete My Profile
-                                        </Button>
-                                    </>
-                                )}
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    { editON && (
+                            )}
+                        </Card.Body>
+                    </Card>
+                </Col>
+                {editON && (
                     <Col lg={4}>
                         <Form>
                             <Form.Group className="mb-3">
@@ -208,11 +243,10 @@ const ProfileCard = (profile) => {
                                 Cancel
                             </Button>
                         </Form>
-                        </Col>
-                    )}
-                </Row>
-            </Container>
-        )
+                    </Col>
+                )}
+            </Row>
+        </Container>
     );
 };
 

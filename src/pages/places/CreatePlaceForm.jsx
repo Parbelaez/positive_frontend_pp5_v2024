@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
     Alert,
     Container,
@@ -366,7 +366,29 @@ const CreatePlaceForm = () => {
                                     />
                                 </Figure>
                             </Col>
-                        ) : null}
+                        ) : (
+                                <Col xs md="4">
+                                    <br />
+                                <p>
+                                    Please, bear in mind that all places will
+                                    have posts attached to them.
+                                </p>
+                                <p>
+                                    For this reason, we are not allowing the
+                                    creator to delete a place.
+                                </p>
+                                <p>
+                                    If you need to delete a place, please
+                                    contact the admin at{" "}
+                                        <Link
+                                            to="mailto:admin@posistive.com"
+                                        >
+                                            admin@posistive.com
+                                        </Link>
+                                    
+                                </p>
+                            </Col>
+                        )}
                         <Col xs md="6"></Col>
                     </Row>
                 </Container>

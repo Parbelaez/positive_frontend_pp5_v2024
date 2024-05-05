@@ -108,12 +108,6 @@ const PlaceCard = (props) => {
                                 Edit Place
                             </Button>
                         )}
-                        <span> </span>
-                        {is_owner && (
-                            <Button variant="danger" onClick={handleDelete()}>
-                                Delete Place
-                            </Button>
-                        )}
                     </Card.Body>
                 </Card>
             </Row>

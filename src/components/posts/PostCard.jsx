@@ -36,6 +36,8 @@ const PostCard = (props) => {
     const [likeId, setLikeId] = useState(like_id);
     const [clickedLike, setClickedLike] = useState(like_type);
 
+    const [showDelete, setShowDelete] = useState(false);
+
     const handleLike = async (likeType) => {
         setClickedLike(likeType);
         try {
@@ -74,9 +76,7 @@ const PostCard = (props) => {
         }
     };
 
-    const [showDelete, setShowDelete] = useState(false);
-
-    const handleDelete = (event, itemType, id) => {
+    const handleDelete = (itemType, id) => {
         setShowDelete(true);
     };
 
@@ -210,6 +210,8 @@ const PostCard = (props) => {
                             <DeleteConfirm
                                 itemType="post"
                                 id={id}
+                                setShowDelete={setShowDelete}
+                                postCard
                             />
                         )}
                     </Card.Body>
