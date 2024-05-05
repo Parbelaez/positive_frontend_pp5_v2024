@@ -4,14 +4,12 @@ import { Link, useLocation } from "react-router-dom";
 import Asset from "../../components/utilities/Asset";
 import { Col, Container, Row, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import NoResults from "../../assets/no-results.jpg";
-import PostPreview, { default as Post } from "../../components/posts/PostPreview";
+import PostPreview from "../../components/posts/PostPreview";
 import MostActiveProfiles from "../../components/profiles/MostActiveProfiles";
-import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchMoreData } from "../../utils/utils";
 
 const Home = ({ message, filter = "" }) => {
-    const currentUser = useCurrentUser();
     const [posts, setPosts] = useState({ results: [] });
     const [hasLoaded, setHasLoaded] = useState(false);
     const [ownerFilter, setOwnerFilter] = useState(false);

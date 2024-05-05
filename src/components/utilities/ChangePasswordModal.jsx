@@ -52,7 +52,6 @@ const ChangePasswordModal = (props) => {
 
     return (
         <>
-            {console.log("Change Profile ID: ", profile_id, "Show: ", show)}
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Change Password</Modal.Title>

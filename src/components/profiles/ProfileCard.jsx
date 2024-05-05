@@ -12,17 +12,6 @@ import DeleteConfirm from "../utilities/DeleteConfirm";
 import ProfileEditForm from "./ProfileEditForm";
 
 const ProfileCard = (profile) => {
-    const [editON, setEditON] = useState(false);
-    const [profileData, setProfileData] = useState({
-        first_name: "",
-        last_name: "",
-        email: "",
-        about_you: "",
-        image: null,
-    });
-    const [changePassword, setChangePassword] = useState(false);
-    const [showDelete, setShowDelete] = useState(false);
-
     const {
         id,
         owner,
@@ -35,6 +24,17 @@ const ProfileCard = (profile) => {
         num_posts,
         is_owner,
     } = profile.profile;
+
+    const [editON, setEditON] = useState(false);
+    const [profileData, setProfileData] = useState({
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        about_you: about_you,
+        image: image,
+    });
+    const [changePassword, setChangePassword] = useState(false);
+    const [showDelete, setShowDelete] = useState(false);
 
     const handleEdit = () => {
         setEditON(!editON);
@@ -52,14 +52,9 @@ const ProfileCard = (profile) => {
     }
 
     useEffect(() => {
-        setProfileData({
-            first_name: first_name,
-            last_name: last_name,
-            email: email,
-            about_you: about_you,
-            image: image,
-        });
-    },[first_name, last_name, email, about_you, image]);
+        console.log("ProfileCard mounted");
+        console.log("profileData: ", profileData);
+    },[profileData]);
 
     return (
         <Container className={`${styles.content}`}>
@@ -91,12 +86,10 @@ const ProfileCard = (profile) => {
                             </Card.Title>
                             {is_owner && (
                                 <Card.Title>
-                                <h3 className="text-muted fs-6">
-                                    {email}
-                                </h3>
+                                    <h3 className="text-muted fs-6">{email}</h3>
                                 </Card.Title>
                             )}
-                            <Card.Text>{about_you}</Card.Text>
+                            <Card.Text>{profileData.about_you}</Card.Text>
                             <p className="text-muted fs-6">
                                 <i
                                     className={`fa-solid fa-location-dot ${styles.icon}`}
