@@ -88,10 +88,12 @@ const NewPostForm = () => {
     };
 
     const handleChange = (event) => {
-        setPostData({
-            ...postData,
-            [event.target.name]: event.target.value,
-        });
+        console.log("event.target.name: ", event.target.name);
+        console.log("event.target.value: ", event.target.value);
+            setPostData({
+                ...postData,
+                [event.target.name]: event.target.value,
+            });
         // Reset the cities when the country changes
         if (event.target.name === "country") {
             const selectedCountryCities = countries.find((n) => {
@@ -102,7 +104,7 @@ const NewPostForm = () => {
             getPlacesArray(postData.country, event.target.value)
                 .then((places) => {
                     setPlaces(places);
-                    console.log(places);
+                    console.log("places: " ,places);
                 })
                 .catch((error) => {
                     console.error("Error fetching data:", error);
@@ -124,8 +126,6 @@ const NewPostForm = () => {
         event.preventDefault();
         const formData = new FormData();
 
-        console.log("submit place id: ", place_id);
-
         formData.append("place", place_id ? place_id : postData.place);
         formData.append("title", postData.title);
         formData.append("visit_date", postData.visit_date);
@@ -133,6 +133,7 @@ const NewPostForm = () => {
         formData.append("image", imageInput.current.files[0]);
         formData.append("recommendaton", postData.recommendaton);
 
+        console.log("formdata: ", formData, "postdata: ", postData);
         try {
             console.log("lo que voy a enviar a la DB: ", formData);
             const { data } = await axiosRequest.post("/posts/", formData);
@@ -184,7 +185,6 @@ const NewPostForm = () => {
                         ))}
                         <div className="form-group">
                             <Form.Label htmlFor="city">City</Form.Label>
-
                             {!!city ? (
                                 <Form.Select disabled>
                                     <option value="city">{city}</option>
@@ -216,13 +216,8 @@ const NewPostForm = () => {
                             {!!place_id ? (
                                 (console.log("place_id: ", place_id),
                                 (
-                                    <Form.Select
-                                        disabled
-                                    >
-                                        <option
-                                            key={place_id}
-                                            value={place_id}
-                                        >
+                                    <Form.Select disabled>
+                                        <option key={place_id} value={place_id}>
                                             {place_name}
                                         </option>
                                     </Form.Select>
@@ -230,14 +225,12 @@ const NewPostForm = () => {
                             ) : (
                                 <Form.Select
                                     className="form-control"
-                                    id="place_name"
-                                    name="place_name"
-                                    value=""
+                                    id="place"
+                                    name="place"
+                                    value={postData.place_name}
                                     onChange={handleChange}
                                 >
-                                    <option value="">
-                                        "Select a place"
-                                    </option>
+                                    <option value="">"Select a place"</option>
                                     {places.length ? (
                                         places.map((place) => (
                                             <option
@@ -352,7 +345,10 @@ const NewPostForm = () => {
                         <Button type="submit" className="btn btn-primary">
                             Submit
                         </Button>
-                        <Button variant="secondary" onClick={() => navigate("/")}>
+                        <Button
+                            variant="secondary"
+                            onClick={() => navigate("/")}
+                        >
                             Cancel
                         </Button>
                         <br />

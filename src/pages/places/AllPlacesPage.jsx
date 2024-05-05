@@ -17,7 +17,7 @@ const PlacesPage = ({ message }) => {
     const [hasLoaded, setHasLoaded] = useState(false);
     const { pathname } = useLocation();
     const [searchEntry, setSearchEntry] = useState('');
-    const [searchPlaceHolder, setSearchPlaceHolder] = useState('Enter a place');
+    const [searchPlaceHolder, setSearchPlaceHolder] = useState('Enter a place, country or city');
     const [ownerFilter, setOwnerFilter] = useState(false);
     const [clear, setClear] = useState(false);
 
@@ -34,7 +34,7 @@ const PlacesPage = ({ message }) => {
                 setPlaces(results);
             } catch (error) {}
         } else {
-            setSearchPlaceHolder("Please enter a place name");
+            setSearchPlaceHolder("Please enter a place name, country or city");
         }
         console.log('Finish fetch: ',places);
     };
