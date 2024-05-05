@@ -4,9 +4,11 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useRedirect } from '../../hooks/useRedirect';
 
 
 const SignUpForm = () => {
+    useRedirect('loggedIn');
     const [signUpData, setSignUpData] = useState({
         username: '',
         email: '',
