@@ -15,15 +15,12 @@ import NewPostForm from './pages/posts/NewPostForm';
 import PlacePage from './pages/places/PlacePage';
 import PostPage from './pages/posts/PostPage';
 import { useCurrentUser } from './contexts/CurrentUserContext';
-// !!! DELETE
-import TestPage from './pages/TestPage';
 import PlaceEditForm from './pages/places/PlaceEdit';
 
 
 
 function App() {
   const currentUser = useCurrentUser();
-  // const profile_id = currentUser?.profile_id || "";
 
   return (
     <div className={styles.App}>
@@ -32,19 +29,17 @@ function App() {
         <Routes>
           <Route exact path="/" element={currentUser ? <Home /> : <LoginForm />} />
           <Route exact path="/login" element={currentUser ? <Home /> : <LoginForm />} />
-          <Route exact path="/signup" element={<SignUpForm />} />
-          <Route exact path="/profiles/:id" element={<ProfilePage />} />
+          <Route exact path="/signup" element={currentUser ? <Home /> : <SignUpForm />} />
+          <Route exact path="/profiles/:id" element={currentUser ? <ProfilePage /> : <LoginForm /> } />
           <Route exact path="/about" element={<About />} />
           <Route exact path="/places" element={<PlacesPage message="No Results found. Adjust the search keyword." />} />
-          <Route exact path="/create-place" element={<CreatePlaceForm />} />
-          <Route exact path="/places/:id/edit" element={<PlaceEditForm />} />
-          <Route exact path="/new-post" element={<NewPostForm />} />
+          <Route exact path="/create-place" element={currentUser ? <CreatePlaceForm /> : <LoginForm />} />
+          <Route exact path="/places/:id/edit" element={currentUser ? <PlaceEditForm /> : <LoginForm />} />
+          <Route exact path="/new-post" element={currentUser ? <NewPostForm /> : <LoginForm />} />
           <Route exact path="*" element={<NotFound />} />
           <Route exact path="/places/:id" element={<PlacePage />} />
           <Route exact path="/posts" element={<Home message="No Results found. Adjust the search keyword." />} />
           <Route exact path="/posts/:id" element={<PostPage />} />
-          {/* !!! DELETE */}
-          <Route exact path="/test" element={<TestPage />} />
         </Routes>
       </Container>
     </div>

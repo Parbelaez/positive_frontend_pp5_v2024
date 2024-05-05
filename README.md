@@ -383,6 +383,9 @@ The implemented features are:
 
 **Login after account creation:** after the user creates an account, he/she is sent to the loging page, so the entered data can be used to log in. This is perhaps an old practice, as modern applicatins log the user in automatically after the account is created. But, as we are using JWT, we need to log in the user manually so we can retrieve the token and cookies.
 
+**Redirecting:** As the current user already serves its puropose of checking if the user is logged in or not, it was decided to not create and extra hook. The currentUser hook is imported in the App.js file, and it is used via ternary operators to decide if the user can go to the requested URL, or if he/she is redirected to the login page.
+*NOTE:* the redirect hook is left created in case it is of use in the future verison, of if this implementation proves wrong overtime.
+
 ## Version 2 desired features
 
 1. The likes and dislikes of the posts will be computed in the backend. It needs brainstorming, as 5 categories will be needed: post likes, post dislikes, post tops, place likes, and place dislikes, which can be confusing to the users.

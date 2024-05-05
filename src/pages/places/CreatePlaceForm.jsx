@@ -12,10 +12,8 @@ import {
     Figure,
 } from "react-bootstrap";
 import { axiosRequest } from "../../api/axiosDefaults";
-import { useRedirect } from "../../hooks/useRedirect";
 
 const CreatePlaceForm = () => {
-    useRedirect("loggedOut");
     // A new axios instance for the country API
     const countryInstance = axios.create({
         baseURL: "https://countriesnow.space/api/v0.1/countries",

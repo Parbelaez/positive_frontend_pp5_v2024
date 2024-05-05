@@ -6,12 +6,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSetCurrentUser } from '../../contexts/CurrentUserContext';
 import { setTokenTimestamp } from "../../utils/utils";
-import { useRedirect } from '../../hooks/useRedirect';
 
 
 const LoginForm = () => {
     const setCurrentUser = useSetCurrentUser();
-    useRedirect('loggedIn');
 
     const [loginData, setLoginData] = useState({
         username: '',

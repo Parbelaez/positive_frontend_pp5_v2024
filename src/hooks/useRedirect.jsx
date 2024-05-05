@@ -7,17 +7,22 @@ export const useRedirect = (userAuthStatus) => {
 
     useEffect(() => {
         const handleMount = async () => {
+            console.log('useRedirect', userAuthStatus);
             try {
-                axios.post('/dj-rest-auth/token/refresh/')
+                axios.post('/dj-rest-auth/user/')
                     // If the user is logged in, then the token can be refreshed
                     // This is a strategy to confirm it.
-                    .then(
-                        userAuthStatus === 'loggedIn' ? navigate('/') : null
-                    );
+                    .then((response) => {
+                        console.log(response);
+                        // if (userAuthStatus === 'loggedIn') {
+                        //     navigate('/')
+                        // } else null;
+                    }
+                    )
             } catch (error) {
                 console.error("An error occurred:", error.response);
                 if (userAuthStatus === 'loggedOut') {
-                    navigate('/login')
+                    navigate('/')
                 }
             }
         }
