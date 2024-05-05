@@ -159,8 +159,7 @@ const PostCard = (props) => {
                                     className={`fa-regular fa-thumbs-up ${styles.icon}`}
                                 ></i>
                             )}
-                            <span> </span> {totalLikes.numLikes} person(s) likes
-                            this place.
+                            <span> </span> {totalLikes.numLikes} person(s) agree(s) with this post.
                             <br />
                             <span> </span>
                             {is_owner ? (
@@ -188,8 +187,7 @@ const PostCard = (props) => {
                                 ></i>
                             )}
                             <span> </span>
-                            {totalLikes.numDislikes} person(s) dislikes this
-                            place.
+                            {totalLikes.numDislikes} person(s) disgree(s) with this post.
                         </p>
                         <p>
                             Thanks to{" "}

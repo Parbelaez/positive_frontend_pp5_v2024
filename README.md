@@ -20,14 +20,18 @@
 - [Creating the Places page](#creating-the-places-page)
   - [The Search bar](#the-search-bar)
   - [The My Places filter button](#the-my-places-filter-button)
-- [Creating the Dashboard (Home) component](#creating-the-dashboard-home-component)
 - [Creating the PostCard component](#creating-the-postcard-component)
+  - [The likes criteria](#the-likes-criteria)
 - [Version 2 desired features](#version-2-desired-features)
 - [Bugs](#bugs)
   - [CI Moments Code's Bugs](#ci-moments-codes-bugs)
     - [Current User is lost after a refresh](#current-user-is-lost-after-a-refresh)
     - [The hamburger menu closes before the link is clicked](#the-hamburger-menu-closes-before-the-link-is-clicked)
     - [No real like calculation is seen in the posts](#no-real-like-calculation-is-seen-in-the-posts)
+  - [Normal Bugs](#normal-bugs)
+    - [The modal is not displayed after the user cancels the deletion (fixed)](#the-modal-is-not-displayed-after-the-user-cancels-the-deletion-fixed)
+    - [When the profile is being updated, if the user cancels the edition after writing, the data is not reset to the previous one (pending)](#when-the-profile-is-being-updated-if-the-user-cancels-the-edition-after-writing-the-data-is-not-reset-to-the-previous-one-pending)
+    - [The current user is lost sometimes messing with the "My Post" filter and posts owner (pending)](#the-current-user-is-lost-sometimes-messing-with-the-my-post-filter-and-posts-owner-pending)
 
 ## Introduction
 
@@ -350,16 +354,6 @@ The search bar triggers a search in the backend, and the backend returns the pla
 
 The My Places filter button is used to show only the places that have been created by the logged-in user. Different than the search bar, **the My Places filter button does not trigger a search in the backend**. It just filters the places that have been fetched from the backend. And the reason? Each query to the DB costs money in a cloud environment, so we need to minimize the number of these DB requests, and as we have already fetched all the places data, then, we can filter it in the frontend.
 
-## Creating the Dashboard (Home) component
-
-![dashboard_wireframe](./README_Images/dashboard_wireframe.png)
-
-The idea of the webpage, is that the non-registered user will only see a splash screen in which it is invited to make part of the community. The registered user is invited to log in. And the logged in user will see the dashboard (Home) component.
-
-In this page, the user will see the list of the posts. The posts will be fetched from the API and will be listed from newer to older.
-
-Also, it is worth noting that the NavBar is available only for the logged in user. The non-registered user and the registered user will not see the NavBar.
-
 ## Creating the PostCard component
 
 The post card will be used only in the detailed view of the post (url ending in /post/:id). It will show the post title, the post content, the post author, and the post date, and the tops, likes, and dislikes.
@@ -616,8 +610,23 @@ A view with better resolution can be seen here:
 
 ### Normal Bugs
 
-#### The modal is not displayed after the user cancels the deletion
+#### The modal is not displayed after the user cancels the deletion (fixed)
 
 When a user clicks the delete button in the post card, a modal is displayed asking for confirmation. If the user clicks the cancel button, the modal is not displayed again when the user clicks the delete button.
 
 Seems more like a feature than a bug, but it is not the expected behavior. The expected behavior is that the modal is displayed every time the user clicks the delete button.
+
+The solution was to pass the state of the modal to the parent component, and then, when the user clicks the delete button, the state is set to true, and the modal is displayed. When the user clicks the cancel button, the state is set to false, and the modal is not displayed.
+
+#### When the profile is being updated, if the user cancels the edition after writing, the data is not reset to the previous one (pending)
+
+When the user clicks the edit button in the profile page, the data is fetched from the backend and displayed in the form. If the user changes the data and then clicks the cancel button, the data is not reset to the previous one.
+
+It all points out to be a problem related to the useEffect hook, or the handling of the states in the modal, but it is not clear yet.
+
+#### The current user is lost sometimes messing with the "My Post" filter and posts owner (pending)
+
+When the user is logged in, the current user is stored in the CurrentUserContext. But, sometimes, the current user is lost, and the "My Post" filter does not work as expected. Also, the posts owner is not displayed correctly.
+
+It is not clear yet what is causing the problem, but it seems to be related to the useEffect hook in the Posts component. It seems like the page is loaded before the current user is fetched from the backend.
+
