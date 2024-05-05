@@ -1,11 +1,21 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Alert, Container, Row, Col, Form } from "react-bootstrap";
 import { axiosRequest } from "../../api/axiosDefaults";
 import styles from "../../styles/NewPostForm.module.css";
 
 const NewPostForm = () => {
+
+    const location = useLocation();
+
+    const place_id = location.state !== null ? location.state.id : "";
+    const place_name = location.state !== null ? location.state.place_name : "";
+    const country = location.state !== null ? location.state.country : "";
+    const city = location.state !== null ? location.state.city : "";
+
+    console.log(place_id, place_name, country, city);
+    
     // A new axios instance for the country API
     const countryInstance = axios.create({
         baseURL: "https://countriesnow.space/api/v0.1/countries",
@@ -67,7 +77,9 @@ const NewPostForm = () => {
 
     const getPlacesArray = async (country, city) => {
         try {
-            const response = await axiosRequest.get(`/places/?country=${country}&city=${city}`);
+            const response = await axiosRequest.get(
+                `/places/?country=${country}&city=${city}`
+            );
             return response.data.results;
         } catch (error) {
             console.error("An error occurred:", error.response);
@@ -138,20 +150,30 @@ const NewPostForm = () => {
                     <Form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <Form.Label htmlFor="country">Country</Form.Label>
-                            <Form.Select
-                                className="form-control"
-                                id="country"
-                                name="country"
-                                value={postData.country}
-                                onChange={handleChange}
-                            >
-                                <option value="">Select a country</option>
-                                {countries.map((country) => (
-                                    <option value={country.country}>
-                                        {country.country}
+                            {!!country ? (
+                                <Form.Select disabled>
+                                    <option value="country">{country}</option>
+                                </Form.Select>
+                            ) : (
+                                <Form.Select
+                                    className="form-control"
+                                    id="country"
+                                    name="country"
+                                    value={postData.country}
+                                    onChange={handleChange}
+                                >
+                                    <option value="country">
+                                        {!!country
+                                            ? country
+                                            : "Select a country"}
                                     </option>
-                                ))}
-                            </Form.Select>
+                                    {countries.map((country) => (
+                                        <option value={country.country}>
+                                            {country.country}
+                                        </option>
+                                    ))}
+                                </Form.Select>
+                            )}
                         </div>
                         {errors?.country?.map((message, idx) => (
                             <Alert variant="warning" key={idx}>
@@ -160,18 +182,25 @@ const NewPostForm = () => {
                         ))}
                         <div className="form-group">
                             <Form.Label htmlFor="city">City</Form.Label>
-                            <Form.Select
-                                className="form-control"
-                                id="city"
-                                name="city"
-                                value={postData.city}
-                                onChange={handleChange}
-                            >
-                                <option value="">Select a city</option>
-                                {cities.map((city) => (
-                                    <option value={city}>{city}</option>
-                                ))}
-                            </Form.Select>
+
+                            {!!city ? (
+                                <Form.Select disabled>
+                                    <option value="city">{city}</option>
+                                </Form.Select>
+                            ) : (
+                                <Form.Select
+                                    className="form-control"
+                                    id="city"
+                                    name="city"
+                                    value={postData.city}
+                                    onChange={handleChange}
+                                >
+                                    <option value="city">Select a city</option>
+                                    {cities.map((city) => (
+                                        <option value={city}>{city}</option>
+                                    ))}
+                                </Form.Select>
+                            )}
                         </div>
                         {errors?.city?.map((message, idx) => (
                             <Alert variant="warning" key={idx}>
@@ -182,6 +211,11 @@ const NewPostForm = () => {
                             <Form.Label htmlFor="place_name">
                                 Place Name
                             </Form.Label>
+                            {!!place_id ? (
+                                <Form.Select disabled>
+                                    <option value="place_id">{place_name}</option>
+                                </Form.Select>
+                            ) : (
                             <Form.Select
                                 className="form-control"
                                 id="place_name"
@@ -189,7 +223,9 @@ const NewPostForm = () => {
                                 value={postData.id}
                                 onChange={handleChange}
                             >
-                                <option value="">Select a place</option>
+                                <option value="place_id">
+                                    {!!place_id ? place_name : "Select a place"}
+                                </option>
                                 {places.length ? (
                                     places.map((place) => (
                                         <option key={place.id} value={place.id}>
@@ -200,9 +236,10 @@ const NewPostForm = () => {
                                     <option value="">No places found</option>
                                 )}
                             </Form.Select>
-                            {errors.place_name && (
+                            )}
+                            {errors.place && (
                                 <div className="alert alert-danger">
-                                    {errors.place_name}
+                                    {errors.place}
                                 </div>
                             )}
                         </div>
@@ -234,9 +271,9 @@ const NewPostForm = () => {
                                 value={postData.visit_date}
                                 onChange={handleChange}
                             />
-                            {errors.address && (
+                            {errors.visit_date && (
                                 <div className="alert alert-danger">
-                                    {errors.address}
+                                    {errors.visit_date}
                                 </div>
                             )}
                         </div>
@@ -254,7 +291,7 @@ const NewPostForm = () => {
                             />
                             {errors?.content?.map((message, idx) => (
                                 <Alert variant="warning" key={idx}>
-                                    {message}
+                                    {errors.content}
                                 </Alert>
                             ))}
                         </div>
@@ -272,7 +309,7 @@ const NewPostForm = () => {
                             />
                             {errors?.recommendation?.map((message, idx) => (
                                 <Alert variant="warning" key={idx}>
-                                    {message}
+                                    {errors.recommendation}
                                 </Alert>
                             ))}
                         </div>
@@ -289,7 +326,7 @@ const NewPostForm = () => {
                             />
                             {errors?.image?.map((message, idx) => (
                                 <Alert variant="warning" key={idx}>
-                                    {message}
+                                    {errors.image}
                                 </Alert>
                             ))}
                         </div>

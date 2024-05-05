@@ -4,6 +4,7 @@ import Card from "react-bootstrap/Card";
 import styles from "../../styles/PostCard.module.css";
 import { axiosResponse } from "../../api/axiosDefaults";
 import { useState } from "react";
+import DeleteConfirm from "../utilities/DeleteConfirm";
 
 const PostCard = (props) => {
     const {
@@ -71,6 +72,10 @@ const PostCard = (props) => {
         } catch (err) {
             console.log(err);
         }
+    };
+
+    const handleDelete = (itemType, id) => {
+        return <DeleteConfirm item={itemType} id={id} />;
     };
 
     return (
@@ -196,7 +201,10 @@ const PostCard = (props) => {
                         )}
                         <span> </span>
                         {is_owner && (
-                            <Button variant="danger">Delete Post</Button>
+                            <Button
+                                variant="danger"
+                                onClick={() => handleDelete("post", id)}
+                            >Delete Post</Button>
                         )}
                     </Card.Body>
                 </Card>

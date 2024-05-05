@@ -9,7 +9,7 @@ import { axiosRequest } from "../../api/axiosDefaults";
 
 const PlaceCard = (props) => {
     const {
-        id=20,
+        id,
         place_name,
         country,
         city,
@@ -23,6 +23,9 @@ const PlaceCard = (props) => {
         owner,
         owner_id
     } = props;
+
+    console.log(id, place_name, country, city);
+
     const currentUser = useCurrentUser();
     const is_owner = currentUser?.pk === owner_id;
     const navigate = useNavigate();
@@ -36,18 +39,25 @@ const PlaceCard = (props) => {
                 console.error("An error occurred:", error.response);
             }
         };
-    }
+    };
 
     const handleEdit = () => {
         return () => {
             navigate(`/places/${props.id}/edit`);
         };
-    }
+    };
+
+    const handlePostCreation = (id, place_name, country, city) => {
+        return () => {
+            navigate("/new-post", {
+                state: { id, place_name, country, city },
+            });
+        };
+    };
+        
 
     return (
-        <Container
-            className={`${styles.content}`}
-        >
+        <Container className={`${styles.content}`}>
             <Row className="justify-content-md-center">
                 <Card style={{ width: "32rem" }}>
                     <Row className="justify-content-md-center">
@@ -55,7 +65,7 @@ const PlaceCard = (props) => {
                             variant="top"
                             src={image}
                             className={`mt-2 ${styles.img}`}
-                            onClick = {() => navigate(`/places/${id}`)}
+                            onClick={() => navigate(`/places/${id}`)}
                         />
                     </Row>
                     <Card.Body>
@@ -74,8 +84,7 @@ const PlaceCard = (props) => {
                             {email}
                         </p>
                         <p>
-                            {num_posts} person(s) have posted about this
-                            place.
+                            {num_posts} person(s) have posted about this place.
                         </p>
                         <p>
                             Thanks to{" "}
@@ -84,20 +93,25 @@ const PlaceCard = (props) => {
                             </span>{" "}
                             for sharing this place with us!
                         </p>
-                        <Button variant="primary">Post You Experience!</Button>
+                        <Button
+                            variant="primary"
+                            onClick={
+                                handlePostCreation(id, place_name, country, city)
+                            }
+                        >
+                            Post You Experience!
+                        </Button>
                         <span> </span>
                         {is_owner && (
-                            <Button
-                                variant="secondary"
-                                onClick={ handleEdit() }
-                            >Edit Place</Button>
+                            <Button variant="secondary" onClick={handleEdit()}>
+                                Edit Place
+                            </Button>
                         )}
                         <span> </span>
                         {is_owner && (
-                            <Button
-                                variant="danger"
-                                onClick={ handleDelete() }
-                            >Delete Place</Button>
+                            <Button variant="danger" onClick={handleDelete()}>
+                                Delete Place
+                            </Button>
                         )}
                     </Card.Body>
                 </Card>
