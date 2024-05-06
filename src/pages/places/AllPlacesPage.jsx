@@ -72,7 +72,7 @@ const PlacesPage = ({ message }) => {
         };
         setHasLoaded(false);
         getPlaces();
-    }, [ pathname, clear ]);
+    }, [ pathname, clear, currentUser ]);
 
     return (
         <Container>

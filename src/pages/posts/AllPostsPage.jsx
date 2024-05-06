@@ -12,12 +12,14 @@ import PostPreview from "../../components/posts/PostPreview";
 import MostActiveProfiles from "../../components/profiles/MostActiveProfiles";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchMoreData } from "../../utils/utils";
+import { useCurrentUser } from "../../contexts/CurrentUserContext";
 
 const Home = ({ message, filter = "" }) => {
     const [posts, setPosts] = useState({ results: [] });
     const [hasLoaded, setHasLoaded] = useState(false);
     const [ownerFilter, setOwnerFilter] = useState(false);
     const { pathname } = useLocation();
+    const currentUser = useCurrentUser();
 
     const handleToggle = () => {
         setOwnerFilter(!ownerFilter);
@@ -40,7 +42,7 @@ const Home = ({ message, filter = "" }) => {
         };
         setHasLoaded(false);
         getPosts();
-    }, [filter, pathname]);
+    }, [filter, pathname, currentUser]);
 
     return (
         <Container>
