@@ -50,7 +50,7 @@ const SignUpForm = () => {
 
 
     return (
-        <Container className="position-absolute top-50 start-50 translate-middle">
+        <Container>
             <Stack gap={4}>
             <Row className="justify-content-md-center">
                 <Col xs lg="4">

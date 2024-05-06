@@ -44,6 +44,19 @@ In my experience as a movie and music reviewer, people feel also attracted to ch
 
 Also, when one writes a negative review, it is very easy to get carried away and write a very long one, losing even scope. But, when one writes a positive review, needs to really focus on explaining why the place is so good, and this is a good exercise for the brain and also, to hihglight why the place is worth visiting.
 
+## The Project, the user stories, and the tests
+
+The project followed the Agile methodology, with the user stories being created in the form of issues in the GitHub repository. The user stories were created based on the requirements of the project, and they were used to guide the development of the project.
+
+[PP5 - The Positive Social Network Project](https://github.com/users/Parbelaez/projects/3/views/1)
+
+The tests were created based on the user stories, and they were used to verify that the requirements of the project were met.
+
+| USER STORY | Description | How it was achieved | Image / GIF |
+| :--- | :--- | :--- | :--- |
+| Sign In page | As a user I can sign in to the app so that I can access functionality for logged in users.This page should be accesible only when my token is old or is not in the local machine. If my token is still valid, then I should be taken directly to home, where the posts reside. | Using React Router and the currentUser context to check if the user is logged in or not |![Login Form](./README_Images/gifs/tests/login.gif) |
+| Sign Un page | As a USER I would like to have a Sign Up page with the following fields: Email, Username, Password, Confirm Password *All data of the profile should be inserted in the profile page. I should be able to create an account to access all features for signed up users. | Using axios to send the post data request and Bootstrap |![Sigup Form](./README_Images/gifs/tests/signup.gif) |
+
 ## Starting the React App
 
 To start the React app, you need first to create the repository and runing the following command in the terminal:
