@@ -39,8 +39,7 @@ const ChangePasswordModal = (props) => {
         try {
             await axiosResponse.post("/dj-rest-auth/password/change/", userData)
                 .then(
-                    (response) => {
-                        console.log(response);
+                    () => {
                         handleClose();
                     }
             );

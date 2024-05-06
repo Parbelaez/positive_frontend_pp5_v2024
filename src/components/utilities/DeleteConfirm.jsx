@@ -7,10 +7,7 @@ const DeleteConfirm = (props) => {
 
     const { itemType, id, setShowDelete } = props;
 
-    console.log("Entering delete confirm: ", itemType, id);
-
     const [modalShow, setModalShow] = useState(true);
-    console.log("Modal show: ", modalShow);
     const navigate = useNavigate();
 
     const handleModalClose = () => {
@@ -31,9 +28,6 @@ const DeleteConfirm = (props) => {
         // The item is passed as a prop from the parent component.
         // The handleClose function will close the modal.
         // The id is also passed as a prop from the parent component.
-
-        console.log("Deleting: ", itemType, id);
-
         try {
             await axiosRequest
                 .delete(`/${itemType}s/${id}/`)

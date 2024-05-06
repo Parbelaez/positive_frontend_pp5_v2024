@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "../../styles/ProfileCard.module.css";
 import {
     Button,
@@ -50,11 +50,6 @@ const ProfileCard = (profile) => {
     const handleDelete = () => {
         setShowDelete(true);
     }
-
-    useEffect(() => {
-        console.log("ProfileCard mounted");
-        console.log("profileData: ", profileData);
-    },[profileData]);
 
     return (
         <Container className={`${styles.content}`}>
