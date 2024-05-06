@@ -18,9 +18,10 @@ const NavBar = () => {
 
     const handleLogout = async () => {
         try {
-            await axios.post('/dj-rest-auth/logout/');
-            setCurrentUser(null);
-            removeTokenTimestamp();
+            await axios
+                .post("/dj-rest-auth/logout/")
+                .then(() => setCurrentUser(null))
+                .then(() => removeTokenTimestamp());
         } catch (error) {
             console.error('An error occurred:', error.response);
         }
