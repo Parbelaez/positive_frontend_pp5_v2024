@@ -29,6 +29,7 @@
     - [Current User is lost after a refresh](#current-user-is-lost-after-a-refresh)
     - [The hamburger menu closes before the link is clicked](#the-hamburger-menu-closes-before-the-link-is-clicked)
     - [No real like calculation is seen in the posts](#no-real-like-calculation-is-seen-in-the-posts)
+    - [Refresh token messages DOS](#refresh-token-messages-dos)
   - [Normal Bugs](#normal-bugs)
     - [The modal is not displayed after the user cancels the deletion (fixed)](#the-modal-is-not-displayed-after-the-user-cancels-the-deletion-fixed)
     - [When the profile is being updated, if the user cancels the edition after writing, the data is not reset to the previous one (pending)](#when-the-profile-is-being-updated-if-the-user-cancels-the-edition-after-writing-the-data-is-not-reset-to-the-previous-one-pending)
@@ -52,10 +53,26 @@ The project followed the Agile methodology, with the user stories being created 
 
 The tests were created based on the user stories, and they were used to verify that the requirements of the project were met.
 
+**NOTE:** some of the issues are assigned to a previous front-end repo. It was decided to leave them there as they were tackled in that first version, and copied to the most recent one.
+
 | USER STORY | Description | How it was achieved | Image / GIF |
 | :--- | :--- | :--- | :--- |
 | Sign In page | As a user I can sign in to the app so that I can access functionality for logged in users.This page should be accesible only when my token is old or is not in the local machine. If my token is still valid, then I should be taken directly to home, where the posts reside. | Using React Router and the currentUser context to check if the user is logged in or not |![Login Form](./README_Images/gifs/tests/login.gif) |
-| Sign Un page | As a USER I would like to have a Sign Up page with the following fields: Email, Username, Password, Confirm Password *All data of the profile should be inserted in the profile page. I should be able to create an account to access all features for signed up users. | Using axios to send the post data request and Bootstrap |![Sigup Form](./README_Images/gifs/tests/signup.gif) |
+| Sign Up page | As a USER I would like to have a Sign Up page with the following fields: Email, Username, Password, Confirm Password *All data of the profile should be inserted in the profile page. I should be able to create an account to access all features for signed up users. | Using axios to send the post data request and Bootstrap |![Sigup Form](./README_Images/gifs/tests/signup.gif) |
+| Logout | As a USER I would like to have the possibility of logging out and being sent to the login page. | Using the currentUser context, axios, and the useNavigate hook |![Logout](./README_Images/gifs/tests/logout.gif) |
+| Navbar creation | As a USER I would like to have a Navbar on every page (except for non-logged users) in which I can link to all pages in the app. | Using React Bootstrap, the currentUser context, and axios |![NavBar](./README_Images/gifs/tests/navbar.gif) |
+| Collapsable hamburger menu | As a USER, I would like the hamburger menu to be collapsable. | Using the useClickOutsideToggle hook |Same as in Navbar creation |
+| Make some menu items unavailable for logged out users | As a USER, I would like that only logged in users could see the full menu. The rest should only see the About option. | Using the currentUser context |Same as in Navbar creation and login procedure |
+| Having the logged user's username in the NavBar | As a USER I would like to have the username of the logged user in the NavBar, so it is clear for the user that he/she is logged in and that what he/she is seeing is his/her dashboard. | Using the currentUser context |Same as in Navbar creation |
+| Profile page | As a USER, I would like to have a profile page where I can see and edit my user/profile info. Also, I should be able to see a list of my posts and places. | Using the currentUser context, axios, and Bootstrap. NOTE: for this user story it was decided to only show the amount of places and posts created by the user |![Profile Page](./README_Images/gifs/tests/profile_page_edit_password.gif) |
+| Fetch the countries and cities data from a third party API | As a USER, I would like to have the possibility of fetching the countries' data from a third-party service. This will let us use the DB free tier and will avoid DB inconsistencies from the cities-light library. | The countries and cities are fetched from [Countries Now](https://countriesnow.space/api/v0.1/countries) and the data is being populated using react hooks to control the form. |![Country and City Fetch](./README_Images/gifs/tests/country_city_fetch.gif) |
+| Create Places | As a USER I would like to create places to share the experience I and the rest of the users had in them | Using axios to send the post data request and Bootstrap. **NOTE:** due to problems with the authentication method employed in the Moments app, and that it is not possible to deploy the app using the same repo with the instructions provided, sometimes it is not possible to upload images. The Back-End trigger a CORS error. |![Create Place](./README_Images/gifs/tests/create_place.gif) |
+| Place Detail Page | As a USER, I would like to have a place detail view, where I can see the full description, plus the experiences it has attached. | Using axios to fetch the place data and Bootstrap. In the case of a redirection after creation, the data is handled with the response. | As seen in the place creation animation, where after the creation the user is redirected to the place detailed page of the newly created one. |
+| Create posts for Places | As a USER I would like to create posts to share the experience I had in any of the Places in the DB | Using axios to send the post data request and Bootstrap. **NOTE:** due to problems with the authentication method employed in the Moments app, and that it is not possible to deploy the app using the same repo with the instructions provided, sometimes it is not possible to upload images. The Back-End trigger a CORS error. |![Create Post](./README_Images/gifs/tests/create_post.gif) |
+| Post Detail Page | As a USER, I would like to have a post detail view, where I can see the full description, plus the likes it has received. | Using axios to fetch the post data and Bootstrap. In the case of a redirection after creation, the data is handled with the response. | As seen in the post creation animation, where after the creation the user is redirected to the post detailed page of the newly created one. |
+| Liking posts | As a USER I would like to have the possibility of sharing that the post help me, that I agree with it, or that I disagree with it. If I am the owner of the post, I shouldn't be able to like it. | It was accomplished with a custom implementation, explained in the "No real like calculation is seen in the posts" of the readme. **NOTE:** when the user has liked a post, he/she should dislike it to assign a new category of like. | ![Like Post](./README_Images/gifs/tests/like_post.gif) |
+
+
 
 ## Starting the React App
 
