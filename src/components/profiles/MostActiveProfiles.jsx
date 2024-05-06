@@ -70,6 +70,7 @@ const MostActiveProfiles = ({ orderCriteria, field }) => {
                                 </p>
                             </Col>
                         </Row>
+                        <br />
                     </Container>
                 ))}
                 </Row>
