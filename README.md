@@ -22,6 +22,7 @@
   - [The My Places filter button](#the-my-places-filter-button)
 - [Creating the PostCard component](#creating-the-postcard-component)
   - [The likes criteria](#the-likes-criteria)
+
 - [Version 2 desired features](#version-2-desired-features)
 - [Bugs](#bugs)
   - [CI Moments Code's Bugs](#ci-moments-codes-bugs)
@@ -308,8 +309,6 @@ Using the jwt-decode library, we can decode the token and get the expiration dat
 
 The logic can be checked in the utils.jsx file in the utils folder.
 
-```js
-
 
 ## Creating the Interceptors
 
@@ -370,6 +369,14 @@ The post card will be used only in the detailed view of the post (url ending in 
 ### The likes criteria
 
 As the idea of the social network is avoid discussions while being able to agree or disagree with the post, the likes and dislikes will be used to show the agreement or disagreement with the post, therefore, the place. The tops are be used for people that found the post useful. And, as the post are all positive, it implies that they also liked the place.
+
+### Infinite scroll
+
+The infinite scroll is a feature that allows the user to scroll down the page and load more posts. It is used to improve the user experience and reduce the loading time of the page. The infinite scroll is triggered when the user reaches the bottom of the page. When the user reaches the bottom of the page, the next page of posts is loaded.
+
+For this we have intalled the `react-infinite-scroll-component` package. You can read more about it here: https://www.npmjs.com/package/react-infinite-scroll-component
+
+The implementation can be seen in the AllPostsPage.jsx and AllPlacesPage.jsx files.
 
 
 ## Creating the About component

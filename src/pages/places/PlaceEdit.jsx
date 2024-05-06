@@ -1,16 +1,14 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-    Alert,
-    Container,
-    Row,
-    Col,
-    Form,
-    Button,
-    Image,
-    Figure,
-} from "react-bootstrap";
+import Alert from "react-bootstrap/Alert";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
+import Figure from "react-bootstrap/Figure";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import { axiosRequest } from "../../api/axiosDefaults";
 
 const PlaceEditForm = () => {

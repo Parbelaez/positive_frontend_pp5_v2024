@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { axiosRequest } from '../../api/axiosDefaults';
-import { Col, Container, Row } from 'react-bootstrap';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/PostList.module.css';
 

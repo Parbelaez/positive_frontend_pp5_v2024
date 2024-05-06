@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import styles from "../../styles/ProfileCard.module.css";
-import {
-    Button,
-    Card,
-    Col,
-    Container,
-    Row,
-} from "react-bootstrap";
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
 import ChangePasswordModal from "../utilities/ChangePasswordModal";
 import DeleteConfirm from "../utilities/DeleteConfirm";
 import ProfileEditForm from "./ProfileEditForm";

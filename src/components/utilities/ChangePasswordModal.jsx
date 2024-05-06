@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { axiosResponse } from "../../api/axiosDefaults";
-import { Alert } from "bootstrap";
+import Alert from "react-bootstrap/Alert";
 
 const ChangePasswordModal = (props) => {
     const { profile_id, setChangePassword } = props;

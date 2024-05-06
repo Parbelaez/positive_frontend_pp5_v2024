@@ -1,7 +1,12 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Alert, Container, Row, Col, Form, Button } from "react-bootstrap";
+import Alert from "react-bootstrap/Alert";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import { axiosRequest } from "../../api/axiosDefaults";
 import styles from "../../styles/NewPostForm.module.css";
 

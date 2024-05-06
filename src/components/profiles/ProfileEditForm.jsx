@@ -1,5 +1,10 @@
 import React, { createRef, useEffect, useState } from 'react'
-import { Figure, Form, Image, Alert, Button, Modal } from 'react-bootstrap';
+import Figure from 'react-bootstrap/Figure';
+import Image from 'react-bootstrap/Image';
+import Alert from 'react-bootstrap/Alert';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 import { axiosRequest } from '../../api/axiosDefaults';
 
 const ProfileEditForm = (props) => {

@@ -1,4 +1,7 @@
-import { Container, Row, OverlayTrigger, Tooltip } from "react-bootstrap";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import styles from "../../styles/PostCard.module.css";
