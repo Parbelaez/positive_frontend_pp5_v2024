@@ -26,6 +26,7 @@
 - [Creating the About component](#creating-the-about-component)
 - [Creating the CreatePost component](#creating-the-createpost-component)
 - [Preventive coding](#preventive-coding)
+- [Deployment](#deployment)
 - [Version 2 desired features](#version-2-desired-features)
 - [Bugs](#bugs)
   - [CI Moments Code's Bugs](#ci-moments-codes-bugs)
@@ -33,6 +34,7 @@
     - [The hamburger menu closes before the link is clicked](#the-hamburger-menu-closes-before-the-link-is-clicked)
     - [No real like calculation is seen in the posts](#no-real-like-calculation-is-seen-in-the-posts)
     - [Refresh token messages DOS](#refresh-token-messages-dos)
+    - [JWT token based cookies are being filteresd by the browser (not fixed, with proposal)](#jwt-token-based-cookies-are-being-filteresd-by-the-browser-not-fixed-with-proposal)
   - [Normal Bugs](#normal-bugs)
     - [The modal is not displayed after the user cancels the deletion (fixed)](#the-modal-is-not-displayed-after-the-user-cancels-the-deletion-fixed)
     - [When the profile is being updated, if the user cancels the edition after writing, the data is not reset to the previous one (pending)](#when-the-profile-is-being-updated-if-the-user-cancels-the-edition-after-writing-the-data-is-not-reset-to-the-previous-one-pending)
@@ -447,6 +449,26 @@ The implemented features are:
 **Redirecting:** As the current user already serves its puropose of checking if the user is logged in or not, it was decided to not create and extra hook. The currentUser hook is imported in the App.js file, and it is used via ternary operators to decide if the user can go to the requested URL, or if he/she is redirected to the login page.
 *NOTE:* the redirect hook is left created in case it is of use in the future verison, of if this implementation proves wrong overtime.
 
+## Deployment
+
+The deployment of the Front-End is relatively easy, but it has some steps that need to be followed. The steps are:
+
+1. Create a new app in Heroku.
+2. Connect the Heroku app with the GitHub repository.
+3. Create a Procfile in the root directory of the repository with the following content:
+
+```bash
+web: serve -s build
+```
+
+4. Add the following line to the scripts in the `package.json` file:
+
+"heroku-prebuild": "npm install -g serve",
+
+5. Deploy the app in Heroku.
+
+**NOTE:** if using React Bootstrap or Bootstrap, it is recommended to import each component from the library in the component that uses it. This way, the app will be lighter and faster.
+
 ## Version 2 desired features
 
 1. The likes and dislikes of the posts will be computed in the backend. It needs brainstorming, as 5 categories will be needed: post likes, post dislikes, post tops, place likes, and place dislikes, which can be confusing to the users.
@@ -706,7 +728,18 @@ export const shouldRefreshToken = () => {
     return localStorage.getItem("refreshTokenTimestamp") <= Date.now() / 1000;
 };
 ```
+#### JWT token based cookies are being filteresd by the browser (not fixed, with proposal)
 
+As mentioned before, the new standard for HTTP authentication requests is more strict than the one used in the tutorial. The cookies are being filtered by the browser (except in Firefox, but a warning can be seen in the console that soon it will be deprecated).
+
+In case that we would like to keep the FE and BE as sepparated entities, it is worth the effort to check these proposed solutions:
+
+- Creating the cookies in the FE and sending them to the BE in the headers.
+- Creating a middleware in the backend the creates the PARTITIONED flag in the set-cookie header.
+- Create a PR in the dj-rest-auth repository to include the PARTITIONED flag in the set-cookie header.
+- Instead of deploying the application using the same repo, deploy the FE in a CDN and the BE in a cloud service, so the samesite can be simulated (this is just speculating, as I have not tested it).
+
+```js
 
 ### Normal Bugs
 
