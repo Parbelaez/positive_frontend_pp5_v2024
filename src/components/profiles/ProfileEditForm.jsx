@@ -26,6 +26,10 @@ const ProfileEditForm = (props) => {
         });
     };
 
+    // This function is used to display the image that the user has selected
+    // before submitting the form.
+    // To properly display the image, we need to create a URL object
+    // and revoke the object URL when the user selects a new image.
     const handleChangeImage = (event) => {
         if (event.target.files.length) {
             URL.revokeObjectURL(profileData.image);
@@ -47,6 +51,7 @@ const ProfileEditForm = (props) => {
         try {
             await axiosRequest.put(`/profiles/${id}`, formData)
                 .then((response) => {
+                    // If the response is successful, we close the modal
                     response.status === 200 && setEditON(false);
                     setProfileData(response.data);
                 });

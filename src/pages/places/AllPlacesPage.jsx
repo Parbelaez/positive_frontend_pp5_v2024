@@ -139,6 +139,11 @@ const PlacesPage = ({ message }) => {
                                 </Button>
                             </Col>
                         </Row>
+                        {/* checks if it has loaded, if so, checks that there is data,
+                                and if there is, checks if My Places filter has been activated.
+                                Afterwards, filters the data to MY PLACES, and if I have created a place or more, 
+                                it will show them, if not -going upwards- will show an image
+                                with no content found. */}
                         {hasLoaded ? (
                             places.results.length ? (
                                 ownerFilter ? (
@@ -211,7 +216,10 @@ const PlacesPage = ({ message }) => {
                 </Col>
                 <Col md={1}></Col>
                 <Col md={4} className="d-none d-lg-block p-0 p-lg-2">
-                    <MostActiveProfiles orderCriteria="-num_places" field="places"/>
+                    <MostActiveProfiles
+                        orderCriteria="-num_places"
+                        field="places"
+                    />
                 </Col>
             </Row>
         </Container>

@@ -99,6 +99,7 @@ const CreatePlaceForm = () => {
         }
     };
 
+    // handleSelect for select fields and update the placeData state
     const handleSelect = (event) => {
         setPlaceData({
             ...placeData,

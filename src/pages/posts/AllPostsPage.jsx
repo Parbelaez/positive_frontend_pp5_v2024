@@ -17,7 +17,6 @@ const Home = ({ message, filter = "" }) => {
 
     const handleToggle = () => {
         setOwnerFilter(!ownerFilter);
-        console.log("Owner filter after toggle: ", ownerFilter);
     };
 
     useEffect((filter) => {
@@ -61,10 +60,6 @@ const Home = ({ message, filter = "" }) => {
                                     defaultValue={[null]}
                                     className="mb-2"
                                 >
-                                    {console.log(
-                                        "Owner filter inside html: ",
-                                        ownerFilter
-                                    )}
                                     <ToggleButton
                                         variant={
                                             ownerFilter
@@ -82,20 +77,14 @@ const Home = ({ message, filter = "" }) => {
                         </Row>
                         <Row>
                             <Col>
+                                {/* checks if it has loaded, if so, checks that there is data,
+                                and if there is, checks if My Posts filter has been activated.
+                                Afterwards, filters the data to MY POST, and if I have created post, 
+                                it will show them, if not -going upwards- will show an image
+                                with no content found. */}
                                 {hasLoaded ? (
                                     posts.results.length ? (
                                         ownerFilter ? (
-                                            (console.log(
-                                                "posts: ",
-                                                posts,
-                                                "results",
-                                                posts.results,
-                                                "post owner filter: ",
-                                                posts.results.filter(
-                                                    (post) =>
-                                                        post.is_owner === true
-                                                )
-                                            ),
                                             posts.results.filter(
                                                 (post) => post.is_owner === true
                                             ).length ? (
@@ -134,7 +123,7 @@ const Home = ({ message, filter = "" }) => {
                                                         message={message}
                                                     />
                                                 </Container>
-                                            ))
+                                            )
                                         ) : (
                                             <InfiniteScroll
                                                 children={posts.results.map(
