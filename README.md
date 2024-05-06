@@ -23,6 +23,9 @@
 - [Creating the PostCard component](#creating-the-postcard-component)
   - [The likes criteria](#the-likes-criteria)
 - [Infinite scroll](#infinite-scroll)
+- [Creating the About component](#creating-the-about-component)
+- [Creating the CreatePost component](#creating-the-createpost-component)
+- [Preventive coding](#preventive-coding)
 - [Version 2 desired features](#version-2-desired-features)
 - [Bugs](#bugs)
   - [CI Moments Code's Bugs](#ci-moments-codes-bugs)
@@ -34,6 +37,7 @@
     - [The modal is not displayed after the user cancels the deletion (fixed)](#the-modal-is-not-displayed-after-the-user-cancels-the-deletion-fixed)
     - [When the profile is being updated, if the user cancels the edition after writing, the data is not reset to the previous one (pending)](#when-the-profile-is-being-updated-if-the-user-cancels-the-edition-after-writing-the-data-is-not-reset-to-the-previous-one-pending)
     - [The current user is lost sometimes messing with the "My Post" filter and posts owner (pending)](#the-current-user-is-lost-sometimes-messing-with-the-my-post-filter-and-posts-owner-pending)
+- [Thank yous](#thank-yous)
 
 ## Introduction
 
@@ -71,6 +75,9 @@ The tests were created based on the user stories, and they were used to verify t
 | Create posts for Places | As a USER I would like to create posts to share the experience I had in any of the Places in the DB | Using axios to send the post data request and Bootstrap. **NOTE:** due to problems with the authentication method employed in the Moments app, and that it is not possible to deploy the app using the same repo with the instructions provided, sometimes it is not possible to upload images. The Back-End trigger a CORS error. |![Create Post](./README_Images/gifs/tests/create_post.gif) |
 | Post Detail Page | As a USER, I would like to have a post detail view, where I can see the full description, plus the likes it has received. | Using axios to fetch the post data and Bootstrap. In the case of a redirection after creation, the data is handled with the response. | As seen in the post creation animation, where after the creation the user is redirected to the post detailed page of the newly created one. |
 | Liking posts | As a USER I would like to have the possibility of sharing that the post help me, that I agree with it, or that I disagree with it. If I am the owner of the post, I shouldn't be able to like it. | It was accomplished with a custom implementation, explained in the "No real like calculation is seen in the posts" of the readme. **NOTE:** when the user has liked a post, he/she should dislike it to assign a new category of like. | ![Like Post](./README_Images/gifs/tests/like_post.gif) |
+| Add filter for my posts and places | As a USER I would like to have the possibility of filtering the posts and places that I have created. | Using the currentUser context and a filter button in the places page. This button follows the logic of a reusable component to which one sents the type of data that would like to see (places or posts, and expansible for future items) and the user | ![My Posts Filter](./README_Images/gifs/tests/my_posts_filter.giF) |
+| Search bar for places | As a USER I would like to have the possibility of searching for places in the places page. This should feasible to be combined with the filter | Using filtering methods on the already fetched data | ![Search Bar](./README_Images/gifs/tests/search_bar.gif) |
+| Top 5 active profiles for places and posts | As a USER I would like to have the possibility of seeing the top 5 active profiles in the places and posts pages. | By counting the amount of items created in the category | As seen in the places and posts pages from previous tests |
 
 
 
@@ -722,3 +729,24 @@ When the user is logged in, the current user is stored in the CurrentUserContext
 
 It is not clear yet what is causing the problem, but it seems to be related to the useEffect hook in the Posts component. It seems like the page is loaded before the current user is fetched from the backend.
 
+#### The responsiveness of the page is not working as expected (pending)
+
+The responsiveness of the page is not working as expected. A few pages look congested on mobile devices, but it had a lower proirity than the bugs derived directly from the logic (many of them comming from the Moments app design), different versions of packages, unexpected bugs coming from the frameworks (as in the JWT authentication).
+
+It will be fixed in the next version with the help of a UX/UI designer.
+
+#### The images are not being uploaded sporadically (pending)
+
+The images are not being uploaded sporadically. It is not clear yet what is causing the problem, but it seems to be related to the authentication method employed in the Moments app. As I used the latest versions of all frameworks and libraries, there are some concerns with the JWT authentication ansd CORS permissions, as the new standards for HTTP requests are more strict than the ones used in the tutorial.
+
+#### The cookies as they are being used are not secure (pending)
+
+The cookies are being used to store the JWT tokens, but they are not secure. The cookies are not being set with the secure flag, the httpOnly flag, and the sameSite flag. The secure flag is used to ensure that the cookies are only sent over HTTPS. The httpOnly flag is used to prevent the cookies from being accessed by JavaScript. The sameSite flag is used to prevent the cookies from being sent in cross-site requests.
+
+On top of that, Firefox is the only browser that still accepts cookies with SameSite=None, but it is not the best practice to use it. It is needed to add the Partioned flag to the cookie to be able to keep using it as it is. dj-rest-auth still does not support such attribute in the set-cookie header, so I raised an issue in the repository [here](https://github.com/iMerica/dj-rest-auth/issues/622).
+
+## Thank yous
+
+I would like to thank my mentor, **Mo Shami**, for all the help and guidance during the project.
+**Kay** my facilitator, for the encouragement and the help during the hard times.
+**Jose Luís Bravo**, my dear grumpy friend, who showed me how to understand what is happening behind the framework curtain.
