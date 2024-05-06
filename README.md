@@ -22,7 +22,7 @@
   - [The My Places filter button](#the-my-places-filter-button)
 - [Creating the PostCard component](#creating-the-postcard-component)
   - [The likes criteria](#the-likes-criteria)
-
+- [Infinite scroll](#infinite-scroll)
 - [Version 2 desired features](#version-2-desired-features)
 - [Bugs](#bugs)
   - [CI Moments Code's Bugs](#ci-moments-codes-bugs)
@@ -370,7 +370,7 @@ The post card will be used only in the detailed view of the post (url ending in 
 
 As the idea of the social network is avoid discussions while being able to agree or disagree with the post, the likes and dislikes will be used to show the agreement or disagreement with the post, therefore, the place. The tops are be used for people that found the post useful. And, as the post are all positive, it implies that they also liked the place.
 
-### Infinite scroll
+## Infinite scroll
 
 The infinite scroll is a feature that allows the user to scroll down the page and load more posts. It is used to improve the user experience and reduce the loading time of the page. The infinite scroll is triggered when the user reaches the bottom of the page. When the user reaches the bottom of the page, the next page of posts is loaded.
 
@@ -381,11 +381,18 @@ The implementation can be seen in the AllPostsPage.jsx and AllPlacesPage.jsx fil
 
 ## Creating the About component
 
-To create the About component, you can follow the same steps as for the Home component.
+In the about page the user can find the information relevant to the social network. It is a simple page with a title and a text.
 
 ## Creating the CreatePost component
 
-For this one, we have used the approach used in the Moments tutorial.
+The post can be created in two ways:
+
+1. From scratch, by clicking the "create post" in the posts page.
+2. From the place detail page, by clicking the "create post" button.
+
+In the first option the user will find a blank form, but the country and city must be filled in order to get the available places in such location.
+
+In the second option, the country and city are already filled, along with the place. This field are greyed out, so the user cannot change them. The user can fill all remaining fields and create the post.
 
 ## Preventive coding
 
