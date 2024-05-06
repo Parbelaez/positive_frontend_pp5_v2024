@@ -32,7 +32,6 @@ const PlacesPage = ({ message }) => {
         if (searchEntry !== "") {
             setOwnerFilter(false);
             try {
-                console.log('Search Results Routine',searchEntry);
                 const response = await axiosRequest.get(
                     `/places/?search=${searchEntry}`
                 );
@@ -42,7 +41,6 @@ const PlacesPage = ({ message }) => {
         } else {
             setSearchPlaceHolder("Please enter a place name, country or city");
         }
-        console.log('Finish fetch: ',places);
     };
 
     const handleChange = () => (event) => {
@@ -56,7 +54,6 @@ const PlacesPage = ({ message }) => {
     useEffect(() => {
         setClear(false);
         setOwnerFilter(false);
-        console.log('Clear: ',clear);
         const getPlaces = async () => {
             try {
                 await axiosResponse

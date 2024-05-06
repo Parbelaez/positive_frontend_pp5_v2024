@@ -32,13 +32,12 @@ function App() {
           <Route exact path="/signup" element={currentUser ? <Home /> : <SignUpForm />} />
           <Route exact path="/profiles/:id" element={currentUser ? <ProfilePage /> : <LoginForm /> } />
           <Route exact path="/about" element={<About />} />
-          <Route exact path="/places" element={<PlacesPage message="No Results found. Adjust the search keyword." />} />
+          <Route exact path="/places" element={<PlacesPage />} />
           <Route exact path="/create-place" element={currentUser ? <CreatePlaceForm /> : <LoginForm />} />
           <Route exact path="/places/:id/edit" element={currentUser ? <PlaceEditForm /> : <LoginForm />} />
           <Route exact path="/new-post" element={currentUser ? <NewPostForm /> : <LoginForm />} />
           <Route exact path="*" element={<NotFound />} />
           <Route exact path="/places/:id" element={<PlacePage />} />
-          <Route exact path="/posts" element={<Home message="No Results found. Adjust the search keyword." />} />
           <Route exact path="/posts/:id" element={<PostPage />} />
         </Routes>
       </Container>

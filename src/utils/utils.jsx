@@ -10,7 +10,7 @@ export const setTokenTimestamp = (data) => {
 
 // Check if the token is expired
 export const shouldRefreshToken = () => {
-    return !!localStorage.getItem("refreshTokenTimestamp");
+    return localStorage.getItem("refreshTokenTimestamp") <= Date.now() / 1000;
 };
 
 // Remove the timestamp from localStorage

@@ -24,8 +24,6 @@ const PlaceCard = (props) => {
         owner_id
     } = props;
 
-    console.log(id, place_name, country, city);
-
     const currentUser = useCurrentUser();
     const is_owner = currentUser?.pk === owner_id;
     const navigate = useNavigate();
@@ -38,7 +36,6 @@ const PlaceCard = (props) => {
 
     const handlePostCreation = (id, place_name, country, city) => {
         return () => {
-            console.log("Lo que envié: ", id, place_name, country, city);
             navigate("/new-post", {
                 state: { id, place_name, country, city },
             });

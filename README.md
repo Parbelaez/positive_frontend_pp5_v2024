@@ -634,6 +634,42 @@ A view with better resolution can be seen here:
 
 [Flow Chart](https://miro.com/app/board/uXjVKLp_b-s=/?share_link_id=287718421848)
 
+#### Refresh token messages DOS
+
+The refresh token messages are being sent to the console every time the user interacts with the page while the token is still valid. This is a DOS attack, and the server was kicking the user out of the session after repeated requests, generating a 500 error.
+
+As it can be seen in CurrentUserContext.js from the Moments app, the shouldRefreshToken function is being called every time the app sents a request. If the function returns true, the app sends a refresh token request to the backend.
+
+```js
+ useMemo(() => {
+    axiosReq.interceptors.request.use(
+      async (config) => {
+        if (shouldRefreshToken()) {
+          try {
+            await axios.post("/dj-rest-auth/token/refresh/");
+.
+.
+.
+```
+
+And in the utils, we see that the return is always true while the refreshTokenTimestamp exists in the locastorage, so the refresh token is always sent, as it is always refreshed.
+
+```js
+export const shouldRefreshToken = () => {
+  return !!localStorage.getItem("refreshTokenTimestamp");
+};
+```
+
+The solution is to check if the token is expired or not, and only send the refresh token if it is expired. This is the code:
+
+```js
+// Check if the token is expired
+export const shouldRefreshToken = () => {
+    return localStorage.getItem("refreshTokenTimestamp") <= Date.now() / 1000;
+};
+```
+
+
 ### Normal Bugs
 
 #### The modal is not displayed after the user cancels the deletion (fixed)

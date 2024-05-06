@@ -35,7 +35,7 @@ const LoginForm = () => {
             const { data } = await axios.post('/dj-rest-auth/login/', loginData);
             setCurrentUser(data.user);
             setTokenTimestamp(data);
-            navigate('/posts');
+            navigate('/');
         } catch (error) {
             console.log('An error occurred:', error.response);
             setError(error.response?.data);
@@ -104,7 +104,7 @@ const LoginForm = () => {
                             <p>
                                 Don't have an account? <Link to="/signup">Sign Up!</Link>                                
                             </p>
-                            <Button variant="primary" type="submit">
+                            <Button onClick={handleSubmit} className="btn btn-primary">
                                 Login
                             </Button>
                         </Form>

@@ -347,7 +347,7 @@ const NewPostForm = () => {
                             ))}
                         </div>
                         <br />
-                        <Button type="submit" className="btn btn-primary">
+                        <Button onClick={handleSubmit} className="btn btn-primary">
                             Submit
                         </Button>
                         <Button

@@ -36,7 +36,7 @@ const NavBar = () => {
             >
                 Places
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/posts">
+            <Nav.Link as={NavLink} to="/">
                 Posts
             </Nav.Link>
             <Nav.Link as={NavLink} to="/login" onClick={handleLogout}>
