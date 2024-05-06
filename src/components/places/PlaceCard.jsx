@@ -5,7 +5,6 @@ import Card from "react-bootstrap/Card";
 import styles from "../../styles/PlaceCard.module.css";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { useNavigate } from "react-router-dom";
-import { axiosRequest } from "../../api/axiosDefaults";
 
 
 const PlaceCard = (props) => {
@@ -30,17 +29,6 @@ const PlaceCard = (props) => {
     const currentUser = useCurrentUser();
     const is_owner = currentUser?.pk === owner_id;
     const navigate = useNavigate();
-
-    const handleDelete = () => {
-        return async () => {
-            try {
-                await axiosRequest.delete(`/places/${props.id}/`)
-                    .then(() => navigate(-1));
-            } catch (error) {
-                console.error("An error occurred:", error.response);
-            }
-        };
-    };
 
     const handleEdit = () => {
         return () => {
