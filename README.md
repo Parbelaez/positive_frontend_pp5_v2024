@@ -302,6 +302,15 @@ const currentUser = useContext(CurrentUserContext);
 
 NOTE: Please, go to the code to see the full implementation.
 
+Afterwards, it is needed to implement a mechanism to check if the refresh token needs to be refreshed. For this, we are storing the timestamp of the last refresh token in the localStorage. This way, we can check if the token has expired or not.
+
+Using the jwt-decode library, we can decode the token and get the expiration date. You can read more about it here: https://www.npmjs.com/package/jwt-decode.
+
+The logic can be checked in the utils.jsx file in the utils folder.
+
+```js
+
+
 ## Creating the Interceptors
 
 As we are using JWT (JSON Web Tokens), we need to check if they have expired or not everytime a user wants to use the webpage. These tokens have a validity of 5 minutes, so without the proper configuration, the user will need to log in everytime that he/she opens the page. With Axios, we can intercept requests or responses before they are handled by then or catch. So, we can check the validity of the token before the request is made. If the token is expired, we can redirect the user to the login page or, much better, we can refresh the token and then make the request.

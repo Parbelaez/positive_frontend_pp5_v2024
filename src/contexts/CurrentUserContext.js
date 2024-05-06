@@ -31,6 +31,10 @@ export const CurrentUserProvider = ({ children }) => {
         }
     }, [loading]);
 
+    // Here we are catching all incoming and outgoing requests
+    // to check if the token is expired and if so, we refresh it.
+    // and if the refresh token is expired, we redirect the user to the login page
+    // and remove the timestamp from localStorage
     useMemo(() => {
         axiosRequest.interceptors.request.use(
             async (request) => {
