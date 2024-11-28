@@ -1,4 +1,4 @@
-# THE POSITIVE SOCIAL NETWORK
+ƒ# THE POSITIVE SOCIAL NETWORK
 
 ![The Positive Social Network](./README_Images/cover_med.jpg)
 
@@ -35,7 +35,7 @@
     - [No real like calculation is seen in the posts](#no-real-like-calculation-is-seen-in-the-posts)
     - [Refresh token messages DOS](#refresh-token-messages-dos)
     - [JWT token based cookies are being filteresd by the browser (not fixed, with proposal)](#jwt-token-based-cookies-are-being-filteresd-by-the-browser-not-fixed-with-proposal)
-  - [Normal Bugs](#normal-bugs)
+  - [](#normal-bugs)
     - [The modal is not displayed after the user cancels the deletion (fixed)](#the-modal-is-not-displayed-after-the-user-cancels-the-deletion-fixed)
     - [When the profile is being updated, if the user cancels the edition after writing, the data is not reset to the previous one (pending)](#when-the-profile-is-being-updated-if-the-user-cancels-the-edition-after-writing-the-data-is-not-reset-to-the-previous-one-pending)
     - [The current user is lost sometimes messing with the "My Post" filter and posts owner (pending)](#the-current-user-is-lost-sometimes-messing-with-the-my-post-filter-and-posts-owner-pending)
@@ -739,7 +739,6 @@ In case that we would like to keep the FE and BE as sepparated entities, it is w
 - Create a PR in the dj-rest-auth repository to include the PARTITIONED flag in the set-cookie header.
 - Instead of deploying the application using the same repo, deploy the FE in a CDN and the BE in a cloud service, so the samesite can be simulated (this is just speculating, as I have not tested it).
 
-```js
 
 ### Normal Bugs
 
